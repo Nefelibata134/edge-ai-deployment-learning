@@ -108,34 +108,65 @@
 
 ## 动手记录
 
-待补充：
-
-- 系统：
-- CPU：
-- 内存：
-- 显卡：
+- 系统：Windows 11 家庭版 25H2，OS 内部版本 26200.8655。
+- CPU：13th Gen Intel(R) Core(TM) i9-13950HX。
+- 内存：15.65 GB。
+- 显卡：NVIDIA GeForce RTX 4070 Laptop GPU，显存 8188 MiB。
+- NVIDIA 驱动：NVIDIA-SMI 610.47，CUDA UMD Version 13.3。
 - Python：
-- Git：
-- VS Code：
+  - `py --version`：Python 3.13.9。
+  - `py -0p` 显示已安装 Python 3.13 和 Python 3.10。
+  - 已通过 `winget install -e --id Python.Python.3.10` 安装 Python 3.10.11。
+- Git：git version 2.53.0.windows.2。
+- VS Code：1.127.0，x64。
 - WSL2 / Ubuntu：
+  - 默认分发：Ubuntu-22.04。
+  - 默认版本：WSL2。
+  - 当前 Ubuntu-22.04 状态：Stopped。
+- 浏览器工具：Kimi WebBridge 已修好，可连接 Chrome 并打开/读取网页。
 
 ## 今日完成情况
 
-待学习结束后补充。
+- 已完成本机基础环境检查。
+- 已确认本机配置足够支持 PC 端模型部署学习。
+- 已安装 Python 3.10.11，后续适合用于 PyTorch/ONNX/TensorRT 相关实验。
+- 已确认 Git 和 VS Code 可用。
+- 已确认 WSL2 + Ubuntu-22.04 已安装，后续可以作为 Linux 学习环境。
+- 已确认 GitHub 学习仓库可用，并已经建立学习记录流程。
+- 已更新 Jetson Orin Nano 采购清单。
 
 ## 遇到的问题
 
-待学习结束后补充。
+- 当前 `py --version` 默认指向 Python 3.13.9，深度学习生态对 Python 3.13 的支持可能不如 Python 3.10 稳定。
+- 后续建议项目环境优先使用 Python 3.10。
+- WSL2 已安装但当前未启动，明天学习 Linux 时需要进入 Ubuntu 环境实际练习。
+- Windows 上 `wsl -l -v` 输出有乱码样式，不影响使用。
+
+## 今日复盘
+
+今天最重要的收获：
+
+- 明确了主线是边缘视觉部署。
+- 完成了学习仓库、GitHub、浏览器工具和本机环境检查。
+- 电脑配置较强，RTX 4070 Laptop GPU 可以支撑 PC 端模型推理、ONNX 和 PyTorch 实验。
+- Python 3.10 已安装，后续可以避免 Python 3.13 带来的兼容性问题。
+
+还不清楚的点：
+
+- WSL2 Ubuntu 环境内的 Linux 命令、包管理、文件路径和 Windows 目录映射还需要明天系统学习。
+- 后续需要决定使用 venv、conda 还是 WSL2 环境来管理不同项目的 Python 依赖。
 
 ## 明日计划
 
-- 学 Linux 基础命令。
-- 写第一份环境记录。
-- 学会把学习日志提交到 GitHub。
+- 学 Linux 基础命令：目录、文件、权限、进程、网络。
+- 启动 Ubuntu-22.04，熟悉 WSL2。
+- 练习 `pwd`、`ls`、`cd`、`mkdir`、`touch`、`cp`、`mv`、`rm`、`cat`、`less`、`grep`。
+- 记录 Windows 路径和 Linux 路径的对应关系。
+- 把 Day 02 学习记录提交到 GitHub。
 
 ## 需要确认
 
 - GitHub 用户名。
 - 仓库名。
 - 是否公开仓库。
-- 当前电脑配置：CPU、内存、显卡、系统版本。
+- 当前电脑配置：已确认。
