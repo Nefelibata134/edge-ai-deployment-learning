@@ -185,18 +185,48 @@ ip addr
 
 ## 动手记录
 
-待补充：
-
-- `pwd` 输出：
-- `whoami` 输出：
-- Ubuntu 家目录：
-- Windows 桌面在 WSL 中的路径：
-- 练习目录：
+- `pwd` 输出：`/home/nefelibata`。
+- `whoami` 输出：`nefelibata`。
+- Ubuntu 家目录：`/home/nefelibata`，也可以写作 `~`。
+- Windows 用户目录在 WSL 中的路径：`/mnt/c/Users/86137`。
+- Windows 桌面在 WSL 中的路径：`/mnt/c/Users/86137/Desktop`。
+- 练习目录：`/home/nefelibata/model-deploy-day02`。
 - `notes.txt` 内容：
+
+```text
+Day 02 Linux practice
+23213133
+onnx and tensorrt need environment management
+```
+
+- `grep "linux" notes.txt`：没有输出，因为当前文件中还没有包含 `linux` 的文本。
+- `grep "tensorrt" notes.txt` 输出：
+
+```text
+onnx and tensorrt need environment management
+```
+
 - `uname -a` 输出：
+
+```text
+Linux Nefelibata 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+```
+
 - `df -h` 关键输出：
+  - Linux 根目录 `/`：`/dev/sdd`，总大小约 `1007G`，已用 `19G`。
+  - Windows C 盘挂载点：`/mnt/c`，总大小约 `933G`，已用 `815G`，剩余 `119G`。
 - `free -h` 输出：
-- 今天最不理解的命令：
+
+```text
+Mem: 11Gi total, 634Mi used, 10Gi free, 10Gi available
+Swap: 8.0Gi total, 0B used, 8.0Gi free
+```
+
+- `ps aux | head`：成功查看进程列表，看到 `/sbin/init`、`systemd-journald`、`cron` 等进程。
+- `ip addr` 关键输出：
+  - `lo`：本地回环地址 `127.0.0.1`。
+  - `eth2`：当前可用网卡，IPv4 地址 `192.168.3.44/24`。
+- 今天最不理解的命令：待学习结束后补充。
 
 ## 今日完成情况
 
@@ -215,4 +245,3 @@ ip addr
 - 继续 Linux：权限、环境变量、包管理和常见文本编辑。
 - 学会 `chmod`、`chown`、`sudo`、`apt`、`nano` 或 `vim` 的基础用法。
 - 开始整理 Python 3.10 环境方案。
-
