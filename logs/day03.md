@@ -216,25 +216,155 @@ which pip3
 
 ## 动手记录
 
-待完成后补充。
+- Ubuntu 家目录：`/home/nefelibata`。
+- Day 02 练习目录：`/home/nefelibata/model-deploy-day02`。
+- `notes.txt` 内容仍然保留：
+
+```text
+Day 02 Linux practice
+23213133
+onnx and tensorrt need environment management
+linux is important for model deployment
+```
+
+- `ls -l` 初始输出：
+
+```text
+total 4
+-rw-r--r-- 1 nefelibata nefelibata 117 Jul  3 10:46 notes.txt
+```
+
+- 创建脚本前误创建了一个拼写错误的空文件 `permissipn_test.sh`，后续已删除。
+- 用 `nano permission_test.sh` 写入脚本：
+
+```bash
+#!/usr/bin/env bash
+echo "Hello Linux permission"
+```
+
+- 脚本没有执行权限时直接运行：
+
+```text
+-bash: ./permission_test.sh: Permission denied
+```
+
+- 添加执行权限后查看权限：
+
+```text
+-rwxr-xr-x 1 nefelibata nefelibata 50 Jul  3 14:47 permission_test.sh
+```
+
+- 添加执行权限后运行成功：
+
+```text
+Hello Linux permission
+```
+
+- 用户和权限相关输出：
+
+```text
+whoami -> nefelibata
+sudo whoami -> root
+ls /root -> Permission denied
+sudo ls /root -> 无报错
+```
+
+- `id` 输出显示当前用户属于 `sudo` 等用户组：
+
+```text
+uid=1000(nefelibata) gid=1000(nefelibata) groups=1000(nefelibata),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev)
+```
+
+- 安装 `tree` 前：
+
+```text
+which tree -> 无输出
+tree --version -> Command 'tree' not found
+```
+
+- `sudo apt update` 成功，使用清华 Ubuntu 源和 ROS2 源，关键结果：
+
+```text
+Fetched 11.4 MB in 3s
+Reading package lists... Done
+43 packages can be upgraded.
+```
+
+- `sudo apt install -y tree` 成功安装 `tree`：
+
+```text
+Setting up tree (2.0.2-1) ...
+```
+
+- `tree --version`：
+
+```text
+tree v2.0.2
+```
+
+- 清理拼写错误文件后，练习目录结构：
+
+```text
+/home/nefelibata/model-deploy-day02
+├── notes.txt
+└── permission_test.sh
+
+0 directories, 2 files
+```
+
+- 环境变量与 Python 记录：
+
+```text
+echo $HOME -> /home/nefelibata
+which python -> /home/nefelibata/miniconda3/bin/python
+which python3 -> /home/nefelibata/miniconda3/bin/python3
+python --version -> Python 3.13.12
+python3 --version -> Python 3.13.12
+which pip -> /home/nefelibata/miniconda3/bin/pip
+which pip3 -> /home/nefelibata/miniconda3/bin/pip3
+pip --version -> pip 26.0.1 from /home/nefelibata/miniconda3/lib/python3.13/site-packages/pip (python 3.13)
+pip3 --version -> pip 26.0.1 from /home/nefelibata/miniconda3/lib/python3.13/site-packages/pip (python 3.13)
+```
+
+- 当前终端提示符带有 `(base)`，说明 WSL 中默认进入了 Miniconda 的 base 环境。
 
 ## 今日完成情况
 
-待完成后补充。
+- 已复习 `cd`、`pwd`、`ls`、`cat` 等基础命令。
+- 已理解 `ls -l` 中 `-rw-r--r--`、`-rwxr-xr-x` 这类权限格式的基本含义。
+- 已用 `nano` 创建并编辑 `permission_test.sh`。
+- 已验证没有执行权限时脚本会报 `Permission denied`。
+- 已用 `chmod +x` 给脚本添加执行权限，并成功运行脚本。
+- 已理解 `whoami` 和 `sudo whoami` 的区别。
+- 已验证普通用户无法直接查看 `/root`，但可以通过 `sudo` 临时获得管理员权限。
+- 已完成 `apt update` 和 `apt install`，成功安装 `tree`。
+- 已用 `tree` 查看练习目录结构。
+- 已查看 `$HOME`、`$PATH`、`python`、`python3`、`pip`、`pip3` 的位置和版本。
+- 已发现当前 WSL 默认 Python 来自 Miniconda base，版本为 Python 3.13.12。
 
 ## 遇到的问题
 
-待完成后补充。
+- `touch permissipn_test.sh` 中 `permission` 拼写错误，创建了一个无用空文件；已用 `rm permissipn_test.sh` 删除。
+- 一开始执行 `./permission_test.sh` 报 `Permission denied`，原因是脚本没有执行权限；通过 `chmod +x permission_test.sh` 解决。
+- 输入了 `whosmi`，系统提示可能想输入 `whoami`；这是普通拼写错误。
+- `which tree` 没有输出，说明 `tree` 当时未安装；通过 `sudo apt install -y tree` 解决。
+- 当前 Python 是 Conda base 中的 Python 3.13.12，后续深度学习部署不建议直接使用，需要单独创建 Python 3.10 环境。
 
 ## 今日复盘
 
 今天最重要的收获：
 
-待完成后补充。
+- Linux 权限不是抽象概念，可以通过“脚本能不能执行”直接感受到。
+- `chmod +x` 的作用是给文件增加执行权限，脚本权限从 `-rw-r--r--` 变成 `-rwxr-xr-x` 后才能用 `./permission_test.sh` 运行。
+- `sudo` 是临时管理员权限，适合安装软件、查看系统目录等操作，但删除和修改系统文件时必须谨慎。
+- `apt update` 是更新软件包索引，`apt install` 才是安装软件。
+- `$PATH` 决定系统从哪些目录寻找命令；当前 `python`、`pip` 都来自 Miniconda。
 
 还不清楚的点：
 
-待完成后补充。
+- Conda 的 `base` 环境和普通系统 Python 的关系还需要继续学习。
+- `pip`、`pip3`、`conda install` 的区别还需要系统梳理。
+- 后续需要弄清楚为什么模型部署更推荐 Python 3.10，而不是直接使用 Python 3.13。
 
 ## 明日计划
 
