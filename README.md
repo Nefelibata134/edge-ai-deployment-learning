@@ -22,6 +22,7 @@
 | --- | --- | --- | --- |
 | Day 01 | 2026-07-02 | 明确方向、路线、GitHub 仓库和本机环境检查 | `logs/day01.md` |
 | Day 02 | 2026-07-03 | WSL2 Ubuntu 与 Linux 基础命令 | `logs/day02.md` |
+| Day 03 | 2026-07-03 | Linux 权限、包管理、文本编辑与 Python 环境准备 | `logs/day03.md` |
 
 文档：
 
@@ -30,6 +31,7 @@
 - `logs/template.md`：每日学习记录模板。
 - `logs/day01.md`：第一天学习记录。
 - `logs/day02.md`：第二天学习记录。
+- `logs/day03.md`：第三天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
