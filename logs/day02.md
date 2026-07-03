@@ -197,9 +197,15 @@ ip addr
 Day 02 Linux practice
 23213133
 onnx and tensorrt need environment management
+linux is important for model deployment
 ```
 
-- `grep "linux" notes.txt`：没有输出，因为当前文件中还没有包含 `linux` 的文本。
+- `grep "linux" notes.txt` 输出：
+
+```text
+linux is important for model deployment
+```
+
 - `grep "tensorrt" notes.txt` 输出：
 
 ```text
@@ -226,19 +232,37 @@ Swap: 8.0Gi total, 0B used, 8.0Gi free
 - `ip addr` 关键输出：
   - `lo`：本地回环地址 `127.0.0.1`。
   - `eth2`：当前可用网卡，IPv4 地址 `192.168.3.44/24`。
-- 今天最不理解的命令：待学习结束后补充。
+- 今天最不理解的命令：`less notes.txt` 已理解，作用是用分页查看器打开文件，按 `q` 退出。
 
 ## 今日完成情况
 
-待学习结束后补充。
+- 已成功进入 WSL2 Ubuntu-22.04。
+- 已理解 Ubuntu 家目录 `~` 和 Windows 目录 `/mnt/c/...` 的区别。
+- 已在 `/home/nefelibata/model-deploy-day02` 中完成文件和目录练习。
+- 已掌握 `mkdir`、`cd`、`pwd`、`touch`、`ls`、`echo`、`cat` 的基础用法。
+- 已完成 `cp`、`mv`、`rm` 的安全练习。
+- 已理解 `>` 是覆盖写入，`>>` 是追加写入。
+- 已学会用 `grep` 搜索文件中的关键词。
+- 已初步了解 `uname`、`df`、`free`、`ps`、`ip` 这些系统信息命令。
 
 ## 遇到的问题
 
-待学习结束后补充。
+- 一开始 `grep "linux" notes.txt` 没有输出，因为文件中还没有包含 `linux` 的行。
+- `mv notes_backup.txt linux_notes_backup.txt` 容易误以为只是移动文件，今天理解了它也可以用于重命名。
+- `less notes.txt` 和 `cat notes.txt` 的区别需要记住：短文件用 `cat`，长文件用 `less`。
 
 ## 今日复盘
 
-待学习结束后补充。
+今天最重要的收获：
+
+- Linux 不是只背命令，核心是理解“我在哪个目录、我要操作哪个文件、命令会改变什么”。
+- WSL2 里的 Linux 家目录适合做学习和开发练习，Windows 文件可以通过 `/mnt/c/...` 访问。
+- 删除命令要谨慎，今天只在练习目录里使用 `rm` 是正确做法。
+
+还不清楚的点：
+
+- Linux 权限、`sudo`、`apt` 包管理还没有系统学习。
+- 后续需要学习如何在 WSL2 里创建 Python 3.10 项目环境。
 
 ## 明日计划
 
