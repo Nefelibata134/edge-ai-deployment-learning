@@ -24,7 +24,7 @@
 | Day 02 | 2026-07-03 | WSL2 Ubuntu 与 Linux 基础命令 | `logs/day02.md` |
 | Day 03 | 2026-07-03 | Linux 权限、包管理、文本编辑与 Python 环境准备 | `logs/day03.md` |
 | Day 04 | 2026-07-04 | Conda、pip 与 Python 3.10 部署环境 | `logs/day04.md` |
-| Day 05 | 2026-07-04 | Python 基础、文件读写与 OpenCV 读图 | `logs/day05.md` |
+| Day 05 | 2026-07-05 | Python 基础、文件读写与 OpenCV 读图 | `logs/day05.md` |
 
 文档：
 

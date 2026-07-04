@@ -1,6 +1,6 @@
 # Day 05 学习记录
 
-日期：2026-07-04
+日期：2026-07-05
 
 ## 今日目标
 
@@ -312,25 +312,163 @@ tree ~/model-deploy-day05
 
 ## 动手记录
 
-待完成后补充。
+- 本次 Day 05 从 2026-07-04 开始练习，2026-07-05 复跑脚本并收尾记录。
+- 使用环境：
+
+```text
+Python 3.10.20
+/home/nefelibata/miniconda3/envs/deploy310/bin/python
+```
+
+- 创建练习目录：
+
+```bash
+mkdir -p ~/model-deploy-day05/images
+cd ~/model-deploy-day05
+```
+
+- `python_basic.py` 运行结果：
+
+```text
+project: edge-ai
+day: 5
+topics:
+- python
+- opencv
+- deployment
+config: {'env': 'deploy310', 'python': '3.10', 'device': 'wsl2'}
+env deploy310
+```
+
+- `file_io.py` 第一次运行报错：
+
+```text
+SyntaxError: expected ':'
+```
+
+原因是 `with open(...) as f` 行末少了冒号。修正后运行成功：
+
+```text
+Day 05 Python practice
+Python scripts are used for model inference
+OpenCV is used for image reading
+```
+
+- `day05_notes.txt` 内容：
+
+```text
+Day 05 Python practice
+Python scripts are used for model inference
+OpenCV is used for image reading
+```
+
+- `create_test_image.py` 运行结果：
+
+```text
+saved: images/test.jpg
+```
+
+- `read_image.py` 第一次读取图片时出现：
+
+```text
+FileNotFoundError: failed to read image: images/test.jpg
+```
+
+后续检查 `ls images` 发现 `test.jpg` 存在，说明问题来自脚本中的路径或保存内容不一致。修正后运行成功：
+
+```text
+image images/test.jpg
+height 480
+width: 640
+channels: 3
+saved: images/test_gray.jpg
+```
+
+- `images` 目录内容：
+
+```text
+test_copy.jpg
+test_gray.jpg
+test.jpg
+```
+
+- `batch_image_info.py` 运行结果：
+
+```text
+image count: 3
+test.jpg: 640x480, channels=3
+test_copy.jpg: 640x480, channels=3
+test_gray.jpg: 640x480, channels=3
+```
+
+- 挑战任务中发现只有 `resize_images.py.save`，没有正式保存为 `resize_images.py`。收尾时补成正式脚本并复跑成功：
+
+```text
+saved: resized/test.jpg
+saved: resized/test_copy.jpg
+saved: resized/test_gray.jpg
+```
+
+- 最终目录结构：
+
+```text
+.
+├── batch_image_info.py
+├── create_test_image.py
+├── day05_notes.txt
+├── file_io.py
+├── images
+│   ├── test_copy.jpg
+│   ├── test_gray.jpg
+│   └── test.jpg
+├── python_basic.py
+├── read_image.py
+├── resized
+│   ├── test_copy.jpg
+│   ├── test_gray.jpg
+│   └── test.jpg
+├── resize_images.py
+└── resize_images.py.save
+
+2 directories, 14 files
+```
 
 ## 今日完成情况
 
-待完成后补充。
+- 已在 `deploy310` 环境中完成 Day 05 所有必做任务。
+- 已复习 Python 变量、列表、字典、函数。
+- 已完成 Python 文件写入和读取练习。
+- 已使用 OpenCV 和 NumPy 生成测试图片 `images/test.jpg`。
+- 已使用 OpenCV 读取单张图片，输出图片尺寸和通道数。
+- 已将彩色图片转换为灰度图并保存为 `images/test_gray.jpg`。
+- 已完成批量读取图片，并输出每张图片的宽、高和通道数。
+- 已完成批量 resize，将图片保存到 `resized/` 目录。
+- 已初步理解模型推理脚本中的常见流程：收集路径、读取图片、检查尺寸、处理图片、保存结果。
 
 ## 遇到的问题
 
-待完成后补充。
+- `file_io.py` 中 `with open(...) as f` 行末少了冒号，导致 `SyntaxError: expected ':'`。
+- `read_image.py` 第一次运行时 `cv2.imread` 没读到图片，触发 `FileNotFoundError`；检查文件存在后修正脚本路径/内容，成功读取。
+- `read_image.py` 中 `print("image", image_path)` 少了冒号，只影响输出格式，不影响功能。
+- `if image is  None:` 中间多了一个空格，不影响运行，但建议写成 `if image is None:`。
+- `resize_images.py` 没有正式保存，只留下 `resize_images.py.save`；收尾时补成正式脚本后成功运行。
 
 ## 今日复盘
 
 今天最重要的收获：
 
-待完成后补充。
+- `deploy310` 环境已经可以支撑基础 Python + OpenCV 练习。
+- Python 脚本报错时，优先看报错最后几行和具体文件行号。
+- `cv2.imread` 读取失败会返回 `None`，在图像脚本里必须检查。
+- `image.shape` 是理解图像尺寸的第一步，彩色图通常是 `(height, width, channels)`。
+- 批量处理图片的基本流程是：用 `Path` 收集文件路径，循环读取，处理后保存。
+- resize 是模型推理前的常见预处理动作，后续 YOLO 会进一步学习 letterbox。
 
 还不清楚的点：
 
-待完成后补充。
+- OpenCV 的 BGR 和 RGB 通道区别还需要继续练习。
+- 灰度图、彩色图、通道数之间的关系还需要通过更多例子理解。
+- YOLO 输入尺寸不是简单 resize，后续需要学习 letterbox 和归一化。
 
 ## 明日计划
 
