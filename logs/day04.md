@@ -1,6 +1,6 @@
 # Day 04 学习记录
 
-日期：2026-07-03
+日期：2026-07-04
 
 ## 今日目标
 
@@ -179,25 +179,171 @@ conda info --envs
 
 ## 动手记录
 
-待完成后补充。
+- WSL2 Ubuntu 启动时间：2026-07-04 09:10 CST。
+- 当前 WSL2 基础信息：
+
+```text
+Ubuntu 22.04.5 LTS
+Linux 6.6.87.2-microsoft-standard-WSL2 x86_64
+Memory usage: 5%
+IPv4 address for eth1: 192.168.3.44
+```
+
+- Conda 基础信息：
+
+```text
+conda --version -> conda 26.1.1
+which conda -> /home/nefelibata/miniconda3/bin/conda
+```
+
+- 创建环境前已有环境：
+
+```text
+# conda environments:
+#
+# * -> active
+# + -> frozen
+base                 *   /home/nefelibata/miniconda3
+auto                     /home/nefelibata/miniconda3/envs/auto
+```
+
+- `base` 环境中的 Python 和 pip：
+
+```text
+which python -> /home/nefelibata/miniconda3/bin/python
+python --version -> Python 3.13.12
+which pip -> /home/nefelibata/miniconda3/bin/pip
+pip --version -> pip 26.0.1 from /home/nefelibata/miniconda3/lib/python3.13/site-packages/pip (python 3.13)
+```
+
+- 创建 Python 3.10 环境：
+
+```bash
+conda create -n deploy310 python=3.10 -y
+```
+
+创建成功后环境位置：
+
+```text
+/home/nefelibata/miniconda3/envs/deploy310
+```
+
+- 激活 `deploy310` 后的 Python 和 pip：
+
+```text
+python --version -> Python 3.10.20
+which python -> /home/nefelibata/miniconda3/envs/deploy310/bin/python
+pip --version -> pip 26.1.2 from /home/nefelibata/miniconda3/envs/deploy310/lib/python3.10/site-packages/pip (python 3.10)
+```
+
+- 升级 pip：
+
+```text
+python -m pip install --upgrade pip
+Requirement already satisfied: pip in ./miniconda3/envs/deploy310/lib/python3.10/site-packages (26.1.2)
+```
+
+- 安装基础包时第一次把 `tqdm` 误写为 `tqam`，安装失败；随后单独安装 `tqdm` 成功：
+
+```text
+Successfully installed tqdm-4.68.3
+```
+
+- 安装 NumPy、Matplotlib、OpenCV：
+
+```text
+Successfully installed contourpy-1.3.2 cycler-0.12.1 fonttools-4.63.0 kiwisolver-1.5.0 matplotlib-3.10.9 numpy-2.2.6 opencv-python-headless-5.0.0.93 pillow-12.3.0 pyparsing-3.3.2 python-dateutil-2.9.0.post0 six-1.17.0
+```
+
+- 创建 Day 04 练习目录：
+
+```bash
+mkdir -p ~/model-deploy-day04
+cd ~/model-deploy-day04
+```
+
+- `check_env.py` 第一次内容中出现两个问题：
+
+```text
+import numpy as numpy
+print("numpy:", np._version_)
+```
+
+问题：
+
+- `import numpy as numpy` 后不能用 `np`。
+- 版本属性应写成 `__version__`，不是 `_version_`。
+
+- 修正后脚本运行成功：
+
+```text
+python: 3.10.20 (main, Jun 11 2026, 15:17:37) [GCC 14.3.0]
+numpy: 2.2.6
+opencv: 5.0.0
+array: [2 4 6]
+```
+
+- 环境切换验证：
+
+```text
+conda deactivate
+python --version -> Python 3.13.12
+which python -> /home/nefelibata/miniconda3/bin/python
+
+conda activate deploy310
+python --version -> Python 3.10.20
+which python -> /home/nefelibata/miniconda3/envs/deploy310/bin/python
+```
+
+- 最终 Conda 环境列表：
+
+```text
+# conda environments:
+#
+# * -> active
+# + -> frozen
+base                     /home/nefelibata/miniconda3
+auto                     /home/nefelibata/miniconda3/envs/auto
+deploy310            *   /home/nefelibata/miniconda3/envs/deploy310
+```
 
 ## 今日完成情况
 
-待完成后补充。
+- 已确认 WSL2 中 Conda 版本为 26.1.1。
+- 已确认 `base` 环境使用 Python 3.13.12，不适合直接作为模型部署实验环境。
+- 已成功创建 `deploy310` 环境。
+- 已成功激活 `deploy310`，并确认其 Python 版本为 3.10.20。
+- 已安装 `tqdm`、`numpy`、`matplotlib`、`opencv-python-headless` 等基础包。
+- 已创建 `~/model-deploy-day04/check_env.py` 环境验证脚本。
+- 已成功验证 Python、NumPy、OpenCV 和数组计算。
+- 已练习 `conda deactivate` 和 `conda activate deploy310`，并观察到不同环境下 `python` 路径和版本不同。
+- 已用 `conda info --envs` 查看环境列表，并确认 `deploy310` 为当前激活环境。
 
 ## 遇到的问题
 
-待完成后补充。
+- `python --versiom` 拼写错误，正确命令是 `python --version`。
+- `python -m pip insatll --upgrade pip` 拼写错误，正确命令是 `python -m pip install --upgrade pip`。
+- `pip install numpy matplotlib opencv-python-headless tqam` 中 `tqdm` 写成了 `tqam`，导致找不到包；随后用 `pip install tqdm` 成功安装。
+- 第一次写 `check_env.py` 时 `import numpy as numpy` 却使用 `np`，导致 `NameError: name 'np' is not defined`。
+- 第二次写版本号时使用了 `np._version_` 和 `cv2._version_`，正确写法是 `np.__version__` 和 `cv2.__version__`。
+- `conda infp --envs` 拼写错误，正确命令是 `conda info --envs`。
 
 ## 今日复盘
 
 今天最重要的收获：
 
-待完成后补充。
+- Conda 环境的核心价值是隔离项目依赖；以后不要把模型部署依赖直接装进 `base`。
+- 同一台机器上可以有多个 Python，当前使用哪个 Python 由激活的环境和 `$PATH` 决定。
+- `base` 中的 Python 是 3.13.12，`deploy310` 中的 Python 是 3.10.20。
+- `which python` 比单看终端提示符更可靠，它能直接告诉你当前 Python 的真实路径。
+- Python 报错要从最后一行读起，例如 `NameError` 和 `AttributeError` 都能直接指出问题位置。
+- 版本属性前后是两个下划线：`__version__`。
 
 还不清楚的点：
 
-待完成后补充。
+- `pip install` 和 `conda install` 的选择规则还需要继续学习。
+- 后续需要理解 PyTorch、ONNX、OpenCV 这些包是否应该固定版本。
+- 还需要学习如何用 `requirements.txt` 固化项目依赖，保证环境可复现。
 
 ## 明日计划
 
