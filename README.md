@@ -24,6 +24,7 @@
 | Day 02 | 2026-07-03 | WSL2 Ubuntu 与 Linux 基础命令 | `logs/day02.md` |
 | Day 03 | 2026-07-03 | Linux 权限、包管理、文本编辑与 Python 环境准备 | `logs/day03.md` |
 | Day 04 | 2026-07-04 | Conda、pip 与 Python 3.10 部署环境 | `logs/day04.md` |
+| Day 05 | 2026-07-04 | Python 基础、文件读写与 OpenCV 读图 | `logs/day05.md` |
 
 文档：
 
@@ -34,6 +35,7 @@
 - `logs/day02.md`：第二天学习记录。
 - `logs/day03.md`：第三天学习记录。
 - `logs/day04.md`：第四天学习记录。
+- `logs/day05.md`：第五天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
