@@ -461,21 +461,97 @@ yolo predict model=yolo26n.pt source=images/real imgsz=640 conf=0.25
 
 ## 今日完成情况
 
-待完成后补充。
+- 已完成 OpenCV 基础可视化练习：
+  - 检查图片读取和尺寸信息。
+  - 生成 BGR 颜色块图片。
+  - 裁剪 ROI。
+  - 使用 `cv2.rectangle` 画矩形框。
+  - 使用 `cv2.putText` 写类别和置信度。
+  - 使用字典模拟 YOLO 检测结果，并批量画框保存。
+- 已安装 Ultralytics YOLO：
+
+```text
+ultralytics: 8.4.87
+```
+
+- 已完成命令行 YOLO 推理：
+
+```bash
+yolo predict model=yolo11n.pt source=images/real imgsz=640 conf=0.25
+```
+
+关键输出：
+
+```text
+Ultralytics 8.4.87
+Python-3.10.20
+torch-2.12.1+cu130
+CUDA:0 (NVIDIA GeForce RTX 4070 Laptop GPU, 8188MiB)
+
+bus.jpg: 640x480 4 persons, 1 bus, 68.5ms
+zidane.jpg: 384x640 2 persons, 1 tie, 58.4ms
+Results saved to /home/nefelibata/model-deploy-day06/runs/detect/predict
+```
+
+- 已完成 Python 单图 YOLO 推理脚本 `yolo_predict.py`，读取并打印检测框：
+
+```text
+image: /home/nefelibata/model-deploy-day06/images/real/bus.jpg
+boxes: 5
+bus 0.94 [3.8, 229.4, 796.2, 728.4]
+person 0.89 [671.0, 394.8, 809.8, 878.7]
+person 0.88 [47.4, 399.6, 239.3, 904.2]
+person 0.86 [223.1, 408.7, 344.5, 860.4]
+person 0.62 [0.0, 556.1, 68.8, 872.4]
+saved: outputs/yolo_predict_bus.jpg
+```
+
+- 已完成 Python 批量 YOLO 推理脚本 `yolo_batch_predict.py`：
+
+```text
+image count: 2
+
+image: images/real/bus.jpg
+boxes: 5
+bus 0.94 [3.8, 229.4, 796.2, 728.4]
+person 0.89 [671.0, 394.8, 809.8, 878.7]
+person 0.88 [47.4, 399.6, 239.3, 904.2]
+person 0.86 [223.1, 408.7, 344.5, 860.4]
+person 0.62 [0.0, 556.1, 68.8, 872.4]
+saved: outputs/yolo_batch/bus.jpg
+
+image: images/real/zidane.jpg
+boxes: 3
+person 0.84 [748.5, 41.8, 1148.1, 711.1]
+person 0.78 [148.5, 203.1, 1125.4, 715.0]
+tie 0.45 [361.4, 437.7, 524.7, 717.3]
+saved: outputs/yolo_batch/zidane.jpg
+```
 
 ## 遇到的问题
 
-待完成后补充。
+- VS Code 中编辑脚本后没有保存，导致 `color_blocks.py` 实际是空文件，运行后没有生成图片。解决方式：运行前 `Ctrl + S` 保存，并确认终端运行的是同一个目录下的文件。
+- `draw_box.py` 中把 `cv2.rectangle` 拼成了 `cv2.retangle`，触发 `AttributeError`。解决方式：根据报错检查函数名拼写。
+- `cv2.putText` 的文字坐标写成了 `(x1, y1, -10)`，触发 `Expected sequence length 2, got 3`。解决方式：坐标必须是 `(x, y)`，应写成 `(x1, y1 - 10)`。
+- WSL 中运行 `code .` 出现 `Code.exe: Exec format error`，说明 WSL 直接启动 Windows 版 VS Code 的互通有问题。解决方式：从 Windows VS Code 连接 WSL 并打开 `/home/nefelibata/model-deploy-day06`。
+- 安装 YOLO 时 VS Code 弹出“是否创建虚拟环境”，因为已经使用 Conda 的 `deploy310`，不需要再创建新的虚拟环境。
 
 ## 今日复盘
 
 今天最重要的收获：
 
-待完成后补充。
+- OpenCV 默认颜色顺序是 BGR，不是 RGB。
+- OpenCV 画框需要 `(x1, y1)` 和 `(x2, y2)` 两个点，文字位置也是 `(x, y)` 二维坐标。
+- YOLO 检测结果中的 `box.xyxy` 正好就是 `(x1, y1, x2, y2)`，可以直接对接 OpenCV 画框。
+- `box.conf` 是置信度，`box.cls` 是类别编号，`result.names[cls_id]` 可以得到类别名。
+- 命令行推理适合快速验证模型是否能跑；Python 推理适合后续写项目代码和部署脚本。
+- 本机 WSL2 能调用 RTX 4070 跑 YOLO，输出中出现 `CUDA:0`，说明 GPU 推理已经打通。
 
 还不清楚的点：
 
-待完成后补充。
+- YOLO 推理前的 resize、letterbox、归一化细节还需要学习。
+- `preprocess`、`inference`、`postprocess` 三段耗时分别代表什么，还需要结合部署优化继续理解。
+- 目前使用的是 `.pt` 模型，后续需要学习导出 ONNX，再进一步进入 TensorRT。
 
 ## 明日计划
 
