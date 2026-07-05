@@ -380,21 +380,109 @@ images/zidane.jpg -> outputs/zidane.npy, original=(720, 1280), tensor=(1, 3, 640
 
 ## 今日完成情况
 
-待完成后补充。
+- 已切换到 VS Code 作为主要编辑器，并解决 Python 自动补全问题。
+- 已确认 Day07 环境：
+
+```text
+Python 3.10.20
+/home/nefelibata/miniconda3/envs/deploy310/bin/python
+```
+
+- 已准备测试图片：
+
+```text
+images/bus.jpg
+images/zidane.jpg
+```
+
+- 已完成普通 resize，输出：
+
+```text
+original shape: (1080, 810, 3)
+resized shape: (640, 640, 3)
+saved: outputs/bus_resize_640.jpg
+```
+
+- 已完成 letterbox 等比例缩放和灰边填充，输出：
+
+```text
+original shape: (1080, 810, 3)
+letterbox shape: (640, 640, 3)
+scale: 0.5925925925925926
+pad left/top: (80, 0)
+saved: outputs/bus_letterbox_640.jpg
+```
+
+- 已完成 BGR 转 RGB 和归一化，输出：
+
+```text
+bgr shape: (1080, 810, 3) dtype: uint8
+rgb shape: (1080, 810, 3) dtype: uint8
+float shape: (1080, 810, 3) dtype: float32
+min: 0.0
+max: 1.0
+```
+
+- 已完成 `HWC -> CHW -> NCHW` 维度转换，输出：
+
+```text
+HWC: (640, 640, 3)
+CHW: (3, 640, 640)
+NCHW: (1, 3, 640, 640)
+dtype: float32
+```
+
+- 已完成封装版 YOLO 预处理脚本 `preprocess_yolo.py`，输出：
+
+```text
+input: images/bus.jpg
+original shape: (1080, 810)
+tensor shape: (1, 3, 640, 640)
+tensor dtype: float32
+tensor min/max: 0.0 1.0
+scale: 0.5925925925925926
+pad: (80, 0)
+saved: outputs/bus_preprocessed.npy
+saved: outputs/preprocessed_letterbox.jpg
+```
+
+- 今日产出文件：
+
+```text
+resize_demo.py
+letterbox_demo.py
+normalize_demo.py
+tensor_shape_demo.py
+preprocess_yolo.py
+outputs/bus_resize_640.jpg
+outputs/bus_letterbox_640.jpg
+outputs/preprocessed_letterbox.jpg
+outputs/bus_preprocessed.npy
+```
 
 ## 遇到的问题
 
-待完成后补充。
+- VS Code 自动补全消失。原因是没有选择当前项目使用的 Python 解释器；选择 `/home/nefelibata/miniconda3/envs/deploy310/bin/python` 后恢复。
+- `cv2.resize(image, (640, 640))` 的参数顺序容易误解，它是 `(width, height)`，不是 `(height, width)`。
+- 普通 resize 和 letterbox 都能得到 `(640, 640, 3)`，但普通 resize 会拉伸图像，letterbox 会保持比例并加灰边。
 
 ## 今日复盘
 
 今天最重要的收获：
 
-待完成后补充。
+- YOLO/ONNX/TensorRT 推理前，不是直接把原图喂给模型，而是要先做预处理。
+- 普通 resize 会改变图像比例，可能影响检测效果；letterbox 通过等比例缩放和 padding 保持目标形状。
+- BGR/RGB 是通道顺序问题，OpenCV 读图默认 BGR，但很多模型训练和推理习惯使用 RGB。
+- 归一化会把像素从 `0-255` 转成 `0-1`，并把数据类型变成 `float32`。
+- `HWC -> NCHW` 是从图像格式转成模型输入格式的关键一步。
+- `(1, 3, 640, 640)` 里的 `1` 是 batch 维度，后面的 `3, 640, 640` 是通道、高、宽。
+- `scale` 和 `pad` 不只是中间值，后面把模型检测框映射回原图时会用到。
 
 还不清楚的点：
 
-待完成后补充。
+- letterbox 后，如何把模型输出框从 640x640 坐标映射回原图坐标，还需要结合后处理继续练习。
+- ONNX 模型的输入名、输出名、动态尺寸还没有开始学。
+- TensorRT 的 engine、FP16、workspace、batch 等概念还没开始学。
 
 ## 明日计划
 
