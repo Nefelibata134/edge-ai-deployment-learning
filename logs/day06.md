@@ -330,6 +330,135 @@ for image_path in input_dir.glob("*.jpg"):
     print("saved:", output_path)
 ```
 
+## YOLO 进阶加餐：预训练模型图片推理
+
+完成 OpenCV 画框后，可以进入 YOLO 推理入门。今天只做“使用预训练模型推理”，不训练模型。
+
+目标：
+
+- 安装 Ultralytics YOLO。
+- 用命令行跑一张图片。
+- 用 Python 脚本跑一张图片。
+- 理解模型输出里的 `boxes`、类别、置信度和坐标。
+- 把今天 OpenCV 学到的画框知识和 YOLO 输出联系起来。
+
+### 1. 安装 YOLO
+
+在 WSL2 Ubuntu 中确认当前环境：
+
+```bash
+conda activate deploy310
+python --version
+which python
+cd ~/model-deploy-day06
+```
+
+WSL/服务器环境优先安装 headless 版本：
+
+```bash
+python -m pip install ultralytics-opencv-headless
+```
+
+安装完成后检查：
+
+```bash
+yolo version
+python -c "import ultralytics; print(ultralytics.__version__)"
+```
+
+### 2. 准备测试图片
+
+如果还没有真实图片，先用 Day05 的测试图：
+
+```bash
+cp ~/model-deploy-day05/images/test.jpg ~/model-deploy-day06/images/test.jpg
+```
+
+也可以后续换成真实街景、人物、车辆图片，YOLO 的效果会更明显。
+
+### 3. 命令行推理
+
+先用官方预训练小模型跑图片：
+
+```bash
+yolo predict model=yolo26n.pt source=images/test.jpg imgsz=640 conf=0.25
+```
+
+注意：
+
+- Ultralytics 命令参数写法是 `key=value`，不要写成 `--model`。
+- 第一次运行会自动下载模型权重。
+- 结果通常保存在 `runs/detect/predict/` 目录。
+
+查看输出目录：
+
+```bash
+find runs -maxdepth 3 -type f
+```
+
+### 4. Python 推理脚本
+
+创建脚本：
+
+```bash
+nano yolo_predict.py
+```
+
+写入：
+
+```python
+from pathlib import Path
+
+from ultralytics import YOLO
+
+model = YOLO("yolo26n.pt")
+image_path = Path("images/test.jpg")
+
+results = model.predict(source=str(image_path), imgsz=640, conf=0.25)
+
+for result in results:
+    print("image:", result.path)
+    print("boxes:", len(result.boxes))
+
+    for box in result.boxes:
+        cls_id = int(box.cls[0])
+        conf = float(box.conf[0])
+        xyxy = box.xyxy[0].tolist()
+        name = result.names[cls_id]
+        print(name, f"{conf:.2f}", [round(v, 1) for v in xyxy])
+
+    result.save(filename="outputs/yolo_predict.jpg")
+    print("saved: outputs/yolo_predict.jpg")
+```
+
+运行：
+
+```bash
+python yolo_predict.py
+```
+
+需要理解：
+
+- `result.boxes` 是检测框集合。
+- `box.xyxy` 是 `(x1, y1, x2, y2)` 格式。
+- `box.conf` 是置信度。
+- `box.cls` 是类别编号。
+- `result.names[cls_id]` 可以把类别编号转换成类别名。
+
+### 5. 如果没有检测结果
+
+如果输出 `boxes: 0`，不一定是你错了，可能是测试图太简单。换一张真实图片再跑：
+
+```bash
+mkdir -p images/real
+```
+
+把真实图片放进 `images/real/`，然后运行：
+
+```bash
+yolo predict model=yolo26n.pt source=images/real imgsz=640 conf=0.25
+```
+
 ## 今日完成情况
 
 待完成后补充。
