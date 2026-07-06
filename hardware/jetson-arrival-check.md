@@ -160,3 +160,32 @@ dpkg -l | grep tensorrt
 - 这是一套 Seeed Studio J401 载板 + Jetson Orin Nano 模组的生态套件，不是 NVIDIA 官方原版 Orin Nano Developer Kit 载板。
 - 对学习边缘 AI / YOLO / ONNX / TensorRT 部署是可用的。
 - 后续系统、刷机、接口说明应优先参考 Seeed J401 文档。
+
+## 2026-07-06 客服资料记录
+
+客服提供的资料要点：
+
+- 官方 Jetson Orin Nano 开发者套件入门教程，含刷机指南：
+  - 飞书链接：`https://icnhodrfplht.feishu.cn/wiki/KOoOWuBRfiL4oKkKRX5cXMapndb`
+  - 密码：`seeedstudio2026`
+- reComputer 自研载板系列教程，含硬件接口使用、参数、原理图：
+  - `https://wiki.seeedstudio.com/NVIDIA_Jetson/`
+- 全系列通用刷机指南：
+  - `https://wiki.seeedstudio.com/flash/jetpack_to_selected_product/`
+- reComputer 常见问题：
+  - `https://wiki.seeedstudio.com/Jetson_FAQ/`
+- Jetson 核心模组资料下载：
+  - `https://developer.nvidia.com/embedded/downloads`
+- QQ 技术群：
+  - `1063528275`
+
+重要注意：
+
+- 不要直接执行系统升级类命令：
+  - `sudo apt upgrade`
+  - `sudo apt full-upgrade`
+  - `sudo apt dist-upgrade`
+  - `do-release-upgrade`
+- 原因：Seeed reComputer / J401 属于第三方 Jetson 载板，内核、驱动、设备树和 BSP 可能是定制版本。盲目升级可能替换关键包，导致兼容性问题。
+- `sudo apt update` 只是刷新软件源索引，通常可以执行；真正需要谨慎的是 `upgrade`。
+- 后续安装软件时，如果终端提示要升级大量 `nvidia-*`、`linux-*`、`kernel`、`l4t` 相关包，应先停止并确认。
