@@ -361,21 +361,159 @@ yolo predict model=models/yolo11n.onnx source=images/bus.jpg imgsz=640 conf=0.25
 
 ## 今日完成情况
 
-待完成后补充。
+- 已创建 Day09 工作目录：
+
+```text
+~/model-deploy-day09
+├── images
+├── models
+├── outputs
+└── scripts
+```
+
+- 已准备文件：
+
+```text
+images/bus.jpg
+models/yolo11n.onnx
+models/yolo11n.pt
+```
+
+- 已确认 ONNX Runtime 版本和可用 provider：
+
+```text
+onnxruntime: 1.23.2
+available providers:
+- AzureExecutionProvider
+- CPUExecutionProvider
+```
+
+- 已使用 `ort_model_info.py` 查看 ONNX 模型输入输出：
+
+```text
+model: models/yolo11n.onnx
+providers: ['CPUExecutionProvider']
+
+inputs:
+name: images
+shape: ['batch', 3, 'height', 'width']
+type: tensor(float)
+
+outputs:
+name: output0
+shape: ['batch', 84, 'anchors']
+type: tensor(float)
+```
+
+- 已复用 Day07 预处理逻辑，得到模型输入张量：
+
+```text
+tensor shape: (1, 3, 640, 640)
+tensor dtype: float32
+original shape: (1080, 810)
+scale: 0.5925925925925926
+pad: (80, 0)
+```
+
+- 已完成 ONNX Runtime 单图推理：
+
+```text
+input name: images
+output name: output0
+input shape: (1, 3, 640, 640)
+output shape: (1, 84, 8400)
+output dtype: float32
+output min/max: 0.0 637.1781005859375
+original shape: (1080, 810)
+scale: 0.5925925925925926
+pad: (80, 0)
+saved: outputs/onnx_output.npy
+```
+
+- 已初步解析 ONNX 原始输出中的最高分候选框：
+
+```text
+raw output shape: (1, 84, 8400)
+top candidates:
+idx= 8169 cls= 5 score= 0.9392 box_xywh= [320.3, 285.5, 466.6, 300.3]
+idx= 8129 cls= 5 score= 0.9371 box_xywh= [323.7, 287.4, 462.6, 300.2]
+idx= 8130 cls= 5 score= 0.9311 box_xywh= [323.5, 286.9, 464.3, 300.5]
+idx= 8170 cls= 5 score= 0.9223 box_xywh= [322.7, 285.8, 469.5, 301.0]
+idx= 8131 cls= 5 score= 0.9204 box_xywh= [324.4, 286.1, 462.1, 299.4]
+idx= 8265 cls= 0 score= 0.902 box_xywh= [166.5, 385.9, 115.3, 300.2]
+idx= 8150 cls= 5 score= 0.8991 box_xywh= [323.2, 286.1, 467.9, 299.8]
+idx= 8149 cls= 5 score= 0.8931 box_xywh= [323.0, 286.1, 462.1, 298.7]
+idx= 8264 cls= 0 score= 0.8857 box_xywh= [166.2, 385.6, 115.3, 299.7]
+idx= 8244 cls= 0 score= 0.8817 box_xywh= [165.7, 385.4, 115.4, 301.4]
+```
+
+- 已使用 Ultralytics 加载 ONNX 进行对比推理：
+
+```bash
+yolo predict model=models/yolo11n.onnx source=images/bus.jpg imgsz=640 conf=0.25
+```
+
+关键输出：
+
+```text
+Loading models/yolo11n.onnx for ONNX Runtime inference...
+CUDA requested but CUDAExecutionProvider not available. Using CPU...
+Using ONNX Runtime 1.23.2 with CPUExecutionProvider
+
+image 1/1 /home/nefelibata/model-deploy-day09/images/bus.jpg: 640x480 4 persons, 1 bus, 35.3ms
+Results saved to /home/nefelibata/model-deploy-day09/runs/detect/predict
+```
+
+- 今日产出文件：
+
+```text
+scripts/ort_check.py
+scripts/ort_model_info.py
+scripts/preprocess.py
+scripts/onnx_infer.py
+scripts/inspect_output.py
+outputs/onnx_output.npy
+runs/detect/predict/bus.jpg
+```
 
 ## 遇到的问题
 
-待完成后补充。
+- 当前安装的是 CPU 版 ONNX Runtime，因此可用 provider 只有 `AzureExecutionProvider` 和 `CPUExecutionProvider`，没有 `CUDAExecutionProvider`。
+- Ultralytics 用 ONNX 推理时提示缺少 `onnxruntime-gpu`，并回退到 CPU：
+
+```text
+CUDA requested but CUDAExecutionProvider not available. Using CPU...
+```
+
+这不是错误。今天重点是 ONNX Runtime 推理流程，GPU 加速后面通过 `onnxruntime-gpu` 或 TensorRT 专门处理。
+
+- ONNX 模型在 ORT 中显示动态维度：
+
+```text
+['batch', 3, 'height', 'width']
+```
+
+实际输入 `(1, 3, 640, 640)` 能正常运行，说明动态维度可以接收固定大小输入。
+
+- 原始输出中同一个目标会出现多个高分候选框，例如 bus 出现了多个相近候选框。后续需要 NMS 去重。
 
 ## 今日复盘
 
 今天最重要的收获：
 
-待完成后补充。
+- 已经不依赖 Ultralytics `predict`，成功用 ONNX Runtime 加载并运行 `yolo11n.onnx`。
+- ONNX Runtime 的核心流程是：创建 `InferenceSession`，读取输入输出名，准备输入张量，调用 `session.run()`。
+- Day07 的预处理函数可以直接服务 ONNX Runtime 推理，说明预处理链路是正确的。
+- ONNX 原始输出 `(1, 84, 8400)` 里包含候选框坐标和类别分数，但还不是最终检测结果。
+- `cls=5` 对应 bus，`cls=0` 对应 person，和 Ultralytics 的 `4 persons, 1 bus` 能对上。
+- ONNX Runtime CPU 推理已经跑通，后续可以继续做后处理，再进入 GPU/TensorRT 加速。
 
 还不清楚的点：
 
-待完成后补充。
+- `box_xywh` 如何转换成 `xyxy`。
+- letterbox 后的坐标如何映射回原图。
+- 多个重复候选框如何通过 NMS 合并成最终检测结果。
+- ONNX Runtime GPU 和 TensorRT 的性能差异还没有开始比较。
 
 ## 明日计划
 
