@@ -118,12 +118,45 @@ dpkg -l | grep tensorrt
 ## 待记录
 
 ```text
-到货时间：
-购买版本：
-商家名称：
-是否官方套件：
-是否 256G SSD：
-是否预装系统：
-初次开机结果：
-问题：
+到货时间：2026-07-06
+购买版本：Seeed Studio reComputer J401 Nano Bundle / J401 carrier board bundle kit with Jetson Orin Nano Module
+商家名称：待补充
+是否官方套件：不是 NVIDIA 原版 Developer Kit 载板；是 Seeed Studio J401 第三方载板套件，盒子标有 NVIDIA Elite Partner
+是否 256G SSD：是，照片可见 FORESEE XP1000F256G-C4H1400 256G SSD
+是否预装系统：待开机确认
+初次开机结果：待确认
+问题：需按 Seeed J401 文档确认刷机/系统流程，不直接套用 NVIDIA 官方原版开发套件 SD 卡流程
 ```
+
+## 2026-07-06 照片观察
+
+已确认：
+
+- 包装标识为 `J401 carrier board bundle kit with Jetson Orin Nano Module`。
+- 板卡侧面标签为 `seeed studio reComputer J401 Nano Bundle`。
+- 盒内清单显示：
+  - Carrier Board x1
+  - Jetson Orin Nano x1
+  - 256G SSD x1
+  - Wi-Fi Module x1
+  - Heat Sink with Fan x1
+  - Power Adapter x1
+  - Wi-Fi Antenna Kit x2
+- 背面照片可见：
+  - FORESEE 256G SSD 已安装。
+  - Wi-Fi 模块已安装。
+  - 40-pin GPIO。
+  - RTC 电池座。
+- 接口照片可见：
+  - DC 圆口电源。
+  - HDMI。
+  - 4 个 USB 3.x Type-A。
+  - 千兆网口。
+  - USB-C。
+  - 2 个 CSI 摄像头接口。
+
+初步判断：
+
+- 这是一套 Seeed Studio J401 载板 + Jetson Orin Nano 模组的生态套件，不是 NVIDIA 官方原版 Orin Nano Developer Kit 载板。
+- 对学习边缘 AI / YOLO / ONNX / TensorRT 部署是可用的。
+- 后续系统、刷机、接口说明应优先参考 Seeed J401 文档。
