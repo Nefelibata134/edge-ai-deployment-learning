@@ -48,4 +48,5 @@
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
 - `hardware/jetson-buying-list.md`：Jetson Orin Nano 采购清单。
+- `hardware/jetson-arrival-check.md`：Jetson Orin Nano 到货检查记录。
 - `github-workflow.md`：GitHub 记录和提交规范。
