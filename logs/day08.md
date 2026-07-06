@@ -271,21 +271,125 @@ cp models/yolo11n.onnx models/yolo11n_static.onnx
 
 ## 今日完成情况
 
-待完成后补充。
+- 已创建 Day08 工作目录：
+
+```text
+~/model-deploy-day08
+├── models
+├── outputs
+└── scripts
+```
+
+- 已复制并准备 YOLO 权重：
+
+```text
+models/yolo11n.pt
+```
+
+- 第一次导出 ONNX 时失败，原因是当前 `deploy310` 环境缺少 ONNX 相关依赖：
+
+```text
+ModuleNotFoundError: No module named 'onnx'
+```
+
+- 已手动安装 ONNX 相关工具：
+
+```bash
+python -m pip install onnx onnxruntime onnxslim netron
+```
+
+- 已成功导出 YOLO ONNX：
+
+```bash
+yolo export model=models/yolo11n.pt format=onnx imgsz=640 opset=12 simplify=True
+```
+
+关键输出：
+
+```text
+Ultralytics 8.4.87
+Python-3.10.20
+torch-2.12.1+cu130
+CPU (13th Gen Intel Core i9-13950HX)
+
+PyTorch: starting from 'models/yolo11n.pt' with input shape (1, 3, 640, 640) BCHW and output shape(s) (1, 84, 8400) (5.4 MB)
+ONNX: starting export with onnx 1.22.0 opset 12...
+ONNX: slimming with onnxslim 0.1.94...
+ONNX: export success, saved as 'models/yolo11n.onnx' (10.2 MB)
+Results saved to /home/nefelibata/model-deploy-day08/models/yolo11n.onnx
+```
+
+- 已确认模型文件存在：
+
+```text
+models/yolo11n.pt
+models/yolo11n.onnx
+```
+
+- 已编写 `scripts/inspect_onnx.py` 检查 ONNX 输入输出：
+
+```text
+model: models/yolo11n.onnx
+ir_version: 7
+opset: [12]
+
+inputs:
+- images shape= ['1', '3', '640', '640'] elem_type= 1
+
+outputs:
+- output0 shape= ['1', '84', '8400'] elem_type= 1
+```
+
+- 已使用 Netron 打开 ONNX 模型：
+
+```bash
+netron models/yolo11n.onnx --host 0.0.0.0 --port 8081
+```
+
+浏览器地址：
+
+```text
+http://localhost:8081
+```
+
+- 已在 Netron 中完成模型结构查看，重点确认：
+  - 输入名：`images`
+  - 输入尺寸：`1 x 3 x 640 x 640`
+  - 输出名：`output0`
+  - 输出尺寸：`1 x 84 x 8400`
 
 ## 遇到的问题
 
-待完成后补充。
+- Ultralytics 尝试自动安装 ONNX 依赖时失败：
+
+```text
+Permission denied: 'uv'
+```
+
+解决方式：不依赖自动安装，手动执行 `python -m pip install onnx onnxruntime onnxslim netron`。
+
+- `yolo export` 显示 `CPU`，一开始容易误以为没有用上 GPU。实际导出 ONNX 是模型格式转换，不是主要推理任务，用 CPU 很正常。
+- ONNX 输出 `output0 shape = [1, 84, 8400]` 一开始不直观，需要拆开理解：
+  - `1` 是 batch。
+  - `84` 通常是 `4 个框坐标 + 80 个类别分数`。
+  - `8400` 是 YOLO 产生的候选框数量。
 
 ## 今日复盘
 
 今天最重要的收获：
 
-待完成后补充。
+- 已经从 Ultralytics `.pt` 模型正式跨到 ONNX 模型。
+- ONNX 是模型部署链路中的中间格式，后面可以用 ONNX Runtime 验证，也可以继续交给 TensorRT 优化。
+- Day07 预处理得到的 `(1, 3, 640, 640)` 和今天 ONNX 模型输入完全对上。
+- ONNX 模型输入名是 `images`，输出名是 `output0`，这两个名字后续写 ONNX Runtime 推理脚本时会用到。
+- `output0` 不是直接画好框的结果，而是模型原始输出，后面还需要做后处理、置信度筛选和 NMS。
+- Netron 是理解模型结构的好工具，能快速查看输入输出、算子结构和张量尺寸。
 
 还不清楚的点：
 
-待完成后补充。
+- `output0` 的 8400 个候选框如何过滤成最终检测框，还需要 Day09/Day10 继续学习。
+- ONNX Runtime 的输入输出 API 还没有开始写。
+- ONNX 输出和 Ultralytics `.pt` 输出之间的差别还需要通过实际推理对比理解。
 
 ## 明日计划
 
