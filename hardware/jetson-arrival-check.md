@@ -252,3 +252,18 @@ SFTP sidebar: /home/nefelibata/
 - 笔记本已经可以通过 MobaXterm 远程连接 Jetson。
 - 后续可以不接显示器，通过 SSH 管理 Jetson。
 - `/usr/bin/xauth: file /home/nefelibata/.Xauthority does not exist` 是 X11 转发提示，不影响 SSH 命令行使用。
+
+Type-C USB 救援通道：
+
+```text
+Windows USB network adapter: 以太网 4 / Remote NDIS Compatible Device
+Windows USB IP: 192.168.55.100/24
+Jetson USB IP: 192.168.55.1
+SSH port 22: reachable
+```
+
+说明：
+
+- 当手机热点 IP 变化、无法通过 Wi-Fi 找到 Jetson 时，可以用 Type-C 数据线连接笔记本和 Jetson。
+- 在 MobaXterm 或 PowerShell 中使用 `ssh nefelibata@192.168.55.1` 作为找回入口。
+- `L4T-README` 盘是 Jetson USB device mode 暴露给 Windows 的只读说明盘，不是 Jetson 系统盘，不要格式化或删除。
