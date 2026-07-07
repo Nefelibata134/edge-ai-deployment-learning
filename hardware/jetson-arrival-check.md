@@ -123,9 +123,9 @@ dpkg -l | grep tensorrt
 商家名称：待补充
 是否官方套件：不是 NVIDIA 原版 Developer Kit 载板；是 Seeed Studio J401 第三方载板套件，盒子标有 NVIDIA Elite Partner
 是否 256G SSD：是，照片可见 FORESEE XP1000F256G-C4H1400 256G SSD
-是否预装系统：待开机确认
-初次开机结果：待确认
-问题：需按 Seeed J401 文档确认刷机/系统流程，不直接套用 NVIDIA 官方原版开发套件 SD 卡流程
+是否预装系统：是，已成功完成首次系统配置
+初次开机结果：先卡在 OEM end-user configuration，断电重启后成功进入系统配置界面并进入桌面
+问题：需按 Seeed J401 文档确认刷机/系统流程，不直接套用 NVIDIA 官方原版开发套件 SD 卡流程；不要执行系统 upgrade
 ```
 
 ## 2026-07-06 照片观察
@@ -189,3 +189,66 @@ dpkg -l | grep tensorrt
 - 原因：Seeed reComputer / J401 属于第三方 Jetson 载板，内核、驱动、设备树和 BSP 可能是定制版本。盲目升级可能替换关键包，导致兼容性问题。
 - `sudo apt update` 只是刷新软件源索引，通常可以执行；真正需要谨慎的是 `upgrade`。
 - 后续安装软件时，如果终端提示要升级大量 `nvidia-*`、`linux-*`、`kernel`、`l4t` 相关包，应先停止并确认。
+
+## 2026-07-07 初始化结果
+
+系统信息：
+
+```text
+Host: nefelibata-desktop
+User: nefelibata
+Ubuntu: 22.04.5 LTS
+Kernel: 5.15.148-tegra
+Architecture: aarch64
+JetPack: 6.2.1
+Jetson Linux: R36.4.3
+Python: 3.10.12
+CUDA Toolkit: 12.6
+TensorRT: 10.3.0.30 + CUDA 12.5
+Power Mode: 25W
+Memory: about 7.4 GiB
+SSD: NVMe 238.5G, root partition about 233G
+```
+
+CUDA 检查：
+
+```text
+/usr/local/cuda/bin/nvcc --version
+CUDA compilation tools, release 12.6, V12.6.68
+```
+
+说明：
+
+- `nvcc` 已存在于 `/usr/local/cuda/bin/nvcc`。
+- 若直接运行 `nvcc` 提示 command not found，需要把 `/usr/local/cuda/bin` 加入 `PATH`。
+
+`tegrastats` 检查：
+
+```text
+RAM about 1397/7620MB
+SWAP 0/3810MB
+GR3D_FREQ 0%
+CPU/GPU/SOC temperature around 47-49C
+VDD_IN about 4.5W
+```
+
+说明：
+
+- 空闲状态温度和功耗正常。
+- GPU 状态可通过 `tegrastats` 监控。
+
+远程连接：
+
+```text
+SSH service: active (running)
+Jetson IP on phone hotspot: 172.20.10.13
+MobaXterm SSH: connected successfully
+Remote prompt: nefelibata@nefelibata-desktop:~$
+SFTP sidebar: /home/nefelibata/
+```
+
+说明：
+
+- 笔记本已经可以通过 MobaXterm 远程连接 Jetson。
+- 后续可以不接显示器，通过 SSH 管理 Jetson。
+- `/usr/bin/xauth: file /home/nefelibata/.Xauthority does not exist` 是 X11 转发提示，不影响 SSH 命令行使用。
