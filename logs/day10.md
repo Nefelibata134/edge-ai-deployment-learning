@@ -320,18 +320,121 @@ yolo predict model=models/yolo11n.onnx source=images/bus.jpg imgsz=640 conf=0.25
 
 ## 今日完成情况
 
-待完成。
+- 已完成 `scripts/postprocess.py`，实现 YOLO ONNX 输出后处理：
+  - `xywh -> xyxy`
+  - 置信度筛选
+  - letterbox 坐标映射回原图
+  - OpenCV NMS
+- 已完成 `scripts/onnx_detect.py`，复用 Day09 的 `preprocess.py` 和 `yolo11n.onnx`，完成端到端检测。
+- 已生成自己后处理和画框的结果图：
+
+```text
+outputs/onnx_detect_bus.jpg
+```
+
+- 自己代码的关键输出：
+
+```text
+detections: 5
+bus 0.9392 [11.9, 228.4, 799.2, 735.2]
+person 0.902 [48.6, 398.0, 243.2, 904.5]
+person 0.8493 [670.6, 392.6, 810.0, 879.6]
+person 0.8328 [223.1, 405.6, 345.2, 859.7]
+person 0.3993 [0.0, 550.2, 66.0, 871.8]
+saved: outputs/onnx_detect_bus.jpg
+```
+
+- 已使用 Ultralytics 的 ONNX 推理结果作为参考：
+
+```bash
+yolo predict model=models/yolo11n.onnx source=images/bus.jpg imgsz=640 conf=0.25
+```
+
+关键输出：
+
+```text
+Using ONNX Runtime 1.23.2 with CPUExecutionProvider
+image 1/1 /home/nefelibata/model-deploy-day09/images/bus.jpg: 640x480 4 persons, 1 bus, 22.7ms
+Speed: 10.6ms preprocess, 22.7ms inference, 20.1ms postprocess per image at shape (1, 3, 640, 480)
+Results saved to /home/nefelibata/model-deploy-day09/runs/detect/predict-2
+```
+
+- 已对比两张结果图：
+  - `outputs/onnx_detect_bus.jpg`
+  - `runs/detect/predict-2/bus.jpg`
+- 对比结论：两者都检测到 `1 bus + 4 persons`，框位置大体一致，Day10 后处理链路通过。
 
 ## 遇到的问题
 
-待记录。
+- 第一次运行 `python scripts/onnx_detect.py` 时报错：
+
+```text
+numpy.exceptions.AxisError: axis 1 is out of bounds for array of dimension 1
+```
+
+原因：
+
+```python
+class_scores = pred[:,4]
+```
+
+这行只取了第 4 列，导致 `class_scores` 变成一维数组，后续执行：
+
+```python
+np.argmax(class_scores, axis=1)
+```
+
+时就会报错。
+
+修复方式：
+
+```python
+class_scores = pred[:, 4:]
+```
+
+含义：
+
+- `pred[:, 4]`：只取第 4 列，结果是一维。
+- `pred[:, 4:]`：取第 4 列到最后，得到 80 个类别分数，结果是二维 `(8400, 80)`。
+
+这个问题帮助我真正理解了 YOLO ONNX 输出中 `84 = 4 + 80` 的结构。
+
+- Ultralytics 推理时提示 `onnxruntime-gpu` 不存在，并回退到 CPU：
+
+```text
+CUDA requested but CUDAExecutionProvider not available. Using CPU...
+```
+
+这不是今天的错误。Day10 的目标是跑通 ONNX 后处理，ONNX Runtime GPU 和 TensorRT 加速后面再处理。
 
 ## 今日复盘
 
-待记录。
+- 今天完成了从 ONNX 原始输出到最终检测结果的关键一步。
+- 现在已经不只是会调用 `yolo predict`，而是能自己完成 YOLO 检测后处理。
+- 对 `(1, 84, 8400)` 的理解更清楚：
+  - 前 4 维是候选框坐标。
+  - 后 80 维是 COCO 类别分数。
+  - 8400 是候选框数量。
+- 后处理核心链路已经跑通：
+
+```text
+ONNX output
+-> transpose
+-> split boxes and class scores
+-> confidence filter
+-> xywh to xyxy
+-> remove letterbox padding
+-> scale back to original image
+-> NMS
+-> draw boxes
+```
+
+- 自己代码和 Ultralytics 都得到 `4 persons, 1 bus`，说明处理方向正确。
+- 自己画的绿色框标签有轻微贴边问题，这是可视化细节，不影响检测逻辑。
 
 ## 明日计划
 
-- 如果 Day10 后处理完成，Day11 开始做推理性能计时和 benchmark。
-- 记录 PyTorch / ONNX Runtime / 后续 TensorRT 的性能指标口径：延迟、FPS、warmup、平均值、P95。
-- Jetson 不在身边时，先继续完成 PC 端部署链路；Jetson 在身边后再迁移。
+- Day11 开始做推理性能计时和 benchmark。
+- 记录 ONNX Runtime 推理的 preprocess、inference、postprocess 总耗时。
+- 学习 warmup、平均延迟、FPS、P95 等指标。
+- Jetson 不在身边时，继续先完成 PC 端部署链路；Jetson 在身边后再迁移到边缘设备。
