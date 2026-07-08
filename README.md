@@ -29,6 +29,7 @@
 | Day 07 | 2026-07-05 | YOLO 预处理：letterbox、归一化与 NCHW 输入 | `logs/day07.md` |
 | Day 08 | 2026-07-06 | YOLO 导出 ONNX 与模型结构检查 | `logs/day08.md` |
 | Day 09 | 2026-07-06 | ONNX Runtime 加载 YOLO 并运行原始推理 | `logs/day09.md` |
+| Day 10 | 2026-07-08 | YOLO ONNX 后处理：坐标转换、NMS 与画框 | `logs/day10.md` |
 
 文档：
 
@@ -44,6 +45,7 @@
 - `logs/day07.md`：第七天学习记录。
 - `logs/day08.md`：第八天学习记录。
 - `logs/day09.md`：第九天学习记录。
+- `logs/day10.md`：第十天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
