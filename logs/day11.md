@@ -508,39 +508,130 @@ ls -lh scripts/benchmark_inference.py scripts/benchmark_pipeline.py outputs/benc
 
 ## 今日完成情况
 
-- [ ] 理解 mean、P50、P95、FPS 和 warmup。
-- [ ] 完成 `scripts/benchmark_inference.py`。
-- [ ] 完成 `scripts/benchmark_pipeline.py`。
-- [ ] 完成 10 次 warmup + 100 次正式测试。
-- [ ] 生成 `outputs/benchmark_cpu.txt`。
-- [ ] 分析性能瓶颈并记录实际数据。
+- [x] 理解 mean、P50、P95、FPS 和 warmup。
+- [x] 完成 `scripts/benchmark_inference.py`。
+- [x] 完成 `scripts/benchmark_pipeline.py`。
+- [x] 完成 10 次 warmup + 100 次正式测试。
+- [x] 生成 `outputs/benchmark_cpu.txt`。
+- [x] 分析性能瓶颈并记录实际数据。
 
 ## 实际测试结果
 
-完成后填写：
+### 核心推理 benchmark
 
 ```text
-provider:
-preprocess mean:
-inference mean:
-postprocess mean:
-total mean:
-total P50:
-total P95:
-total FPS:
-detections:
+provider: ['CPUExecutionProvider']
+input shape: (1, 3, 640, 640)
+warmup runs: 10
+test runs: 100
+mean: 26.977 ms
+min: 23.011 ms
+max: 44.184 ms
+P50: 25.872 ms
+P95: 41.242 ms
+FPS: 37.07
 ```
+
+### 最终端到端 CPU 基线
+
+```text
+model: models/yolo11n.onnx
+image: images/bus.jpg
+providers: ['CPUExecutionProvider']
+warmup runs: 10
+test runs: 100
+detections: 5
+
+preprocess   mean=   3.929 ms  P50=   3.864 ms  P95=   4.480 ms  min=   3.400 ms  max=   7.069 ms  FPS= 254.54
+inference    mean=  26.069 ms  P50=  26.249 ms  P95=  28.165 ms  min=  23.340 ms  max=  33.873 ms  FPS=  38.36
+postprocess  mean=   0.999 ms  P50=   0.987 ms  P95=   1.158 ms  min=   0.850 ms  max=   1.459 ms  FPS=1000.68
+total        mean=  31.001 ms  P50=  31.272 ms  P95=  33.505 ms  min=  27.680 ms  max=  38.661 ms  FPS=  32.26
+```
+
+最终 CPU 基线结论：
+
+- 单张图片完整检测平均耗时为 `31.001 ms`，约 `32.26 FPS`。
+- 核心 ONNX 推理平均耗时为 `26.069 ms`，约占总耗时的 `84.1%`，是当前主要瓶颈。
+- 预处理平均耗时为 `3.929 ms`，约占总耗时的 `12.7%`。
+- 后处理平均耗时为 `0.999 ms`，约占总耗时的 `3.2%`。
+- 最终一轮 total P95 为 `33.505 ms`，比 P50 高 `2.233 ms`，这一轮波动较小。
+- 检测数量始终为 5，与 Day10 的 `1 bus + 4 persons` 一致。
+
+### 多轮重复测试
+
+为了观察波动，连续运行了多次端到端 benchmark：
+
+| 测试 | inference mean | total mean | total P50 | total P95 | total FPS |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 第 1 轮 | 28.821 ms | 34.278 ms | 33.569 ms | 40.020 ms | 29.17 |
+| 第 2 轮 | 34.181 ms | 38.794 ms | 41.986 ms | 44.342 ms | 25.78 |
+| 第 3 轮 | 26.457 ms | 31.119 ms | 29.444 ms | 41.966 ms | 32.14 |
+| 第 4 轮 | 26.069 ms | 31.001 ms | 31.272 ms | 33.505 ms | 32.26 |
+
+多轮结果说明：
+
+- 完整流程性能大致在 `25.78-32.26 FPS` 之间。
+- 推理阶段受 CPU 调度、后台程序、缓存状态和电源策略影响，会发生波动。
+- 第 2 轮明显偏慢，证明只测一次不能代表稳定性能。
+- 第 4 轮的 P50 和 P95 最接近，适合作为当前稳定基线，但性能报告仍应说明测试次数和运行环境。
 
 ## 遇到的问题
 
-完成后填写。
+### 1. 在 base 环境运行时缺少 NumPy
+
+第一次运行：
+
+```bash
+(base) python scripts/benchmark_inference.py
+```
+
+报错：
+
+```text
+ModuleNotFoundError: No module named 'numpy'
+```
+
+原因不是 benchmark 代码错误，而是当前处于 Miniconda 的 `base` 环境，Day04 安装的 NumPy、ONNX Runtime 等依赖位于 `deploy310` 环境。
+
+修复：
+
+```bash
+conda activate deploy310
+python scripts/benchmark_inference.py
+```
+
+以后运行项目前先观察终端提示符是否为：
+
+```text
+(deploy310)
+```
+
+### 2. 终端出现 `^[[A`
+
+第二轮输出开头出现：
+
+```text
+^[[A
+```
+
+这是终端把方向键上键的控制字符显示了出来，不是 Python 或 ONNX Runtime 报错，对测试结果没有影响。
+
 
 ## 今日复盘
 
-完成后填写。
+- 今天第一次建立了可重复的模型部署性能测试方法，不再只看一次 `yolo predict` 的速度输出。
+- 学会了正式计时前做 warmup，并使用 100 次运行计算 mean、P50、P95、min 和 max。
+- 核心推理 FPS 和端到端 FPS 含义不同：
+  - 核心推理约 `38.36 FPS`。
+  - 包含图片读取、预处理和后处理的完整流程约 `32.26 FPS`。
+- 当前性能瓶颈是 ONNX Runtime CPU 推理，预处理和后处理占比较小。
+- P95 能反映偶发慢请求。多轮测试中 P95 波动明显，因此后续比较 ONNX GPU 和 TensorRT 时必须使用相同图片、输入尺寸、warmup 次数和测试次数。
+- Ultralytics 的 Speed 与自己的 benchmark 不一定完全一致，因为计时边界、warmup、预处理实现、后处理实现、线程设置和系统负载可能不同。
+- `deploy310` 是本项目的依赖环境；终端处于 `(base)` 时不能假定项目依赖已经安装。
 
 ## 明日计划
 
-- Day12 对比不同输入尺寸或 ONNX Runtime 配置对性能的影响。
-- 为后续 ONNX Runtime GPU 和 TensorRT benchmark 统一测试方法。
+- Day12 对比 `320 / 480 / 640` 不同输入尺寸对速度和检测结果的影响。
+- 生成输入尺寸、平均延迟、P95、FPS、检测数量的对比表。
+- 固定 benchmark 规则，为后续 ONNX Runtime GPU 和 TensorRT 测试建立统一标准。
 - Jetson 不在身边时继续完成 PC 端部署链路。

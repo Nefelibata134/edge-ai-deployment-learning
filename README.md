@@ -30,7 +30,7 @@
 | Day 08 | 2026-07-06 | YOLO 导出 ONNX 与模型结构检查 | `logs/day08.md` |
 | Day 09 | 2026-07-06 | ONNX Runtime 加载 YOLO 并运行原始推理 | `logs/day09.md` |
 | Day 10 | 2026-07-08 | YOLO ONNX 后处理：坐标转换、NMS 与画框 | `logs/day10.md` |
-| Day 11 | 2026-07-10 | ONNX Runtime 性能测试：warmup、延迟、P50/P95 与 FPS | `logs/day11.md` |
+| Day 11 | 2026-07-10 | ONNX Runtime 性能测试：warmup、延迟、P50/P95 与 FPS（已完成） | `logs/day11.md` |
 
 文档：
 
