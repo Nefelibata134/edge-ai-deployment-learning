@@ -7,8 +7,8 @@
 - 两个月内建立模型部署、边缘 AI、Jetson 视觉部署能力。
 - 暑假结束后能开始投递实习和秋招相关岗位。
 - 至少完成两个就业相关项目：
-  - PC 端 YOLO + ONNX + TensorRT 推理优化项目。
-  - Jetson Orin Nano 实时视觉感知项目，可扩展为视觉小车。
+  - 工业视觉缺陷检测 + ONNX/TensorRT + GPU 推理服务项目。
+  - Jetson Orin Nano 实时多目标跟踪与事件检测项目，可扩展为视觉小车。
 
 ## 用户背景
 

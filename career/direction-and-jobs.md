@@ -79,15 +79,14 @@
 
 项目 1：
 
-基于 YOLO 的目标检测模型部署与 TensorRT 推理优化。完成 PyTorch 模型到 ONNX、TensorRT engine 的转换，支持图片/视频推理，设计 benchmark 脚本对比 PyTorch、ONNX Runtime、TensorRT 在不同精度下的延迟和 FPS，并整理部署流程与常见问题。
+面向工业缺陷检测场景，完成轻量视觉模型的数据处理、训练与 mAP 评估，并将模型导出至 ONNX 和 TensorRT FP16。使用 FastAPI、Docker 构建 GPU 推理服务，通过并发压测对比 PyTorch、ONNX Runtime、TensorRT 的 QPS、P50/P95 延迟与显存占用，形成可复现的部署和性能报告。
 
 项目 2：
 
-基于 Jetson Orin Nano 的边缘视觉感知系统。完成 JetPack 环境配置、摄像头实时采集、TensorRT 加速推理和结果可视化，记录设备端 FPS、温度、功耗和延迟，并针对输入分辨率、模型精度和运行模式进行优化。
+基于 Jetson Orin Nano 构建实时多目标跟踪与事件检测系统，完成摄像头采集、TensorRT FP16 检测、ByteTrack/DeepStream 跟踪、越线计数和区域事件日志。记录设备端 FPS、P50/P95 延迟、温度和功耗，并针对输入分辨率、功耗模式和视频 pipeline 进行优化。
 
 ## 暂不建议优先选择
 
 - 纯深度学习算法岗：对论文、训练经验、数学和算法深度要求更高，两个月内竞争力不够稳定。
 - 纯嵌入式驱动岗：C/C++、Linux 内核、驱动、硬件接口要求更深，和模型部署目标偏离。
 - 纯后端开发岗：可投，但会浪费你 Jetson 和边缘 AI 项目的差异化优势。
-
