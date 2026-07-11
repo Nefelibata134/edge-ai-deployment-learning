@@ -31,7 +31,7 @@
 | Day 09 | 2026-07-06 | ONNX Runtime 加载 YOLO 并运行原始推理 | `logs/day09.md` |
 | Day 10 | 2026-07-08 | YOLO ONNX 后处理：坐标转换、NMS 与画框 | `logs/day10.md` |
 | Day 11 | 2026-07-10 | ONNX Runtime 性能测试：warmup、延迟、P50/P95 与 FPS（已完成） | `logs/day11.md` |
-| Day 12 | 2026-07-11 | YOLO 动态输入尺寸：320/480/640 性能与检测结果对比 | `logs/day12.md` |
+| Day 12 | 2026-07-11 | YOLO 动态输入尺寸：320/480/640 性能与检测结果对比（已完成） | `logs/day12.md` |
 
 文档：
 
