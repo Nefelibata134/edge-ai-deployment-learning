@@ -588,21 +588,96 @@ career/competition-shortlist-2026-summer.md 中的规则核对记录
 
 ## 今日完成情况
 
-- [ ] 确认原 `deploy310` CPU 环境仍然可用。
-- [ ] 创建独立 `ortgpu310` 环境。
-- [ ] 安装稳定版 ONNX Runtime GPU 及 CUDA 12 / cuDNN 运行库。
-- [ ] `CUDAExecutionProvider` 检查通过。
+- [x] 确认原 `deploy310` CPU 环境仍然可用。
+- [x] 创建独立 `ortgpu310` 环境。
+- [x] 安装稳定版 ONNX Runtime GPU 及 CUDA 12 / cuDNN 运行库。
+- [x] `CUDAExecutionProvider` 检查通过。
 - [ ] 完成统一 CPU / CUDA benchmark。
 - [ ] 计算 inference 和 total speedup。
 - [ ] 核对个人竞赛候选的报名、单人资格和截止时间。
 
 ## 实际测试结果
 
-完成后填写。
+### GPU 环境验证
+
+```text
+environment: ortgpu310
+python: /home/nefelibata/miniconda3/envs/ortgpu310/bin/python
+Python: 3.10.20
+onnxruntime-gpu: 1.23.2
+available providers:
+- TensorrtExecutionProvider
+- CUDAExecutionProvider
+- CPUExecutionProvider
+pip check: No broken requirements found
+```
+
+实际创建 CUDA session 并完成一次 YOLO11n ONNX 推理：
+
+```text
+session providers: ['CUDAExecutionProvider', 'CPUExecutionProvider']
+output shape: (1, 84, 8400)
+GPU inference check: PASS
+```
+
+原 CPU 环境也已复查：
+
+```text
+environment: deploy310
+onnxruntime: 1.23.2
+available providers:
+- AzureExecutionProvider
+- CPUExecutionProvider
+pip check: No broken requirements found
+```
 
 ## 遇到的问题
 
-完成后填写。
+### CUDA 依赖第一次误装到 base
+
+第一次执行安装命令时，终端提示符仍为：
+
+```text
+(base)
+```
+
+因此 `onnxruntime-gpu`、CUDA 12、cuDNN、NumPy 和 OpenCV 被安装到：
+
+```text
+/home/nefelibata/miniconda3/lib/python3.13/site-packages
+```
+
+而不是计划中的：
+
+```text
+/home/nefelibata/miniconda3/envs/ortgpu310/lib/python3.10/site-packages
+```
+
+处理过程：
+
+1. 保留 pip 下载缓存。
+2. 激活 `ortgpu310`，从缓存重新安装正确依赖。
+3. 验证 `CUDAExecutionProvider` 并实际运行一次模型。
+4. 从 base 卸载误装的 ORT GPU、CUDA 12、cuDNN、NumPy、OpenCV 和新增依赖。
+5. 分别执行 `pip check` 验证三个环境。
+
+最终结果：
+
+```text
+base: 误装包已删除，No broken requirements found
+deploy310: CPU ORT 正常，No broken requirements found
+ortgpu310: CUDA 推理正常，No broken requirements found
+```
+
+这次问题说明，执行任何 `pip install` 前必须同时检查：
+
+```bash
+conda activate 环境名
+which python
+python --version
+```
+
+不能只根据之前创建过环境，就假定当前终端已经激活该环境。
 
 ## 今日复盘
 
