@@ -16,45 +16,48 @@
 | 候选 | 类型 | 与主线匹配 | 单人资格 | 当前状态 | 初步结论 |
 | --- | --- | --- | --- | --- | --- |
 | 天池海藻目标检测练习赛 | YOLO 目标检测 | 高 | 待登录确认 | 页面可读取，需确认提交入口 | 第一优先，适合完成首次有效提交 |
-| 天池 2026 工业异常检测与分割 | 工业异常分类/分割 | 很高 | 页面写个人或团队，但本科资格需确认 | A 榜计划持续至 2026-08-31 | 与项目 1 高度相关，但难度更高 |
+| 第七届 CSIG 复杂工业场景异常检测算法挑战 | 工业异常检测 | 很高 | 已以个人账号报名，团队细则后续复核 | 2026-07-12 报名成功，进行中 | 正式主赛候选，与项目 1 高度相关 |
+| CCL2026-Eval 跨境电商图像文本翻译大赛 | 图像文本翻译 | 低 | 已以个人账号报名 | 2026-07-12 报名成功，进行中 | 保持报名，暂不作为暑期主投入 |
 | 天池地表建筑物识别练习赛 | 航拍语义分割 | 中 | 待登录确认 | 练习赛页面可读取 | 目标检测赛不可用时的备选 |
-| IITQA 2026 | 图像文本翻译质量评估 | 低 | 待确认 | 报名启动，测评时间待定 | 与边缘视觉部署距离较远，暂不优先 |
-| Kaggle 当前视觉赛 | 待筛选 | 待评估 | 逐赛核对 | 登录后查看 Active Competitions | 只保留一个数据量可控的候选 |
+| Kaggle Digit Recognizer | MNIST 图像多分类 | 中 | 可个人完成 | 长期开放，可直接提交预测 | 低成本练习赛，优先完成首次 Kaggle 有效提交 |
+| Kaggle Biohub Cell Tracking | 3D 检测、跟踪与谱系重建 | 高 | 可单人成队，队伍上限 5 人 | 报名截止 2026-09-22，提交截止 2026-09-29 | 难度过高，仅保留为后续高难度备选 |
 
 ## 官方页面
 
 - [天池海藻目标检测练习赛](https://tianchi.aliyun.com/competition/entrance/532171/information)
-- [天池 2026 工业异常检测与分割](https://tianchi.aliyun.com/competition/entrance/532482)
+- [第七届 CSIG 复杂工业场景异常检测算法挑战](https://tianchi.aliyun.com/competition/entrance/532482)
 - [天池地表建筑物识别练习赛](https://tianchi.aliyun.com/competition/entrance/531872/information)
-- [IITQA 2026](https://tianchi.aliyun.com/competition/entrance/532463)
+- [CCL2026-Eval 跨境电商图像文本翻译大赛](https://tianchi.aliyun.com/competition/entrance/532463)
 - [Kaggle Competitions](https://www.kaggle.com/competitions)
+- [Kaggle Digit Recognizer](https://www.kaggle.com/competitions/digit-recognizer)
+- [Kaggle Biohub - Cell Tracking During Development](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development)
 
 ## Day13-Day15 核对表
 
 登录平台后逐项填写：
 
-| 项目 | 目标检测练习赛 | 工业异常检测赛 | 地表建筑物识别 | Kaggle 候选 |
+| 项目 | 目标检测练习赛 | CSIG 工业异常检测赛 | 地表建筑物识别 | Kaggle Digit Recognizer |
 | --- | --- | --- | --- | --- |
-| 可否报名 | 待填写 | 待填写 | 待填写 | 待填写 |
-| 可否单人参赛 | 待填写 | 待填写 | 待填写 | 待填写 |
-| 截止时间 | 待填写 | 2026-08-31（A 榜，需页面复核） | 待填写 | 待填写 |
+| 可否报名 | 待填写 | 已报名 | 待填写 | 可参与并提交 |
+| 可否单人参赛 | 待填写 | 已以个人账号报名，细则待复核 | 待填写 | 可以 |
+| 截止时间 | 待填写 | 待页面复核 | 待填写 | 长期开放 |
 | 数据大小 | 待填写 | 待填写 | 待填写 | 待填写 |
-| 评价指标 | mAP50-95 | 待填写 | 语义分割指标，待填写 | 待填写 |
-| 提交格式 | JSON，待实际下载模板确认 | 待填写 | 待填写 | 待填写 |
-| baseline 难度 | 低 | 高 | 中 | 待填写 |
-| 是否保留 | 待决定 | 待决定 | 待决定 | 待决定 |
+| 评价指标 | mAP50-95 | 待填写 | 语义分割指标，待填写 | 分类准确率 |
+| 提交格式 | JSON，待实际下载模板确认 | 待填写 | 待填写 | CSV 标签预测 |
+| baseline 难度 | 低 | 高 | 中 | 低 |
+| 是否保留 | 待决定 | 主赛候选 | 待决定 | 保留为练习赛 |
 
 ## 最终选择
 
-最迟 Day15 填写：
+Day13 初步选择，最迟 Day15 复核：
 
 ```text
-主赛：
-练习赛：
-选择理由：
-第一次有效提交目标日期：
-每周投入时间：
-使用算力：
+主赛：第七届 CSIG 复杂工业场景异常检测算法挑战
+练习赛：Kaggle Digit Recognizer
+选择理由：主赛与工业视觉项目高度相关；练习赛用于低成本跑通 Kaggle 全流程
+第一次有效提交目标日期：Day22-Day25
+每周投入时间：4-5 小时
+使用算力：RTX 4070、Kaggle 免费 Notebook；必要时使用合理付费云算力
 ```
 
 ## 重要说明

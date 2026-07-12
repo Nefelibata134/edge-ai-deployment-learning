@@ -474,14 +474,17 @@ CPU tensor
 
 | Provider | inference mean | inference P95 | total mean | total P95 | total FPS | detections |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| CPU | 待填写 | 待填写 | 待填写 | 待填写 | 待填写 | 待填写 |
-| CUDA | 待填写 | 待填写 | 待填写 | 待填写 | 待填写 | 待填写 |
+| CPU | 30.128 ms | 41.350 ms | 35.762 ms | 47.421 ms | 27.96 | 5 |
+| CUDA | 7.270 ms | 8.963 ms | 11.707 ms | 13.905 ms | 85.42 | 5 |
 
 计算：
 
 ```text
 inference speedup = CPU inference mean / CUDA inference mean
 total speedup = CPU total mean / CUDA total mean
+
+inference speedup = 4.14x
+total speedup = 3.05x
 ```
 
 如果 CUDA 没有比 CPU 快很多，不要立刻认定 GPU 无效。需要检查：
@@ -592,9 +595,9 @@ career/competition-shortlist-2026-summer.md 中的规则核对记录
 - [x] 创建独立 `ortgpu310` 环境。
 - [x] 安装稳定版 ONNX Runtime GPU 及 CUDA 12 / cuDNN 运行库。
 - [x] `CUDAExecutionProvider` 检查通过。
-- [ ] 完成统一 CPU / CUDA benchmark。
-- [ ] 计算 inference 和 total speedup。
-- [ ] 核对个人竞赛候选的报名、单人资格和截止时间。
+- [x] 完成统一 CPU / CUDA benchmark。
+- [x] 计算 inference 和 total speedup。
+- [x] 核对个人竞赛候选的报名、单人资格和截止时间。
 
 ## 实际测试结果
 
@@ -630,6 +633,37 @@ available providers:
 - CPUExecutionProvider
 pip check: No broken requirements found
 ```
+
+### CPU 与 CUDA 统一 benchmark
+
+测试条件：同一个 `ortgpu310` 环境、同一个 ONNX 模型、同一张图片、`imgsz=640`、warmup 10 次、正式测试 100 次。CPU 和 CUDA 均检测到 5 个目标。
+
+| Provider | inference mean | inference P95 | total mean | total P95 | total FPS | detections |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| CPU | 30.128 ms | 41.350 ms | 35.762 ms | 47.421 ms | 27.96 | 5 |
+| CUDA | 7.270 ms | 8.963 ms | 11.707 ms | 13.905 ms | 85.42 | 5 |
+
+```text
+inference speedup = 30.128 / 7.270 = 4.14x
+total speedup = 35.762 / 11.707 = 3.05x
+total FPS speedup = 85.42 / 27.96 = 3.06x
+```
+
+推理加速高于端到端加速，是因为 OpenCV 预处理、后处理以及 Host/Device 数据传输不会随 GPU 推理等比例加速。CUDA 的端到端 P95 从 47.421 ms 降至 13.905 ms，延迟稳定性也明显改善。
+
+### 竞赛核对
+
+2026-07-12 已在天池以个人账号报名：
+
+- CCL2026-Eval 任务：第一届跨境电商图像文本翻译大赛。
+- 第七届 CSIG 图像图形技术挑战赛：复杂工业场景异常检测算法挑战。
+
+Kaggle 登录核对结果：
+
+- `Digit Recognizer`：长期开放的 Getting Started 图像多分类赛，可个人完成，没有截止压力，适合在 Day22-Day25 前跑通 Kaggle Notebook、生成提交文件和完成第一次有效提交。
+- `Biohub - Cell Tracking During Development`：允许个人作为单人成队参赛，队伍上限 5 人；报名截止 2026-09-22，最终提交截止 2026-09-29。任务包含 3D 细胞检测、跨帧追踪、分裂识别和谱系重建，技术匹配但现阶段难度过高，只保留为高难度备选。
+
+当前优先级：CSIG 工业异常检测作为正式主赛候选，Digit Recognizer 作为低成本 Kaggle 练习赛；跨境电商图像文本翻译赛保持报名但暂不重投入。
 
 ## 遇到的问题
 
@@ -681,11 +715,13 @@ python --version
 
 ## 今日复盘
 
-完成后填写。
+今天完成了从 CPU ONNX Runtime 到 CUDA Provider 的完整迁移和公平 benchmark。YOLO11n 的纯推理获得 4.14 倍加速，端到端获得 3.05 倍加速，说明不仅要确认 Provider，还要分阶段测量预处理、推理和后处理。
+
+环境误装问题也形成了明确习惯：每次安装前检查 conda 环境、`which python` 和 Python 版本。竞赛方面已完成两项天池报名，并为 Kaggle 确定一个能够快速形成有效提交的入门视觉赛，避免同时投入多个高难度任务。
 
 ## 明日计划
 
 - Day14 学习 GPU 数据传输与 ONNX Runtime I/O Binding。
 - 对比普通 `session.run()` 与设备端绑定后的推理延迟。
-- 继续核对个人赛候选，最迟 Day15 确定一个赛题。
+- 准备 Digit Recognizer baseline，最迟 Day15 确定第一次 Kaggle 提交日期。
 - 为 Day15-Day17 的 TensorRT 学习准备统一 benchmark 接口。
