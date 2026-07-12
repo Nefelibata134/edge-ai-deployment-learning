@@ -32,6 +32,7 @@
 | Day 10 | 2026-07-08 | YOLO ONNX 后处理：坐标转换、NMS 与画框 | `logs/day10.md` |
 | Day 11 | 2026-07-10 | ONNX Runtime 性能测试：warmup、延迟、P50/P95 与 FPS（已完成） | `logs/day11.md` |
 | Day 12 | 2026-07-11 | YOLO 动态输入尺寸：320/480/640 性能与检测结果对比（已完成） | `logs/day12.md` |
+| Day 13 | 2026-07-12 | ONNX Runtime CUDA Provider、GPU benchmark 与个人竞赛初筛 | `logs/day13.md` |
 
 文档：
 
@@ -50,9 +51,11 @@
 - `logs/day10.md`：第十天学习记录。
 - `logs/day11.md`：第十一天学习记录。
 - `logs/day12.md`：第十二天学习记录。
+- `logs/day13.md`：第十三天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
+- `career/competition-shortlist-2026-summer.md`：2026 暑假个人赛候选与规则核对表。
 - `hardware/jetson-buying-list.md`：Jetson Orin Nano 采购清单。
 - `hardware/jetson-arrival-check.md`：Jetson Orin Nano 到货检查记录。
 - `github-workflow.md`：GitHub 记录和提交规范。
