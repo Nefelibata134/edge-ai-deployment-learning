@@ -147,9 +147,13 @@ PyTorch -> ONNX -> TensorRT -> benchmark -> 可复现部署
 ## 项目时间节点
 
 - Day13-Day17：GPU / TensorRT 基础，继续完善项目 1 所需能力。
-- Day18 左右：创建项目 1 独立仓库并确定数据集。
-- Day19-Day27：完成项目 1 训练、部署、服务化和第一版 README。
-- Jetson 回到身边后：穿插完成板端基线、TensorRT、摄像头和视频流实验。
-- Day28-Day30：创建项目 2 独立仓库。
-- Day31-Day42：完成项目 2 检测、跟踪、事件逻辑和性能测试。
-- Day43 以后：项目增强、竞赛、简历、面试和缓冲时间。
+- Day18：创建项目 1 独立仓库并确定数据集、指标和目录结构。
+- Day19-Day25：完成项目 1 训练、ONNX/TensorRT、FastAPI、Docker、benchmark 和 v1 README。
+- Day26-Day27：项目 1 缓冲与修复，同时完成 Jetson 环境、摄像头和设备基线。
+- Day28：创建项目 2 独立仓库，并在 Jetson 上生成板端 TensorRT engine。
+- Day29-Day30：跑通 Jetson 实时检测和功耗/分辨率调优。
+- Day31-Day40：完成项目 2 检测、跟踪、事件逻辑、性能测试、README 和 v1 演示。
+- Day41-Day53：两个项目 v2、竞赛改进、C++/DeepStream/稳定性增强。
+- Day54-Day60：简历、GitHub、岗位、面试和投递材料。
+
+详细日程以 `roadmap/60-day-plan.md` 为唯一执行表。

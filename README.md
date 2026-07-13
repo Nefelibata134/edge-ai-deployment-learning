@@ -36,8 +36,8 @@
 
 文档：
 
-- `roadmap/60-day-plan.md`：两个月每日路线。
-- `roadmap/personal-60-day-plan.md`：按你的背景定制的暑假就业版路线。
+- `roadmap/60-day-plan.md`：当前唯一的 Day1-Day60 逐日执行表；发生计划冲突时以它为准。
+- `roadmap/personal-60-day-plan.md`：个人目标、时间分配、项目和竞赛原则。
 - `logs/template.md`：每日学习记录模板。
 - `logs/day01.md`：第一天学习记录。
 - `logs/day02.md`：第二天学习记录。
