@@ -19,8 +19,36 @@
 - Linux 基本没有基础。
 - 深度学习入门。
 - 有 GitHub 账号：Nefelibata134。
-- 计划购买 Jetson Orin Nano。
+- 已购买 Jetson Orin Nano 8GB，配有 256GB NVMe SSD，并已完成首次初始化、JetPack/TensorRT 检查和 SSH/串口连接。
 - 不考研，暑假结束后准备秋招和实习。
+
+## 上下文重置后的恢复流程
+
+`AGENTS.md` 是本协作的长期记忆入口。每次上下文重置、开启新任务或不确定当前进度时，必须先恢复仓库状态，不能只凭对话残留猜测。
+
+按顺序检查：
+
+1. 阅读 `AGENTS.md`，恢复硬性规则、用户背景和仓库边界。
+2. 阅读 `README.md` 的学习进度索引，确认最后一个已完成 Day。
+3. 阅读 `roadmap/60-day-plan.md`，它是当前唯一的 Day1-Day60 逐日执行表。
+4. 阅读最新的 `logs/dayXX.md`，确认当天已完成内容、错误和下一步。
+5. 阅读 `projects/README.md` 与 `career/competition-shortlist-2026-summer.md`，恢复两个项目和竞赛状态。
+6. 执行 `git status --short` 和 `git log -3 --oneline`，确认是否存在未提交改动以及最近完成的工作。
+
+恢复后先用仓库事实确认当前 Day 和下一任务。如果聊天中的旧计划与仓库冲突，以 `roadmap/60-day-plan.md` 和最新日志为准；不要重新采用早期“Day47 才开始项目”或“最后一周才做竞赛”的通用路线。
+
+## 两个正式项目仓库
+
+两个项目必须分别建立独立 GitHub 仓库，不能把正式核心代码直接堆在本学习仓库中：
+
+| 项目 | 独立仓库名 | 建仓节点 | v1 节点 |
+| --- | --- | --- | --- |
+| 工业视觉缺陷检测与 GPU 推理服务 | `industrial-defect-inference-service` | Day18 | Day25 |
+| Jetson 实时多目标跟踪与事件检测系统 | `jetson-realtime-tracking-system` | Day28 | Day40 |
+
+仓库归属统一使用 GitHub 用户 `Nefelibata134`。项目开始时再创建对应仓库；创建前先确认名称尚未占用。
+
+本学习仓库只保存项目 proposal、学习日志、实验摘要、踩坑记录和项目索引。正式项目仓库保存代码、配置、测试、依赖、模型说明、性能报告、截图位置和项目 README。
 
 ## 协作方式
 
@@ -84,9 +112,12 @@
 
 ## 文件约定
 
-- 总路线：`roadmap/personal-60-day-plan.md`
+- 唯一逐日执行表：`roadmap/60-day-plan.md`
+- 个人目标与原则：`roadmap/personal-60-day-plan.md`
 - 每日记录：`logs/dayXX.md`
+- 项目规划：`projects/README.md`
 - 竞赛计划：`career/competition-plan.md`
+- 当前竞赛候选：`career/competition-shortlist-2026-summer.md`
 - 岗位建议：`career/direction-and-jobs.md`
 - Jetson 采购：`hardware/jetson-buying-list.md`
 - GitHub 规范：`github-workflow.md`

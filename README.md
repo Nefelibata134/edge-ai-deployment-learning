@@ -36,6 +36,7 @@
 
 文档：
 
+- `AGENTS.md`：上下文重置后的协作记忆、恢复顺序和仓库边界。
 - `roadmap/60-day-plan.md`：当前唯一的 Day1-Day60 逐日执行表；发生计划冲突时以它为准。
 - `roadmap/personal-60-day-plan.md`：个人目标、时间分配、项目和竞赛原则。
 - `logs/template.md`：每日学习记录模板。
