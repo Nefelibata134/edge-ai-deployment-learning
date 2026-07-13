@@ -33,6 +33,7 @@
 | Day 11 | 2026-07-10 | ONNX Runtime 性能测试：warmup、延迟、P50/P95 与 FPS（已完成） | `logs/day11.md` |
 | Day 12 | 2026-07-11 | YOLO 动态输入尺寸：320/480/640 性能与检测结果对比（已完成） | `logs/day12.md` |
 | Day 13 | 2026-07-12 | ONNX Runtime CUDA Provider、CPU/CUDA benchmark 与个人竞赛初筛（已完成） | `logs/day13.md` |
+| Day 14 | 2026-07-13 | ONNX Runtime I/O Binding 与 GPU 数据传输（进行中） | `logs/day14.md` |
 
 文档：
 
@@ -53,6 +54,7 @@
 - `logs/day11.md`：第十一天学习记录。
 - `logs/day12.md`：第十二天学习记录。
 - `logs/day13.md`：第十三天学习记录。
+- `logs/day14.md`：第十四天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
