@@ -502,9 +502,9 @@ python scripts/benchmark_iobinding.py --imgsz 640 --warmup 10 --runs 100
 
 | 路径 | mean | P50 | P95 | FPS | 包含 H2D | 包含 D2H |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
-| `session.run numpy` | 待填写 | 待填写 | 待填写 | 待填写 | 是 | 是 |
-| `iobinding cpu roundtrip` | 待填写 | 待填写 | 待填写 | 待填写 | 是 | 是 |
-| `iobinding device only` | 待填写 | 待填写 | 待填写 | 待填写 | 否，循环外上传 | 否，输出留在 GPU |
+| `session.run numpy` | 5.927 ms | 5.473 ms | 7.228 ms | 168.71 | 是 | 是 |
+| `iobinding cpu roundtrip` | 5.222 ms | 4.700 ms | 6.864 ms | 191.49 | 是 | 是 |
+| `iobinding device only` | 4.251 ms | 4.031 ms | 5.421 ms | 235.26 | 否，循环外上传 | 否，输出留在 GPU |
 
 回答以下问题：
 
@@ -601,25 +601,55 @@ Digit Recognizer baseline 信息记录
 
 ## 今日完成情况
 
-- [ ] 环境与 CUDA Provider 检查通过。
-- [ ] I/O Binding 输入输出设备检查通过。
-- [ ] 普通输出和绑定输出数值一致。
-- [ ] 完成三路径 benchmark。
-- [ ] 连续运行三次并分析波动。
-- [ ] 回答四个分析问题。
-- [ ] 完成 Kaggle baseline 的 30 分钟准备。
+- [x] 环境与 CUDA Provider 检查通过。
+- [x] I/O Binding 输入输出设备检查通过。
+- [x] 普通输出和绑定输出数值一致。
+- [x] 完成三路径 benchmark。
+- [x] 连续运行三次并分析波动。
+- [x] 回答四个分析问题。
+- [x] 完成 Kaggle Digit Recognizer baseline，并获得平台接受的首次提交。
 
 ## 实际测试结果
 
-完成后填写。
+环境为 `ortgpu310`、ONNX Runtime 1.23.2，实际 Session 使用 `CUDAExecutionProvider` 和 `CPUExecutionProvider`。I/O Binding 验证结果如下：
+
+```text
+input device: cuda
+output device: cuda
+output shape: [1, 84, 8400]
+reference detections: 5
+iobinding detections: 5
+max absolute error: 0.0
+I/O Binding validation: PASS
+```
+
+正式测试使用 10 次 warmup 和 100 次计时，最终保存的一轮结果为：
+
+```text
+session.run numpy       mean=5.927 ms  P50=5.473 ms  P95=7.228 ms  FPS=168.71
+iobinding cpu roundtrip mean=5.222 ms  P50=4.700 ms  P95=6.864 ms  FPS=191.49
+iobinding device only   mean=4.251 ms  P50=4.031 ms  P95=5.421 ms  FPS=235.26
+
+device-only speedup vs session.run: 1.39x
+Output validation: PASS
+```
+
+三次运行存在正常波动，主要来自 WSL、GPU 调度、同步和后台负载。报告文件只保留最后一次完整结果，因此不伪造前两次的精确范围。
 
 ## 遇到的问题
 
-完成后填写。
+- I/O Binding CPU 往返路径仍包含 H2D 和 D2H，不保证每次都明显快于 `session.run()`。
+- device-only 数据很好看，但它排除了首次 H2D、最终 D2H、OpenCV 预处理和 NMS，不能直接当成摄像头应用 FPS。
+- benchmark 报告会被后一次运行覆盖；后续正式项目应将时间戳或实验编号写入文件名，保留完整实验历史。
 
 ## 今日复盘
 
-完成后填写。
+1. `iobinding cpu roundtrip` 不一定更快，因为输入仍从 CPU 上传、输出仍复制回 CPU，还增加了绑定、同步和 API 调度成本；YOLO11n 较小，这些固定开销更明显。
+2. `bind_cpu_input` 绑定的是主机内存，执行前仍需要传到 GPU；`bind_ortvalue_input` 可以直接绑定 CUDA OrtValue，让输入保留在设备内存。
+3. 设备端路径适合多级 GPU pipeline，因为中间 tensor 可以直接交给下一阶段，避免每一级都在 CPU 与 GPU 之间往返复制。
+4. device-only FPS 不能写成摄像头系统 FPS，因为它没有包含采集、解码、预处理、上传、后处理、下载、画框和显示等完整链路。
+
+今天还提前完成了 Kaggle `Digit Recognizer` 手写数字识别练习赛的 baseline 与首次有效提交。它属于 Getting Started 入门练习，不等同于正式竞赛获奖，但证明已经跑通数据读取、训练/预测、生成 CSV、提交和平台评分的完整流程。
 
 ## 明日计划
 
