@@ -1,6 +1,6 @@
 # 60 天模型部署学习路线（当前执行版）
 
-最后统一日期：2026-07-13
+最后统一日期：2026-07-18
 
 这份文件是 Day 级别的唯一执行表。若它与早期聊天、周框架或旧计划冲突，以本文件和当天 `logs/dayXX.md` 为准。
 
@@ -45,8 +45,10 @@
 | --- | --- | --- | --- |
 | Day14 | ONNX Runtime I/O Binding，理解 Host/Device 数据复制 | 普通 `session.run()` 与 I/O Binding 对比 | 不需要 |
 | Day15 | TensorRT 架构、engine、builder、parser、profile；确认 PC 环境 | TensorRT 概念图与环境检查 | 不需要 |
-| Day16 | 使用 `trtexec` 构建 FP32/FP16 engine | 构建命令、日志和延迟表 | 不需要 |
-| Day17 | TensorRT Python API、动态 shape、统一 benchmark | TRT Python 推理 demo 与错误清单 | 不需要 |
+| Day16 | 使用 `trtexec` 或等价 Builder API 构建 PC 端 FP32/FP16 engine | 构建命令、日志、engine 文件和延迟表 | 不需要，保持 PC 主线 |
+| Day17 | TensorRT Python API、动态 shape、统一 benchmark；Jetson 重新接入预检 | TRT Python 推理 demo、错误清单、Jetson SSH/环境快照/ONNX 传输验证 | 使用约 1 小时，不在板端建 engine |
+
+Jetson 从 Day16 起已可使用，但不提前并行启动项目 2。Day17 只做低风险接入和文件传输预检；Day18-Day25 仍集中完成项目 1 v1，Day26 起再正式进入 Jetson 基线和项目 2。这样可以利用设备，同时避免两个项目同时展开造成交付失控。
 
 ## Day18-Day25：项目 1 v1 冲刺
 

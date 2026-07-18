@@ -392,10 +392,34 @@ Day16 FP32/FP16 实验设计
 - [x] 建立独立 `trt310` 环境，不影响已有环境。
 - [x] TensorRT 10.9 Python API、Builder 和 FP16 能力检查通过。
 - [x] YOLO11n ONNX Parser 和动态 Profile 检查通过。
-- [ ] 能用自己的话解释 TensorRT 工作流和各组件职责。
-- [ ] 完成七道检查题。
-- [ ] 完成 30 分钟个人竞赛记录。
-- [ ] 完成 Day15 复盘。
+- [x] 能用自己的话解释 TensorRT 工作流和各组件职责。
+- [x] 完成七道检查题。
+- [x] 完成 30 分钟个人竞赛记录或既有 baseline 复盘。
+- [x] 完成 Day15 复盘。
+
+## 实际完成情况
+
+2026-07-18，用户确认 Day15 全部完成。环境检查和脚本此前已实际验证：
+
+```text
+TensorRT: 10.9.0.34
+layers: 775
+input: images (-1, 3, -1, -1)
+output: output0 (-1, 84, -1)
+precision: FP16 enabled
+optimization profile: configured
+```
+
+今天完成的是 engine 构建前的结构验证，没有把“支持 FP16”误写成“已经生成 FP16 engine”。实际 FP32/FP16 engine 构建、文件大小和性能数据留到 Day16 测量。
+
+## 今日复盘
+
+- ONNX 是相对通用的模型计算图，TensorRT engine 是针对目标 GPU、TensorRT/CUDA 版本、输入范围和精度配置优化后的执行计划。
+- Builder、Parser、Network、BuilderConfig 和 Optimization Profile 属于构建阶段；Runtime 和 ExecutionContext 属于运行阶段。
+- 动态输入的 min/opt/max 定义可接受范围和重点优化尺寸，不负责图片预处理，也不是范围越宽越好。
+- 启用 FP16 表示允许 TensorRT 选择 FP16 tactic，不保证每层都强制使用 FP16。
+- PC 与 Jetson 必须分别生成 engine，不能直接复制 RTX 4070 上的 engine 到 Jetson。
+- Kaggle Digit Recognizer 已在 Day14 完成首次有效提交；Day15 不虚构未记录的 Public Score。
 
 ## 已遇到的问题
 
@@ -415,4 +439,5 @@ Day16 FP32/FP16 实验设计
 - Day16 准备 `trtexec` 或等价 Python Builder 构建入口。
 - 分别构建 TensorRT FP32 与 FP16 engine。
 - 记录 build 时间、engine 大小，并运行统一 benchmark。
-- 不使用 Jetson，继续在 RTX 4070 + WSL2 完成 PC 端实验。
+- Day16 主实验不依赖 Jetson，继续在 RTX 4070 + WSL2 完成 PC 端构建。
+- Jetson 已重新可用；Day17 安排约 1 小时完成 SSH、环境快照和 ONNX 传输预检，但暂不提前启动项目 2。
