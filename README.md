@@ -35,7 +35,7 @@
 | Day 13 | 2026-07-12 | ONNX Runtime CUDA Provider、CPU/CUDA benchmark 与个人竞赛初筛（已完成） | `logs/day13.md` |
 | Day 14 | 2026-07-13 | ONNX Runtime I/O Binding、三路径 benchmark 与 Kaggle 首次有效提交（已完成） | `logs/day14.md` |
 | Day 15 | 2026-07-14 | TensorRT 架构、Builder、Parser、Engine 与动态 Profile（已完成） | `logs/day15.md` |
-| Day 16 | 2026-07-19 | TensorRT FP32/FP16 Engine 构建、CUDA Event benchmark 与检测级验证（进行中） | `logs/day16.md` |
+| Day 16 | 2026-07-19 | TensorRT FP32/FP16 Engine 构建、CUDA Event benchmark 与检测级验证（已完成） | `logs/day16.md` |
 
 文档：
 
