@@ -35,6 +35,7 @@
 | Day 13 | 2026-07-12 | ONNX Runtime CUDA Provider、CPU/CUDA benchmark 与个人竞赛初筛（已完成） | `logs/day13.md` |
 | Day 14 | 2026-07-13 | ONNX Runtime I/O Binding、三路径 benchmark 与 Kaggle 首次有效提交（已完成） | `logs/day14.md` |
 | Day 15 | 2026-07-14 | TensorRT 架构、Builder、Parser、Engine 与动态 Profile（已完成） | `logs/day15.md` |
+| Day 16 | 2026-07-19 | TensorRT FP32/FP16 Engine 构建、CUDA Event benchmark 与检测级验证（进行中） | `logs/day16.md` |
 
 文档：
 
@@ -56,6 +57,8 @@
 - `logs/day12.md`：第十二天学习记录。
 - `logs/day13.md`：第十三天学习记录。
 - `logs/day14.md`：第十四天学习记录。
+- `logs/day15.md`：第十五天学习记录。
+- `logs/day16.md`：第十六天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
