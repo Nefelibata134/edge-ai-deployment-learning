@@ -36,7 +36,7 @@
 | Day 14 | 2026-07-13 | ONNX Runtime I/O Binding、三路径 benchmark 与 Kaggle 首次有效提交（已完成） | `logs/day14.md` |
 | Day 15 | 2026-07-14 | TensorRT 架构、Builder、Parser、Engine 与动态 Profile（已完成） | `logs/day15.md` |
 | Day 16 | 2026-07-19 | TensorRT FP32/FP16 Engine 构建、CUDA Event benchmark 与检测级验证（已完成） | `logs/day16.md` |
-| Day 17 | 2026-07-20 | TensorRT Python 端到端推理、动态 shape、统一 benchmark 与 Jetson 接入预检（进行中） | `logs/day17.md` |
+| Day 17 | 2026-07-20 | TensorRT Python 端到端推理、动态 shape、统一 benchmark 与 Jetson 接入预检（已完成） | `logs/day17.md` |
 
 文档：
 

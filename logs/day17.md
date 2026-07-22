@@ -4,7 +4,7 @@
 
 主题：TensorRT Python 端到端推理、动态 shape、统一 benchmark 与 Jetson 接入预检
 
-状态：进行中
+状态：已完成（2026-07-22 完成 Jetson 接入与传输验证）
 
 ## 今日目标
 
@@ -641,6 +641,49 @@ ssh nefelibata@172.20.10.13 \
 - 插 Type-C 后尝试 `192.168.55.1`；或
 - 使用之前验证过的 COM 串口登录后运行 `hostname -I`。
 
+### Jetson 实测结果（2026-07-22）
+
+本次不依赖显示器完成了串口恢复、无线 SSH、SFTP 和 ONNX 传输：
+
+```text
+Type-C 串口：COM5，可登录 ttyGS0
+无线接口：wlP1p1s0
+无线连接：HUAWEI-F1A6MO_5G
+Jetson Wi-Fi IP：192.168.3.121/24
+笔记本 Wi-Fi IP：192.168.3.44/24
+SSH：192.168.3.121:22，连接成功
+远程工具：MobaXterm SSH + SFTP
+```
+
+Windows 能识别 Type-C 的串口和 `L4T-README` 盘，但 RNDIS/NCM 虚拟网卡未正常启动。因此本次使用 `COM5` 查询无线 IP，再切换到同一局域网内的 Wi-Fi SSH。该路径可在不关闭 `xiuxianyun4` 的情况下工作，因为 `192.168.3.0/24` 走本地 WLAN 路由。
+
+Jetson 环境快照：
+
+```text
+架构：aarch64
+Ubuntu：22.04.5 LTS
+Jetson Linux：R36.4.3
+JetPack：6.2.1+b38
+TensorRT：10.3.0.30-1+cuda12.5
+Python：3.10.12
+根分区：233G，总可用约 206G
+内存：7.4Gi，总可用约 5.6Gi
+功耗模式：25W，Mode ID 1
+```
+
+ONNX 从 WSL 传到 Jetson：
+
+```text
+源文件：~/model-deploy-day09/models/yolo11n.onnx
+目标：~/model-deploy-day17/models/yolo11n.onnx
+大小：约 10 MiB
+传输速度：4.4 MiB/s
+耗时：约 2 秒
+SHA256：6b110fcad67c342ad863124f1d1be243b068737f6890f89c46a68e184682b40e
+```
+
+WSL 与 Jetson 的 SHA256 完全一致，文件传输验证通过。RTX 4070 上生成的 `.engine` 没有复制到 Jetson；后续将在 Jetson 上使用板端 TensorRT 重新构建 engine。
+
 ## 个人竞赛 30 分钟
 
 Kaggle Digit Recognizer 已完成有效提交，不再重复入门赛。今天继续主赛：
@@ -743,15 +786,15 @@ README.md
 - [x] Codex 已生成并通过语法检查全部 Day17 脚本。
 - [x] Codex 已验证 TRT FP16 真实图片检测并检查结果图。
 - [x] Codex 已跑通三后端统一 benchmark 和动态 shape 预实验。
-- [ ] 用户阅读 `TensorRTDetector` 并能解释核心资源生命周期。
-- [ ] 用户在 VS Code 终端亲自运行真实图片检测。
-- [ ] 用户检查 `outputs/trt_fp16_bus.jpg`。
-- [ ] 用户亲自运行或复核统一 benchmark 输出。
-- [ ] 用户完成动态 shape 结果分析。
-- [ ] 用户完成 Jetson 环境快照和 ONNX SHA256 传输验证。
-- [ ] 用户完成检查题。
-- [ ] 用户完成一条可核验的 CSIG 推进记录。
-- [ ] 更新完成状态并提交 GitHub。
+- [x] 用户阅读 `TensorRTDetector` 并能解释核心资源生命周期。
+- [x] 用户在 VS Code 终端亲自运行真实图片检测。
+- [x] 用户检查 `outputs/trt_fp16_bus.jpg`。
+- [x] 用户亲自运行或复核统一 benchmark 输出。
+- [x] 用户完成动态 shape 结果分析。
+- [x] 用户完成 Jetson 环境快照和 ONNX SHA256 传输验证。
+- [x] 用户完成检查题。
+- [x] 用户完成一条可核验的 CSIG 推进记录。
+- [x] 更新完成状态并提交 GitHub。
 
 ## 明日计划
 
@@ -759,4 +802,3 @@ README.md
 - 确定工业缺陷数据集、类别、许可和评价指标。
 - 只在学习仓库保留 proposal 和索引；正式代码进入独立项目仓库。
 - 建立项目目录、环境说明、数据检查脚本和第一版 README。
-
