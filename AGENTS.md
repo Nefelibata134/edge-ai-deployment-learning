@@ -7,8 +7,8 @@
 - 两个月内建立模型部署、边缘 AI、Jetson 视觉部署能力。
 - 暑假结束后能开始投递实习和秋招相关岗位。
 - 至少完成两个就业相关项目：
-  - 工业视觉缺陷检测 + ONNX/TensorRT + GPU 推理服务项目。
-  - Jetson Orin Nano 实时多目标跟踪与事件检测项目，可扩展为视觉小车。
+  - Severstal 钢材缺陷语义分割 + ONNX/TensorRT + Triton/FastAPI GPU 推理服务项目。
+  - Jetson Orin Nano C++ 实时多目标跟踪与安全事件分析系统，可扩展为视觉小车。
 - 从 Day13 起并行推进个人竞赛，优先选择允许单人完成的视觉赛题；目标至少完成一次有效提交，并对一个赛题进行有记录的优化。
 
 ## 用户背景
@@ -43,12 +43,16 @@
 
 | 项目 | 独立仓库名 | 建仓节点 | v1 节点 |
 | --- | --- | --- | --- |
-| 工业视觉缺陷检测与 GPU 推理服务 | `industrial-defect-inference-service` | Day18 | Day25 |
-| Jetson 实时多目标跟踪与事件检测系统 | `jetson-realtime-tracking-system` | Day28 | Day40 |
+| 工业钢材缺陷分割与 GPU 推理服务 | `industrial-defect-inference-service` | Day18 | Day25 |
+| Jetson 实时跟踪与安全事件分析系统 | `jetson-realtime-tracking-system` | Day28 | Day40 |
 
 仓库归属统一使用 GitHub 用户 `Nefelibata134`。项目开始时再创建对应仓库；创建前先确认名称尚未占用。
 
 本学习仓库只保存项目 proposal、学习日志、实验摘要、踩坑记录和项目索引。正式项目仓库保存代码、配置、测试、依赖、模型说明、性能报告、截图位置和项目 README。
+
+项目 2 的 v1 核心技术栈固定为 C++17、CMake、GStreamer、TensorRT C++ API 和 ByteTrack，必须覆盖持续视频流、事件规则、设备监控和故障恢复。DeepStream 仅在 JetPack 兼容性验证通过后作为对照实验，不得阻塞 v1。
+
+两个公开项目仓库是面向招聘者的工程作品，不得出现 `DayXX`、学习任务、教程式打卡或“正在学习”等叙述。开发过程使用 release milestone、issue、ADR、`CHANGELOG.md`、benchmark report 和工程化 commit 表达；学习过程只记录在本仓库。
 
 ## 协作方式
 
@@ -57,7 +61,7 @@
 - 每天结束后，整理当天学习记录到 `logs/dayXX.md`。
 - 每次新增学习记录后，更新 `README.md` 的学习进度索引。
 - 学习记录、路线、复盘和准备材料放在本仓库。
-- 正式项目代码后续单独开仓库，不混入大量学习计划和日志。
+- 正式项目代码后续单独开仓库，不混入学习计划和打卡日志。
 - 不要删除已有学习记录、路线规划、项目规划文件，除非用户明确要求。
 - 每次提交前总结改动，并建议清晰的 git commit message。
 - 每次重要更新后提交 Git，并推送到 GitHub。
@@ -108,7 +112,7 @@
 - 每天学习结束后，必须更新 `logs/dayXX.md`。
 - 每次新增或修改当天学习记录后，必须同步更新 `README.md` 的学习进度索引。
 - 所有建议都要考虑用户背景：电子信息工程大三，Linux/C++ 较弱，目标是暑假项目积累、实习和秋招。
-- 代码项目优先保持可运行、可复现；项目 README 需要写清环境、命令、结果截图位置。
+- 代码项目优先保持可运行、可复现；项目 README 需要以结果和架构为先，写清环境、命令、指标、结果截图与演示位置。
 
 ## 文件约定
 

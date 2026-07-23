@@ -1,159 +1,181 @@
 # 作品集项目规划
 
-两个项目必须共享一条清晰的技术主线，同时证明不同层面的工程能力。
-
-共同主线：
+两个项目共享同一条部署主线，但必须证明不同的工程能力：
 
 ```text
 PyTorch -> ONNX -> TensorRT -> benchmark -> 可复现部署
 ```
 
-区别要求：
+- 项目 1 面向 x86 GPU 服务端，重点是语义分割、并发推理、服务接口和容器化。
+- 项目 2 面向 Jetson 边缘端，重点是 C++ 流式处理、跟踪、事件规则、功耗和可靠性。
+- 两个项目分别建立公开 GitHub 仓库，正式代码不放入本学习仓库。
 
-- 不能只是把同一个模型从 PC 搬到 Jetson。
-- 应在应用场景、输入形态、系统架构、性能指标和工程难点上形成明显差异。
-- 每个项目单独建立 GitHub 仓库，学习计划和每日记录仍保留在本仓库。
+## 项目 1：工业钢材缺陷分割与 GPU 推理服务
 
-## 项目 1：工业视觉缺陷检测与 GPU 推理服务
-
-建议英文名：`industrial-defect-inference-service`
+仓库名：`industrial-defect-inference-service`
 
 ### 项目定位
 
-在本地 RTX 4070 或云 GPU 上完成工业缺陷检测模型的训练、评估、推理加速和服务化部署。
+使用 Severstal Steel Defect Detection 数据集构建钢材表面缺陷语义分割系统，完成模型训练、ONNX/TensorRT 优化、Triton 服务化、FastAPI 网关和可复现压测。
 
-这个项目重点证明：
+数据集包含 12,568 张训练图像、4 类匿名钢材缺陷和 RLE 掩码。它足以支撑一个完整的工业分割项目，同时不会把暑假主要时间消耗在超大规模训练上。
 
-- 能处理数据集并训练一个面向具体场景的视觉模型。
-- 能从 PyTorch 导出 ONNX 和 TensorRT。
-- 能把模型封装成可调用、可压测、可复现的 GPU 推理服务。
-- 能用准确率和服务性能两组指标评价系统。
+### 核心架构
 
-### 核心功能
+```text
+Client
+  -> FastAPI gateway
+  -> Triton Inference Server
+  -> TensorRT FP16 model
+  -> mask decoding and response
+  -> metrics and benchmark report
+```
 
-- 选择公开工业缺陷数据集，完成数据检查、划分和可视化。
-- 训练轻量目标检测模型，优先使用 YOLO11n 或 YOLO11s。
-- 输出 Precision、Recall、mAP50 和 mAP50-95。
-- 导出 ONNX，并生成 TensorRT FP32 / FP16 engine。
-- 对比 PyTorch、ONNX Runtime、TensorRT 的延迟和吞吐。
-- 使用 FastAPI 提供图片上传和 JSON 检测接口。
-- 返回类别、置信度、检测框和可视化结果图。
-- 使用 Docker 固化运行环境。
-- 使用 Locust、wrk 或同类工具测试 QPS、P50 和 P95。
-- 记录 GPU 型号、显存占用、batch、输入尺寸和测试方法。
+### 核心交付
 
-### 可选增强
+- 数据检查、RLE 掩码解码、固定随机种子的训练/验证划分。
+- U-Net + ResNet18 baseline，记录 Dice、IoU、Precision、Recall 和图像级漏检率。
+- PyTorch、ONNX Runtime、TensorRT FP32/FP16 输出一致性和性能比较。
+- Triton model repository、动态 batching 和 Prometheus 指标。
+- FastAPI 图片上传、结果查询、错误处理和健康检查接口。
+- Docker Compose 启动服务，完成并发压测和异常输入测试。
+- 记录 mean/P50/P95/P99、QPS、错误率、GPU 显存、Triton queue/compute 时间。
 
-- TensorRT INT8 校准与精度对比。
-- Triton Inference Server 和动态 batching。
-- gRPC 接口。
-- 云端部署和公开演示地址。
-- 将比赛数据集或比赛 baseline 复用为项目数据来源。
+### v1 边界
 
-### 核心指标
+- 必做：Severstal baseline、ONNX、TensorRT FP16、Triton、FastAPI、Docker Compose、压测和完整 README。
+- 选做：INT8、gRPC、Kubernetes、云端公开演示。
+- 不把原始数据集、训练权重或大型 engine 提交到 Git。
 
-- 模型指标：Precision、Recall、mAP50、mAP50-95。
-- 单请求指标：平均延迟、P50、P95。
-- 服务指标：QPS、并发数、batch、错误率。
-- 资源指标：GPU 显存、CPU 占用、镜像大小。
+## 项目 2：Jetson 实时跟踪与安全事件分析系统
 
-### 最小可交付版本
-
-- 一个训练得到的缺陷检测模型。
-- PyTorch / ONNX Runtime / TensorRT FP16 三种推理方式。
-- 一个 FastAPI 推理接口。
-- 一份性能对比表。
-- Dockerfile、requirements、运行命令和结果截图。
-- 完整 README 和演示视频。
-
-## 项目 2：Jetson 实时多目标跟踪与事件检测系统
-
-建议英文名：`jetson-realtime-tracking-system`
+仓库名：`jetson-realtime-tracking-system`
 
 ### 项目定位
 
-在 Jetson Orin Nano 上处理摄像头或视频流，完成实时目标检测、跨帧跟踪和事件判断。
+在 Jetson Orin Nano 上实现一个长期运行的边缘视频分析进程，对人员或车辆执行实时检测、跨帧跟踪和安全事件判断。v1 聚焦三类可解释事件：
 
-这个项目重点证明：
+- 限制区域闯入。
+- 指定方向越线。
+- 区域停留超时。
 
-- 能在 ARM 边缘设备上部署视觉模型。
-- 能处理持续视频流，而不只是单张图片请求。
-- 能把检测结果组合成跟踪、计数和事件逻辑。
-- 能在功耗、温度和实时性约束下完成系统优化。
+这不是“摄像头跑一次 YOLO”的演示，而是包含视频输入、推理、跟踪、规则、证据留存、监控和故障恢复的完整边缘应用。
 
-### 核心功能
+### 核心架构
 
-- 支持 USB 摄像头和本地视频输入。
-- 使用 YOLO11n TensorRT FP16 完成目标检测。
-- 使用 ByteTrack、DeepStream tracker 或同类方法进行多目标跟踪。
-- 支持至少两类事件逻辑：
-  - 越线计数。
-  - 指定区域进入、离开或停留检测。
-- 在画面中显示目标 ID、类别、置信度、FPS 和计数。
-- 保存事件截图和 CSV / JSON 日志。
-- 对比不同输入尺寸和 Jetson 功耗模式。
-- 记录端到端延迟、FPS、温度、功耗和内存占用。
-- 支持无显示器 SSH 运行、日志查看和正常退出。
-- 提供启动脚本，条件允许时配置开机自启动。
+```text
+File / USB UVC / RTSP
+  -> GStreamer capture and decode
+  -> bounded frame queue with drop-oldest policy
+  -> TensorRT C++ detector
+  -> ByteTrack C++ tracker
+  -> ROI / line-crossing / dwell rule engine
+  -> JSONL event + snapshot + optional event clip
+  -> tegrastats metrics + systemd watchdog
+```
 
-### 可选增强
+核心接口：
 
-- 使用 DeepStream / GStreamer 重构视频 pipeline。
-- 接入 RTSP 网络视频流。
-- 增加 Web 状态页或事件查询接口。
-- 用 C++ 重写摄像头采集、后处理或关键推理路径。
-- 接入视觉小车，实现目标跟随或简单避障。
+- `IFrameSource`：本地视频、USB 摄像头和 RTSP 使用同一输入接口。
+- `IDetector`：TensorRT detector 与测试用 mock detector 可替换。
+- `ITracker`：封装 ByteTrack，隔离检测与跟踪。
+- `IEventSink`：输出 JSONL、截图和事件视频片段。
 
-### 核心指标
+运行结构采用采集、推理/跟踪、事件写入三阶段线程和有界队列。输入拥塞时丢弃最旧帧并保留时间戳，避免实时系统因积压产生越来越大的延迟。
 
-- 实时指标：平均 FPS、P50 / P95 端到端延迟、丢帧情况。
-- 设备指标：温度、功耗、CPU / GPU / 内存占用。
-- 稳定性指标：持续运行时间、异常输入恢复、摄像头断开处理。
-- 业务指标：计数结果、事件触发结果、目标 ID 连续性。
+### 核心技术栈
 
-### 最小可交付版本
+- C++17、CMake、CTest。
+- GStreamer 视频采集、解码和时间戳管理。
+- TensorRT C++ API，使用 FP16 engine。
+- YOLOX-Nano / YOLOX-Tiny 二选一，按 Jetson 实测精度与性能确定。
+- ByteTrack C++ 多目标跟踪。
+- YAML 配置、JSONL 事件协议、systemd 服务和日志轮转。
+- GitHub Actions 运行不依赖 Jetson 的几何、事件状态机和配置解析测试。
 
-- Jetson TensorRT FP16 实时检测与跟踪。
-- 越线计数和区域事件检测。
-- 事件日志与结果视频。
-- 输入尺寸、功耗模式、FPS 和温度对比表。
-- 一键启动脚本、环境说明和完整 README。
-- 一段完整演示视频。
+选择 YOLOX 是为了获得 Apache-2.0 许可和成熟的 TensorRT C++ 路径；选择 ByteTrack 是为了使用 MIT 许可的跟踪实现。权重、数据集和第三方源码分别记录来源、版本、许可和校验值。
+
+### 数据与评估
+
+项目 2 是流式系统工程项目，不需要人为扩大训练数据集。数据设计分成三层：
+
+1. MOT17 训练序列和标注：验证跟踪效果，输出 HOTA、IDF1、MOTA 和 ID switches。
+2. 确定性的合成轨迹：覆盖越线、闯入、离开、停留、边界抖动和事件去重单元测试。
+3. 8-12 段短事件视频：人工标注事件时间和类别，计算事件 Precision、Recall、重复事件率与时间戳误差。
+
+文件回放是可复现基线，USB 摄像头和 RTSP 是真实输入验证。摄像头晚到不会阻塞 detector、tracker、事件规则和 benchmark 开发。
+
+### 性能与可靠性验收
+
+- 跟踪：HOTA、IDF1、MOTA、ID switches。
+- 事件：Precision、Recall、重复事件率、触发时间误差。
+- 实时性：effective FPS、mean/P50/P95 端到端延迟、丢帧率和队列深度。
+- 设备：CPU/GPU/RAM、温度、功耗和 `nvpmodel` 模式。
+- 稳定性：30-60 分钟 soak test、视频源断开重连、进程异常后 systemd 重启、磁盘与日志轮转。
+
+性能目标在完成设备基线后锁定。初始工程目标是在选定的单路 720p 或 1080p 配置上达到不低于 25 FPS、稳定输入下丢帧率低于 1%，并通过 30 分钟无未恢复崩溃测试；最终 README 只报告真实测量结果。
+
+### DeepStream 兼容性决策
+
+当前设备是 JetPack 6.2.1 / L4T 36.4.3 / CUDA 12.6 / TensorRT 10.3。DeepStream 7.1 的官方验证组合是 JetPack 6.1，NVIDIA 论坛也提示在 JetPack 6.2 上可能遇到内存复制兼容问题。因此：
+
+- v1 使用原生 GStreamer + TensorRT C++，不依赖 DeepStream。
+- DeepStream 只作为兼容性门禁后的对照实验或 ADR。
+- 如果验证不稳定，保留问题、版本和结论，不为追求关键词牺牲项目可靠性。
+
+### v1 边界
+
+- 必做：本地视频回放、TensorRT C++ 检测、ByteTrack、三类事件、JSONL/截图、设备指标、systemd、故障恢复和演示视频。
+- 摄像头可用后补充 USB UVC 实时演示；RTSP 至少完成连接和断线恢复测试。
+- 视觉小车、CUDA 自定义预处理、INT8、DeepStream 和多路流属于 v1.1/v2。
 
 ## 两个项目的区别
 
 | 维度 | 项目 1 | 项目 2 |
 | --- | --- | --- |
-| 场景 | 工业缺陷检测 | 实时视频感知与事件检测 |
-| 输入 | 图片请求、batch | 摄像头或连续视频流 |
-| 环境 | x86 RTX GPU / 云 GPU | Jetson Orin Nano ARM 边缘设备 |
-| 模型来源 | 自己训练的领域模型 | 预训练或轻量微调模型 + tracker |
-| 系统形态 | HTTP/gRPC 推理服务 | 长时间运行的视频 pipeline |
-| 主要优化 | 并发、batch、吞吐、服务延迟 | 实时性、功耗、温度、稳定性 |
-| 主要指标 | mAP、QPS、P50/P95、显存 | FPS、端到端延迟、功耗、温度 |
-| 工程关键词 | FastAPI、Docker、Triton、压测 | Jetson、DeepStream、GStreamer、跟踪 |
+| 场景 | 钢材缺陷语义分割 | 实时安全事件分析 |
+| 输入 | 图片请求、batch | 连续视频、USB、RTSP |
+| 环境 | x86 RTX GPU / 云 GPU | Jetson Orin Nano ARM |
+| 主要语言 | Python | C++17 |
+| 模型 | 自训练 U-Net 分割模型 | 轻量检测器 + ByteTrack |
+| 系统形态 | Triton/FastAPI 推理服务 | GStreamer 长驻进程 |
+| 优化重点 | batch、并发、吞吐、服务延迟 | 实时性、背压、功耗、可靠性 |
+| 主要指标 | Dice/IoU、QPS、P95/P99、显存 | HOTA/IDF1、事件准确率、FPS、功耗 |
+| 工程关键词 | ONNX、TensorRT、Triton、Docker、FastAPI | C++、CMake、GStreamer、Jetson、systemd |
 
-两个项目共享模型部署基础，但分别覆盖服务端推理工程和边缘实时视觉工程，放在同一份简历中不会互相重复。
+## 公开仓库展示规范
+
+两个公开项目仓库只展示工程开发过程：
+
+- README 首屏先展示演示图、架构图和关键指标，不写学习背景。
+- 使用 release milestone、issue、ADR、`CHANGELOG.md` 和 benchmark report 记录演进。
+- commit message 描述功能、修复、性能或文档变化，不使用 `DayXX` 或“完成学习任务”。
+- 提供环境矩阵、复现命令、数据/权重获取脚本、许可和校验值。
+- README 不承诺未测量的性能，不把第三方数据和权重直接提交到仓库。
 
 ## 云算力原则
 
 - 本地 RTX 4070 用于开发、调试和小规模训练。
-- 当数据集、显存或训练时长有明确需要时，可以使用付费云算力。
-- AutoDL、Google Cloud、AWS、Google Colab 或其他合规平台都可以按任务选择。
-- 云 GPU 不限制为免费资源，也不人为限制在 8GB 显存以内。
-- 使用付费资源前先确定训练脚本、数据路径、预估时长和保存策略，避免把租用时间浪费在环境排错上。
-- 项目 README 记录云 GPU 型号、显存、训练时长、主要参数和大致成本，使实验可复现。
+- 数据规模、显存或训练时长有明确需要时，可以使用 AutoDL、Google Cloud、AWS、Colab 等付费或免费算力。
+- 租用 GPU 前先验证脚本和数据路径，记录 GPU、显存、训练时长、主要参数和大致成本。
 
-## 项目时间节点
+## 时间节点
 
-- Day13-Day17：GPU / TensorRT 基础，继续完善项目 1 所需能力。
-- Day18：创建项目 1 独立仓库并确定数据集、指标和目录结构。
-- Day19-Day25：完成项目 1 训练、ONNX/TensorRT、FastAPI、Docker、benchmark 和 v1 README。
-- Day26-Day27：项目 1 缓冲与修复，同时完成 Jetson 环境、摄像头和设备基线。
-- Day28：创建项目 2 独立仓库，并在 Jetson 上生成板端 TensorRT engine。
-- Day29-Day30：跑通 Jetson 实时检测和功耗/分辨率调优。
-- Day31-Day40：完成项目 2 检测、跟踪、事件逻辑、性能测试、README 和 v1 演示。
-- Day41-Day53：两个项目 v2、竞赛改进、C++/DeepStream/稳定性增强。
-- Day54-Day60：简历、GitHub、岗位、面试和投递材料。
+- Day18-Day25：完成项目 1 v1。
+- Day26-Day27：Jetson C++/GStreamer/TensorRT 环境与设备基线。
+- Day28：创建项目 2 独立仓库。
+- Day29-Day40：完成项目 2 v1。
+- Day41-Day53：两个项目性能、稳定性和可展示性增强。
+- Day54-Day60：简历、GitHub、岗位和面试交付。
 
 详细日程以 `roadmap/60-day-plan.md` 为唯一执行表。
+
+## 主要技术资料
+
+- NVIDIA DeepStream SDK：https://developer.nvidia.com/deepstream-sdk
+- NVIDIA TensorRT：https://docs.nvidia.com/deeplearning/tensorrt/latest/index.html
+- NVIDIA Jetson `tegrastats`：https://docs.nvidia.com/jetson/archives/r36.4/DeveloperGuide/AT/JetsonLinuxDevelopmentTools/TegrastatsUtility.html
+- ByteTrack：https://github.com/FoundationVision/ByteTrack
+- YOLOX：https://github.com/Megvii-BaseDetection/YOLOX
+- MOTChallenge：https://motchallenge.net/
+- TrackEval：https://github.com/JonathonLuiten/TrackEval

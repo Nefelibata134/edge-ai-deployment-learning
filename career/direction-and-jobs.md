@@ -10,14 +10,14 @@
 
 - 和 Jetson Orin Nano、视觉小车、电子信息工程背景匹配。
 - 能用项目证明能力：摄像头、模型、部署、性能、设备端运行。
-- 岗位关键词覆盖面广：Linux、Python、C++、ONNX、TensorRT、CUDA、OpenCV、Jetson、DeepStream。
+- 岗位关键词覆盖面广：Linux、Python、C++、CMake、ONNX、TensorRT、CUDA、GStreamer、Jetson、Docker、Triton。
 
 你需要补的能力：
 
 - Linux 基础操作。
 - C++ 基础读写能力。
 - ONNX/TensorRT 部署链路。
-- 摄像头和视频流处理。
+- GStreamer 视频流、并发队列和故障恢复。
 - 性能分析和优化。
 
 ### 2. 计算机视觉工程化 / 视觉算法部署
@@ -32,10 +32,10 @@
 
 你需要补的能力：
 
-- OpenCV。
-- YOLO 系列模型训练和推理。
-- 数据集标注、训练、评估。
-- 检测指标：mAP、Precision、Recall。
+- OpenCV、GStreamer 和视频时序处理。
+- 分割、检测和多目标跟踪模型的训练与推理。
+- 数据集划分、标注格式、训练和评估。
+- Dice/IoU、mAP、HOTA、IDF1、Precision、Recall。
 
 ### 3. AI 推理优化工程师
 
@@ -79,11 +79,11 @@
 
 项目 1：
 
-面向工业缺陷检测场景，完成轻量视觉模型的数据处理、训练与 mAP 评估，并将模型导出至 ONNX 和 TensorRT FP16。使用 FastAPI、Docker 构建 GPU 推理服务，通过并发压测对比 PyTorch、ONNX Runtime、TensorRT 的 QPS、P50/P95 延迟与显存占用，形成可复现的部署和性能报告。
+基于 Severstal 钢材缺陷数据构建 U-Net 语义分割模型，完成 RLE 掩码处理及 Dice、IoU、Precision、Recall 和漏检分析，并导出 ONNX/TensorRT FP16。使用 Triton Inference Server、FastAPI 和 Docker Compose 构建 GPU 推理服务，通过动态 batching 与并发压测记录 QPS、P50/P95/P99、错误率和显存占用，形成可复现的模型与服务性能报告。
 
 项目 2：
 
-基于 Jetson Orin Nano 构建实时多目标跟踪与事件检测系统，完成摄像头采集、TensorRT FP16 检测、ByteTrack/DeepStream 跟踪、越线计数和区域事件日志。记录设备端 FPS、P50/P95 延迟、温度和功耗，并针对输入分辨率、功耗模式和视频 pipeline 进行优化。
+基于 Jetson Orin Nano、C++17、GStreamer 和 TensorRT 构建实时安全事件分析系统，采用 YOLOX FP16 与 ByteTrack 完成人员检测和跨帧跟踪，实现限制区闯入、方向越线与停留超时状态机。通过有界帧队列控制实时延迟，使用 MOT17/TrackEval 与事件视频评估 HOTA、IDF1 和事件准确率，并完成断线重连、systemd 自恢复、长时间运行及 FPS、P95、丢帧率、温度和功耗测试。
 
 ## 暂不建议优先选择
 
