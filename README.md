@@ -38,6 +38,7 @@
 | Day 16 | 2026-07-19 | TensorRT FP32/FP16 Engine 构建、CUDA Event benchmark 与检测级验证（已完成） | `logs/day16.md` |
 | Day 17 | 2026-07-20 | TensorRT Python 端到端推理、动态 shape、统一 benchmark 与 Jetson 接入预检（已完成） | `logs/day17.md` |
 | Day 18 | 2026-07-23 | 项目 1 立项、独立公开仓库与生产级工程骨架（已完成） | `logs/day18.md` |
+| Day 19 | 2026-07-24 | Severstal 数据验证、RLE、确定性划分、掩码可视化与 C++ 基础（已完成） | `logs/day19.md` |
 
 文档：
 
@@ -63,6 +64,7 @@
 - `logs/day16.md`：第十六天学习记录。
 - `logs/day17.md`：第十七天学习记录。
 - `logs/day18.md`：第十八天学习记录。
+- `logs/day19.md`：第十九天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
