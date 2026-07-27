@@ -42,6 +42,7 @@
 | Day 20 | 2026-07-25 | U-Net 分割基线、类别不平衡诊断、采样与损失对照实验（已完成） | `logs/day20.md` |
 | Day 21 | 2026-07-26 | 分割评估、错误分析、候选消融与部署模型选择（已完成） | `logs/day21.md` |
 | Day 22 | 2026-07-26 | ONNX 导出、动态 batch 契约与 PyTorch/ORT 一致性验证（已完成） | `logs/day22.md` |
+| Day 23 | 2026-07-27 | TensorRT FP32/FP16 engine、动态 profile、正确性验证与统一 benchmark（已完成） | `logs/day23.md` |
 
 文档：
 
