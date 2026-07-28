@@ -43,6 +43,7 @@
 | Day 21 | 2026-07-26 | 分割评估、错误分析、候选消融与部署模型选择（已完成） | `logs/day21.md` |
 | Day 22 | 2026-07-26 | ONNX 导出、动态 batch 契约与 PyTorch/ORT 一致性验证（已完成） | `logs/day22.md` |
 | Day 23 | 2026-07-27 | TensorRT FP32/FP16 engine、动态 profile、正确性验证与统一 benchmark（已完成） | `logs/day23.md` |
+| Day 24 | 2026-07-27 至 2026-07-28 | Triton 动态 batching、FastAPI 网关、Docker Compose、Prometheus 与 C++ RAII（已完成） | `logs/day24.md` |
 
 文档：
 
@@ -69,6 +70,11 @@
 - `logs/day17.md`：第十七天学习记录。
 - `logs/day18.md`：第十八天学习记录。
 - `logs/day19.md`：第十九天学习记录。
+- `logs/day20.md`：第二十天学习记录。
+- `logs/day21.md`：第二十一天学习记录。
+- `logs/day22.md`：第二十二天学习记录。
+- `logs/day23.md`：第二十三天学习记录。
+- `logs/day24.md`：第二十四天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
