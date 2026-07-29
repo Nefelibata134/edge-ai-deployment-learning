@@ -14,6 +14,9 @@ PyTorch -> ONNX -> TensorRT -> benchmark -> 可复现部署
 
 仓库名：`industrial-defect-inference-service`
 
+当前状态：v1.0.0 实现和质量门禁已于 Day25 完成；GitHub release 标签等待
+许可证选择后创建。
+
 ### 项目定位
 
 使用 Severstal Steel Defect Detection 数据集构建钢材表面缺陷语义分割系统，完成模型训练、ONNX/TensorRT 优化、Triton 服务化、FastAPI 网关和可复现压测。

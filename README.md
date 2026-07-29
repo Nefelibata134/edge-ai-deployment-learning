@@ -44,6 +44,7 @@
 | Day 22 | 2026-07-26 | ONNX 导出、动态 batch 契约与 PyTorch/ORT 一致性验证（已完成） | `logs/day22.md` |
 | Day 23 | 2026-07-27 | TensorRT FP32/FP16 engine、动态 profile、正确性验证与统一 benchmark（已完成） | `logs/day23.md` |
 | Day 24 | 2026-07-27 至 2026-07-28 | Triton 动态 batching、FastAPI 网关、Docker Compose、Prometheus 与 C++ RAII（已完成） | `logs/day24.md` |
+| Day 25 | 2026-07-28 至 2026-07-29 | 并发压测、动态 batching A/B、超时恢复与项目 1 v1.0.0 质量门禁（已完成） | `logs/day25.md` |
 
 文档：
 
