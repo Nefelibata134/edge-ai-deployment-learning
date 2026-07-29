@@ -243,10 +243,12 @@ dynamic_batching {
 - 服务报告、README 和 v1.0.0 变更记录。
 - 全仓库 90 项测试、Ruff 和措辞检查。
 
-发布前待确认：
+发布状态：
 
-- 正式项目采用开源许可证还是保留默认版权。
-- 确认许可证后创建 `v1.0.0` GitHub release 标签。
+- 项目自有源码和文档采用 MIT License。
+- 第三方数据、权重和 NVIDIA 组件继续遵循各自条款。
+- annotated tag `v1.0.0` 指向包含许可证的提交。
+- GitHub Release `v1.0.0` 已公开发布。
 
 ## 明日计划
 

@@ -14,8 +14,8 @@ PyTorch -> ONNX -> TensorRT -> benchmark -> 可复现部署
 
 仓库名：`industrial-defect-inference-service`
 
-当前状态：v1.0.0 实现和质量门禁已于 Day25 完成；GitHub release 标签等待
-许可证选择后创建。
+当前状态：v1.0.0 实现和质量门禁已于 Day25 完成；项目采用 MIT License，
+`v1.0.0` Git 标签和 GitHub Release 已发布。
 
 ### 项目定位
 
