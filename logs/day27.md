@@ -2,7 +2,7 @@
 
 日期：2026-08-06
 
-状态：进行中
+状态：已完成
 
 ## 今日目标
 
@@ -107,6 +107,7 @@ pkg_check_modules(
     IMPORTED_TARGET
     gstreamer-1.0
     gstreamer-app-1.0
+    gstreamer-video-1.0
 )
 
 add_executable(
@@ -183,13 +184,69 @@ elapsed_ms=<实际时间>
 
 ## 完成标准
 
-- [ ] `gstreamer-app-1.0` 开发依赖可用。
-- [ ] C++17/CMake 骨架可重复配置和编译。
-- [ ] `IFrameSource` 和 `Frame` 接口能够解释。
-- [ ] Jetson 硬件解码文件源能够通过 `appsink` 读取帧。
-- [ ] 帧尺寸、帧号、PTS、EOS 和错误文件路径均已验证。
-- [ ] 完成一次最大读取帧数修改并重新验证。
-- [ ] README 进度索引和 Day27 日志已更新。
+- [x] `gstreamer-app-1.0` 与 `gstreamer-video-1.0` 开发依赖可用。
+- [x] C++17/CMake 骨架可重复配置和编译。
+- [x] `IFrameSource` 和 `Frame` 接口能够解释。
+- [x] Jetson 硬件解码文件源能够通过 `appsink` 读取帧。
+- [x] 帧尺寸、帧号、PTS、EOS 和错误文件路径均已验证。
+- [x] 完成一次最大读取帧数修改并重新验证。
+- [x] README 进度索引和 Day27 日志已更新。
+
+## 实际完成记录
+
+### 实现结果
+
+- 在 Jetson Orin Nano 上完成 C++17/CMake 视频文件源。
+- 使用 `GstSample`、`GstVideoInfo` 和 `gst_buffer_map` 从 `appsink` 取得真实 BGR 帧。
+- 按图像 stride 逐行复制像素，避免把每行对齐空间误当成有效图像数据。
+- `filesrc` 使用命名元素和 `g_object_set` 设置路径，避免管线字符串转义导致文件无法打开。
+- `read()` 使用 `std::optional<Frame>` 表示“取得一帧”或“已经 EOS”，错误信息则单独输出。
+- `close()` 可以重复调用，释放 GStreamer 管线后将内部指针恢复为 `nullptr`。
+
+### 验证结果
+
+30 帧主动停止测试：
+
+```text
+frame=0 size=1280x720 channels=3 bytes=2764800 pts_ms=0.000
+frame=1 size=1280x720 channels=3 bytes=2764800 pts_ms=33.333
+...
+frame=29 size=1280x720 channels=3 bytes=2764800 pts_ms=966.667
+frames=30
+pts_monotonic=true
+closed=true
+```
+
+完整回放与自然 EOS 测试：
+
+```text
+eos=true
+frames=300
+pts_monotonic=true
+closed=true
+```
+
+不存在文件的错误路径：
+
+```text
+GStreamer file source: videos/missing.mp4
+Input file does not exist: videos/missing.mp4
+exit_code=1
+```
+
+### 排错记录
+
+- 将 `g_shell_quote` 生成的路径直接放入 `gst_parse_launch` 字符串后，管线无法启动；改为取得命名的 `filesrc` 元素并通过属性 API 设置 `location`。
+- 修改最大帧数时误输入全角分号 `；`，编译器将其解析成非法数字后缀；改为 ASCII 分号 `;`。
+- 编译失败后仍看到旧程序输出，是因为构建和运行使用了两条独立命令；改用 `cmake --build ... && ./build/...`，确保只有构建成功才运行新二进制。
+
+### 今日理解
+
+- 30 FPS 的相邻帧 PTS 理论间隔为 `1000 / 30 = 33.333 ms`。
+- 30 帧的帧号是 0 到 29，因为序号从 0 开始并在每次成功读取后递增。
+- `2,764,800 = 1280 x 720 x 3`，对应一帧 BGR 图像的有效字节数。
+- PTS 描述帧在媒体时间线上的展示时刻，不等于程序实际处理该帧消耗的时间。
+- 缺失输入返回退出码 1，便于 shell、测试和服务管理程序可靠判断失败。
 
 ## 明日预告
 

@@ -46,7 +46,7 @@
 | Day 24 | 2026-07-27 至 2026-07-28 | Triton 动态 batching、FastAPI 网关、Docker Compose、Prometheus 与 C++ RAII（已完成） | `logs/day24.md` |
 | Day 25 | 2026-07-28 至 2026-07-29 | 并发压测、超时恢复、MIT 许可证与项目 1 v1.0.0 正式发布（已完成） | `logs/day25.md` |
 | Day 26 | 2026-08-05 至 2026-08-06 | Jetson 设备基线、C++ 工具链、GStreamer 与 DeepStream 兼容性门禁（已完成） | `logs/day26.md` |
-| Day 27 | 2026-08-06 | C++ 视频回放骨架、`IFrameSource` 与 GStreamer `appsink`（进行中） | `logs/day27.md` |
+| Day 27 | 2026-08-06 | C++ `IFrameSource`、GStreamer `appsink` 帧读取与边界验证（已完成） | `logs/day27.md` |
 
 文档：
 
