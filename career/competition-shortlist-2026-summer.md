@@ -56,7 +56,7 @@ Day13 初步选择，最迟 Day15 复核：
 练习赛：Kaggle Digit Recognizer
 选择理由：主赛与工业视觉项目高度相关；练习赛用于低成本跑通 Kaggle 全流程
 第一次有效提交：已于 Day14 提前完成 Kaggle Digit Recognizer 平台有效提交
-每周投入时间：4-5 小时
+投入时间：Day28-Day50 暂停，Day51-Day53 集中推进
 使用算力：RTX 4070、Kaggle 免费 Notebook；必要时使用合理付费云算力
 ```
 

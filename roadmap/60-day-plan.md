@@ -16,8 +16,8 @@
 
 | 主线 | 每周投入 | 执行规则 |
 | --- | ---: | --- |
-| 部署学习与两个项目 | 27-30 小时 | 从 Day18 起以项目驱动学习，不再连续堆教程 |
-| 个人竞赛 | 4-5 小时 | 最多一个主赛加一个练习赛，先完成有效提交 |
+| 部署学习与两个项目 | 31-34 小时 | Day28-Day50 以两个项目的 v1/v2 交付为唯一开发主线 |
+| 个人竞赛 | Day51-Day53 集中投入 | 已完成练习赛有效提交；项目冻结后再完成主赛 baseline、优化和复盘 |
 | C++ / Linux / 就业准备 | 3-4 小时 | 每周至少两次短练习，补部署岗位基础 |
 | 日志与 GitHub | 每天约 1 小时 | 更新日志、结果、问题和 commit |
 
@@ -75,8 +75,8 @@ Jetson 已购买并完成首次初始化，因此不再安排“选型和采购�
 | --- | --- | --- |
 | Day26 | 复查 JetPack/TensorRT/CMake/GStreamer，建立 DeepStream 兼容性 ADR | Jetson C++ 工具链与兼容性报告 |
 | Day27 | 建立 C++17/CMake 骨架、视频文件回放和 `IFrameSource` 接口 | PC/Jetson 可编译的 replay demo |
-| Day28 | 创建项目 2 仓库；将 ONNX 移到 Jetson 并构建板端 FP16 engine | 独立仓库、板端 engine、detector 接口 |
-| Day29 | GStreamer 文件输入、时间戳和有界帧队列 | 采集线程、drop-oldest 策略和队列测试 |
+| Day28 | 创建项目 2 仓库；将 ONNX 移到 Jetson 并构建板端 FP16 engine；IMX219 到货后做 CSI 冒烟测试 | 独立仓库、板端 engine、detector 接口、摄像头能力快照 |
+| Day29 | GStreamer 文件/CSI 输入、时间戳和有界帧队列 | 采集线程、drop-oldest 策略和队列测试 |
 | Day30 | TensorRT C++ detector；对比 YOLOX-Nano/Tiny、720p/1080p 和功耗模式 | 第一版检测性能与设备基线表 |
 
 TensorRT engine 在 PC 和 Jetson 上分别构建，不把 x86 engine 直接复制到 Jetson 使用。
@@ -91,7 +91,7 @@ TensorRT engine 在 PC 和 Jetson 上分别构建，不把 x86 engine 直接复�
 | Day32 | 使用 MOT17 + TrackEval 评估跟踪参数 | HOTA、IDF1、MOTA、ID switches 报告 |
 | Day33 | 实现 ROI 闯入、方向越线、停留状态机和合成轨迹测试 | 事件规则模块和 CTest |
 | Day34 | JSONL 事件协议、事件去重、截图和可选前后事件视频 | event schema、样例证据与 I/O 测试 |
-| Day35 | USB UVC/RTSP 输入与断线重连；摄像头缺席时保留文件回放 | 多输入适配器和重连测试 |
+| Day35 | IMX219 CSI/RTSP 输入与断线重连；保留文件回放，USB UVC 作为可选适配器 | 多输入适配器和重连测试 |
 | Day36 | 接入 `tegrastats`、队列深度、丢帧率和端到端延迟指标 | 设备与 pipeline metrics |
 | Day37 | systemd、watchdog、优雅退出、离线缓存和日志轮转 | headless 服务与恢复脚本 |
 | Day38 | 720p/1080p、Nano/Tiny、FP16 和功耗模式综合 benchmark | 性能/功耗/温度矩阵 |
@@ -100,7 +100,7 @@ TensorRT engine 在 PC 和 Jetson 上分别构建，不把 x86 engine 直接复�
 
 项目 2 的 v1 必须使用 C++17、CMake、GStreamer、TensorRT C++ API 和 ByteTrack。视觉小车、DeepStream、CUDA 自定义预处理和 INT8 是增强项，不是 v1 完成条件。
 
-## Day41-Day53：两个项目 v2、竞赛和工程补强
+## Day41-Day53：两个项目 v2 与集中竞赛
 
 | 天数 | 主任务 | 当天产出 |
 | --- | --- | --- |
@@ -112,11 +112,11 @@ TensorRT engine 在 PC 和 Jetson 上分别构建，不把 x86 engine 直接复�
 | Day46 | C++ 代码质量、RAII、线程退出、CTest 和 CI 补强 | C++ 测试与静态检查 |
 | Day47 | CUDA 预处理、零拷贝或 TensorRT buffer 复用优化 | 关键路径 profile 与对比 |
 | Day48 | Jetson 60 分钟稳定性、资源监控和日志轮转 | 长跑测试报告 |
-| Day49 | 选做 INT8 或更轻模型，不影响主交付 | 可选量化报告 |
-| Day50 | 通过兼容性门禁后做 DeepStream 对照，或完成 RTSP/视觉小车扩展 | 一个明确增强功能或兼容性 ADR |
-| Day51 | 主竞赛一次有记录的改进 | 实验表与新分数 |
-| Day52 | 两个项目演示视频、截图、架构图和指标图 | 展示素材 |
-| Day53 | 冻结两个项目 v2，核对从零复现流程 | 两个可投递项目 |
+| Day49 | 选做 INT8 或更轻模型，不影响主交付；整理项目 2 演示素材 | 可选量化报告与演示视频 |
+| Day50 | 通过兼容性门禁后做 DeepStream/RTSP 扩展或可靠性补强；冻结两个项目 v2 | 两个项目的复现检查与 v2 release |
+| Day51 | 核对主赛规则、数据和评价指标，跑通可提交 baseline | baseline、提交文件和平台结果 |
+| Day52 | 对主赛做一次单变量受控优化并重新提交 | 实验表、对照指标和新分数 |
+| Day53 | 完成竞赛复盘，归档两个项目的截图、架构图和指标图 | 竞赛复盘与项目最终素材 |
 
 ## Day54-Day60：就业交付
 
@@ -137,11 +137,11 @@ TensorRT engine 在 PC 和 Jetson 上分别构建，不把 x86 engine 直接复�
 | Day13-Day15 | 已报名两项天池；确定 CSIG 主赛候选和 Kaggle Digit Recognizer 练习赛 | 规则与候选表 |
 | Day16-Day21 | 跑通 Digit Recognizer 或选定赛题 baseline | 本地/Notebook baseline |
 | Day22-Day25 | 完成第一次平台接受的有效提交 | 排行榜分数和截图 |
-| Day26-Day35 | CSIG 或最终主赛完成至少两次有记录实验 | 参数、指标和结论 |
-| Day36-Day45 | 根据项目进度继续一次改进或停止冲榜 | 竞赛 README/复盘 |
-| Day46-Day60 | 整理比赛产出，关注华为 ICT、嵌入式和机器人赛事 | 可写入简历的真实记录 |
+| Day26-Day50 | 暂停竞赛，把时间集中投入项目 1 和项目 2 | 两个独立项目完成 v1/v2 冻结 |
+| Day51-Day53 | 主赛 baseline、一次单变量优化和复盘 | 至少一次有效提交、实验表和结论 |
+| Day54-Day60 | 整理比赛产出，关注华为 ICT、嵌入式和机器人赛事 | 可核验的真实记录 |
 
-实际进度：Kaggle `Digit Recognizer` 的第一次平台有效提交已于 Day14 提前完成。Day16-Day25 原有竞赛时间用于一次低成本优化或 CSIG 工业异常检测赛 baseline，不重复追求“第一次提交”。
+实际进度：Kaggle `Digit Recognizer` 的第一次平台有效提交已于 Day14 完成，随后完成一次单变量增强并取得新分数。Day28-Day50 不再并行竞赛，Day51-Day53 再集中处理 CSIG 或届时确认的单人视觉主赛。
 
 ## 不变的验收标准
 

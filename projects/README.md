@@ -67,7 +67,7 @@ Client
 ### 核心架构
 
 ```text
-File / USB UVC / RTSP
+File / CSI IMX219 / RTSP
   -> GStreamer capture and decode
   -> bounded frame queue with drop-oldest policy
   -> TensorRT C++ detector
@@ -79,7 +79,7 @@ File / USB UVC / RTSP
 
 核心接口：
 
-- `IFrameSource`：本地视频、USB 摄像头和 RTSP 使用同一输入接口。
+- `IFrameSource`：本地视频、CSI IMX219 和 RTSP 使用同一输入接口，USB UVC 作为可选适配器。
 - `IDetector`：TensorRT detector 与测试用 mock detector 可替换。
 - `ITracker`：封装 ByteTrack，隔离检测与跟踪。
 - `IEventSink`：输出 JSONL、截图和事件视频片段。
@@ -106,7 +106,7 @@ File / USB UVC / RTSP
 2. 确定性的合成轨迹：覆盖越线、闯入、离开、停留、边界抖动和事件去重单元测试。
 3. 8-12 段短事件视频：人工标注事件时间和类别，计算事件 Precision、Recall、重复事件率与时间戳误差。
 
-文件回放是可复现基线，USB 摄像头和 RTSP 是真实输入验证。摄像头晚到不会阻塞 detector、tracker、事件规则和 benchmark 开发。
+文件回放是可复现基线，IMX219 CSI 是板端主要实时输入，RTSP 用于网络输入和断线恢复验证。USB UVC 保留为可选扩展。
 
 ### 性能与可靠性验收
 
@@ -129,7 +129,7 @@ File / USB UVC / RTSP
 ### v1 边界
 
 - 必做：本地视频回放、TensorRT C++ 检测、ByteTrack、三类事件、JSONL/截图、设备指标、systemd、故障恢复和演示视频。
-- 摄像头可用后补充 USB UVC 实时演示；RTSP 至少完成连接和断线恢复测试。
+- 使用 IMX219 完成 CSI 实时演示；RTSP 至少完成连接和断线恢复测试，USB UVC 为可选扩展。
 - 视觉小车、CUDA 自定义预处理、INT8、DeepStream 和多路流属于 v1.1/v2。
 
 ## 两个项目的区别
@@ -137,7 +137,7 @@ File / USB UVC / RTSP
 | 维度 | 项目 1 | 项目 2 |
 | --- | --- | --- |
 | 场景 | 钢材缺陷语义分割 | 实时安全事件分析 |
-| 输入 | 图片请求、batch | 连续视频、USB、RTSP |
+| 输入 | 图片请求、batch | 连续视频、CSI IMX219、RTSP |
 | 环境 | x86 RTX GPU / 云 GPU | Jetson Orin Nano ARM |
 | 主要语言 | Python | C++17 |
 | 模型 | 自训练 U-Net 分割模型 | 轻量检测器 + ByteTrack |
