@@ -48,6 +48,7 @@
 | Day 26 | 2026-08-05 至 2026-08-06 | Jetson 设备基线、C++ 工具链、GStreamer 与 DeepStream 兼容性门禁（已完成） | `logs/day26.md` |
 | Day 27 | 2026-08-06 | C++ `IFrameSource`、GStreamer `appsink` 帧读取与边界验证（已完成） | `logs/day27.md` |
 | Day 28 | 2026-08-07 | 项目 2 独立仓库、IMX219、YOLOX FP16 TensorRT 与静态图端到端检测 | `logs/day28.md` |
+| Day 29 | 2026-08-09 至 2026-08-10 | 持续视频采集、有界帧队列、过载丢帧与 IMX219 TensorRT 连续检测（已完成） | `logs/day29.md` |
 
 文档：
 
