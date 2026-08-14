@@ -50,6 +50,7 @@
 | Day 28 | 2026-08-07 | 项目 2 独立仓库、IMX219、YOLOX FP16 TensorRT 与静态图端到端检测 | `logs/day28.md` |
 | Day 29 | 2026-08-09 至 2026-08-10 | 持续视频采集、有界帧队列、过载丢帧与 IMX219 TensorRT 连续检测（已完成） | `logs/day29.md` |
 | Day 30 | 2026-08-10 至 2026-08-12 | YOLOX-Nano/Tiny、720p/1080p 与 Jetson 锁频功耗模式性能矩阵（已完成） | `logs/day30.md` |
+| Day 31 | 2026-08-13 至 2026-08-14 | ByteTrack C++、稳定目标 ID、异步标注视频输出与队列背压验证（已完成） | `logs/day31.md` |
 
 文档：
 
@@ -83,6 +84,11 @@
 - `logs/day24.md`：第二十四天学习记录。
 - `logs/day25.md`：第二十五天学习记录。
 - `logs/day26.md`：第二十六天学习记录。
+- `logs/day27.md`：第二十七天学习记录。
+- `logs/day28.md`：第二十八天学习记录。
+- `logs/day29.md`：第二十九天学习记录。
+- `logs/day30.md`：第三十天学习记录。
+- `logs/day31.md`：第三十一天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：竞赛准备建议。
