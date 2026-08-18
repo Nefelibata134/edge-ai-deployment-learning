@@ -1,6 +1,6 @@
 # 60 天模型部署学习路线（当前执行版）
 
-最后统一日期：2026-07-23
+最后统一日期：2026-08-18
 
 这份文件是 Day 级别的唯一执行表。若它与早期聊天、周框架或旧计划冲突，以本文件和当天 `logs/dayXX.md` 为准。
 
@@ -9,16 +9,15 @@
 - 完成两个独立 GitHub 项目，而不是等到最后两周才开始项目。
 - 项目 1：工业钢材缺陷分割与 GPU 推理服务。
 - 项目 2：Jetson C++ 实时跟踪与安全事件分析系统。
-- 至少完成一次天池或 Kaggle 有效提交，并对一个视觉赛题留下可复现实验记录。
 - 暑假结束前形成简历、项目 README、演示视频、性能报告和面试准备材料。
 
 ## 固定并行节奏
 
 | 主线 | 每周投入 | 执行规则 |
 | --- | ---: | --- |
-| 部署学习与两个项目 | 31-34 小时 | Day28-Day50 以两个项目的 v1/v2 交付为唯一开发主线 |
-| 个人竞赛 | Day51-Day53 集中投入 | 已完成练习赛有效提交；项目冻结后再完成主赛 baseline、优化和复盘 |
-| C++ / Linux / 就业准备 | 3-4 小时 | 每周至少两次短练习，补部署岗位基础 |
+| 部署学习与两个项目 | 31-34 小时 | Day28-Day53 以两个项目的 v1/v2 交付为唯一开发主线 |
+| C++ / Linux / 系统工程 | 4-6 小时 | 结合正式项目补语言、并发、进程、网络和故障处理 |
+| 就业准备 | 2-3 小时 | Day41 起逐步沉淀技术讲解、岗位关键词和项目材料 |
 | 日志与 GitHub | 每天约 1 小时 | 更新日志、结果、问题和 commit |
 
 ## Day1-Day13：已完成的基础链路
@@ -37,7 +36,7 @@
 | Day10 | 坐标转换、NMS 与画框 | 完整 ONNX 检测脚本 | 已完成 |
 | Day11 | warmup、P50/P95、FPS | CPU benchmark | 已完成 |
 | Day12 | 动态输入尺寸比较 | 320/480/640 对比 | 已完成 |
-| Day13 | ORT CUDA Provider 与竞赛初筛 | CUDA 4.14x 推理加速、天池报名、Kaggle 候选 | 已完成 |
+| Day13 | ORT CUDA Provider 与 CPU/CUDA benchmark | CUDA 4.14x 推理加速与 Provider 验证 | 已完成 |
 
 ## Day14-Day17：TensorRT 前置与核心入门
 
@@ -56,12 +55,12 @@ Jetson 从 Day16 起已可使用，但不提前并行启动项目 2。Day17 只�
 
 | 天数 | 主任务 | 当天产出 | 并行任务 |
 | --- | --- | --- | --- |
-| Day18 | 创建项目仓库，冻结 Severstal 分割任务、ADR、目录和数据契约 | 工程骨架、dataset card、数据校验器 | 竞赛规则/数据核对 |
+| Day18 | 创建项目仓库，冻结 Severstal 分割任务、ADR、目录和数据契约 | 工程骨架、dataset card、数据校验器 | 数据路径与仓库边界核对 |
 | Day19 | 下载并检查 12,568 张图像，解码 RLE 掩码，固定训练/验证划分 | 数据报告、掩码可视化和 split 文件 | C++ 基础 1 小时 |
-| Day20 | 训练 U-Net + ResNet18 baseline | checkpoint、loss 曲线和训练配置 | 竞赛 baseline |
+| Day20 | 训练 U-Net + ResNet18 baseline | checkpoint、loss 曲线和训练配置 | 训练日志与实验命名 |
 | Day21 | 验证集评估和错误分析 | Dice、IoU、Precision、Recall、漏检与失败样例 | Linux/Git 复习 |
-| Day22 | 导出 ONNX，验证 PyTorch/ORT 数值与掩码一致性 | ONNX 模型、parity report | 竞赛低成本优化 |
-| Day23 | 构建 TensorRT FP32/FP16 engine，完成统一 benchmark | PyTorch/ORT/TRT 延迟与显存表 | 竞赛有效提交/改进 |
+| Day22 | 导出 ONNX，验证 PyTorch/ORT 数值与掩码一致性 | ONNX 模型、parity report | ONNX 导出与结构检查 |
+| Day23 | 构建 TensorRT FP32/FP16 engine，完成统一 benchmark | PyTorch/ORT/TRT 延迟与显存表 | benchmark 结果归档 |
 | Day24 | Triton model repository、动态 batching、FastAPI 网关和 Docker Compose | 可调用服务、Prometheus 指标和接口测试 | C++ 基础 1 小时 |
 | Day25 | 并发压测、异常输入、README、结果图和演示视频；冻结项目 1 v1 | QPS/P50/P95/P99 报告和 v1 release | Jetson 当晚前准备到位 |
 
@@ -94,54 +93,41 @@ TensorRT engine 在 PC 和 Jetson 上分别构建，不把 x86 engine 直接复�
 | Day35 | IMX219 CSI/RTSP 输入与断线重连；保留文件回放，USB UVC 作为可选适配器 | 多输入适配器和重连测试 |
 | Day36 | 接入 `tegrastats`、队列深度、丢帧率和端到端延迟指标 | 设备与 pipeline metrics |
 | Day37 | systemd、watchdog、优雅退出、离线缓存和日志轮转 | headless 服务与恢复脚本 |
-| Day38 | 720p/1080p、Nano/Tiny、FP16 和功耗模式综合 benchmark | 性能/功耗/温度矩阵 |
-| Day39 | 30 分钟 soak test、视频源故障和进程崩溃注入 | 稳定性与恢复报告 |
+| Day38 | 对比检测、跟踪、事件分析和证据写入各阶段开销，并复测 720p/1080p 与功耗模式 | 完整流水线延迟、功耗和温度报告 |
+| Day39 | 60 分钟 soak test、视频源故障和进程崩溃注入 | 稳定性与恢复报告 |
 | Day40 | README 首屏演示、架构图、复现命令、指标表；冻结项目 2 v1 | 项目 2 v1 release |
 
 项目 2 的 v1 必须使用 C++17、CMake、GStreamer、TensorRT C++ API 和 ByteTrack。视觉小车、DeepStream、CUDA 自定义预处理和 INT8 是增强项，不是 v1 完成条件。
 
-## Day41-Day53：两个项目 v2 与集中竞赛
+## Day41-Day53：两个项目 v2 工程加固
 
 | 天数 | 主任务 | 当天产出 |
 | --- | --- | --- |
-| Day41 | 项目 1 数据增强、损失函数和错误分析优化 | 新旧 Dice/IoU 对比 |
-| Day42 | Triton 并发、动态 batching、QPS 和 P95/P99 调优 | 服务压测报告 |
-| Day43 | Docker Compose、依赖锁定、模型版本与指标监控 | 一键运行环境 |
-| Day44 | 项目 1 单元/集成测试、异常输入和 README 完善 | 项目 1 v2 |
-| Day45 | 项目 2 多视频场景、事件阈值和跟踪参数调优 | 跟踪/事件对比报告 |
-| Day46 | C++ 代码质量、RAII、线程退出、CTest 和 CI 补强 | C++ 测试与静态检查 |
-| Day47 | CUDA 预处理、零拷贝或 TensorRT buffer 复用优化 | 关键路径 profile 与对比 |
-| Day48 | Jetson 60 分钟稳定性、资源监控和日志轮转 | 长跑测试报告 |
-| Day49 | 选做 INT8 或更轻模型，不影响主交付；整理项目 2 演示素材 | 可选量化报告与演示视频 |
-| Day50 | 通过兼容性门禁后做 DeepStream/RTSP 扩展或可靠性补强；冻结两个项目 v2 | 两个项目的复现检查与 v2 release |
-| Day51 | 核对主赛规则、数据和评价指标，跑通可提交 baseline | baseline、提交文件和平台结果 |
-| Day52 | 对主赛做一次单变量受控优化并重新提交 | 实验表、对照指标和新分数 |
-| Day53 | 完成竞赛复盘，归档两个项目的截图、架构图和指标图 | 竞赛复盘与项目最终素材 |
+| Day41 | 项目 1 质量验收：类别阈值、错误切片、失败样例和固定测试集复核 | 模型质量与限制报告 |
+| Day42 | Triton 并发、动态 batching、QPS 和 P95/P99 瓶颈分析 | 服务压测与容量报告 |
+| Day43 | 网关超时、请求大小限制、背压、异常输入和过载行为 | 服务可靠性测试 |
+| Day44 | Docker Compose、依赖锁定、模型版本、健康检查和指标监控 | 可复现运行与可观测性检查 |
+| Day45 | 服务中断、Triton 不可用和模型加载失败注入，验证恢复与错误协议 | 故障注入报告 |
+| Day46 | 在干净环境执行项目 1 全量回归、README 与 release checklist | 项目 1 v2 release |
+| Day47 | 项目 2 C++ 代码质量：RAII、线程退出、静态检查、CTest 和 CI | C++ 质量报告 |
+| Day48 | profile 预处理、内存复制、TensorRT buffer 与后处理，按证据优化热点 | 关键路径 profile 与前后对比 |
+| Day49 | 建立真实视频事件回归集，核对漏报、误报、证据文件与事件协议 | 事件验收报告 |
+| Day50 | 启动配置、engine 元数据、输入契约和不兼容 artifact 的 fail-fast 检查 | 部署契约与错误矩阵 |
+| Day51 | 受控评估 INT8；只有精度、延迟和工程复杂度通过门禁才保留 | FP16/INT8 质量性能对比 |
+| Day52 | 最终配置进行 2 小时稳定性与断流/重启恢复测试 | v2 长跑与恢复报告 |
+| Day53 | 两台环境复现、演示素材、架构与限制文档；冻结项目 2 v2 | 项目 2 v2 release |
 
 ## Day54-Day60：就业交付
 
 | 天数 | 主任务 | 当天产出 |
 | --- | --- | --- |
-| Day54 | GitHub 首页、置顶仓库和项目导航 | GitHub 作品集首页 |
-| Day55 | 两个项目的简历 STAR/指标化描述 | 简历项目段落 |
-| Day56 | 整理 30 个岗位 JD 和高频技能 | 岗位关键词表 |
-| Day57 | ONNX、TensorRT、CUDA、模型优化面试题 | 部署面试题库 |
-| Day58 | Linux、C++、网络、Docker 和深度学习基础面试题 | 基础面试题库 |
-| Day59 | 模拟面试、简历修改和第一批投递清单 | 简历 v1、投递表 |
-| Day60 | 总复盘、竞赛复盘和下一阶段计划 | 60 天总结报告 |
-
-## 竞赛并行里程碑
-
-| 时间 | 竞赛安排 | 完成标准 |
-| --- | --- | --- |
-| Day13-Day15 | 已报名两项天池；确定 CSIG 主赛候选和 Kaggle Digit Recognizer 练习赛 | 规则与候选表 |
-| Day16-Day21 | 跑通 Digit Recognizer 或选定赛题 baseline | 本地/Notebook baseline |
-| Day22-Day25 | 完成第一次平台接受的有效提交 | 排行榜分数和截图 |
-| Day26-Day50 | 暂停竞赛，把时间集中投入项目 1 和项目 2 | 两个独立项目完成 v1/v2 冻结 |
-| Day51-Day53 | 主赛 baseline、一次单变量优化和复盘 | 至少一次有效提交、实验表和结论 |
-| Day54-Day60 | 整理比赛产出，关注华为 ICT、嵌入式和机器人赛事 | 可核验的真实记录 |
-
-实际进度：Kaggle `Digit Recognizer` 的第一次平台有效提交已于 Day14 完成，随后完成一次单变量增强并取得新分数。Day28-Day50 不再并行竞赛，Day51-Day53 再集中处理 CSIG 或届时确认的单人视觉主赛。
+| Day54 | GitHub 首页、置顶仓库、项目导航和公开仓库内容审计 | GitHub 项目导航 |
+| Day55 | 两个项目的指标化简历描述，并逐项核对可证明证据 | 简历项目段落 |
+| Day56 | 整理 30 个岗位 JD，建立技能覆盖、缺口和投递优先级 | 岗位关键词与差距表 |
+| Day57 | 从入口到输出讲清两个项目的数据流、线程模型、错误处理和性能指标 | 项目技术讲解稿与架构图 |
+| Day58 | ONNX/TensorRT/CUDA、C++/Linux、网络/Docker 高频追问与现场排错 | 面试题库和排错记录 |
+| Day59 | 两轮模拟面试、简历修改和首批岗位投递 | 简历 v1、模拟面试记录和投递表 |
+| Day60 | 60 天总复盘、两个项目最终验收和下一阶段 30 天计划 | 总结报告与后续执行表 |
 
 ## 不变的验收标准
 
@@ -149,5 +135,4 @@ TensorRT engine 在 PC 和 Jetson 上分别构建，不把 x86 engine 直接复�
 - 项目 1 证明语义分割训练、TensorRT/Triton GPU 推理服务和并发压测能力。
 - 项目 2 证明 C++、GStreamer、Jetson TensorRT、持续视频流、跟踪、事件规则和设备可靠性能力。
 - 两个公开项目仓库不得出现 `DayXX`、学习打卡或教程式措辞，使用 release、ADR、CHANGELOG 和 benchmark 记录开发过程。
-- 竞赛不能只有报名，至少需要一次有效提交。
 - 每日学习结束更新 `logs/dayXX.md`，README 同步进度索引。

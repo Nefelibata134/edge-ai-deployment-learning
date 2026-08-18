@@ -9,7 +9,7 @@
 - 至少完成两个就业相关项目：
   - Severstal 钢材缺陷语义分割 + ONNX/TensorRT + Triton/FastAPI GPU 推理服务项目。
   - Jetson Orin Nano C++ 实时多目标跟踪与安全事件分析系统，可扩展为视觉小车。
-- 已完成 Kaggle Digit Recognizer 有效提交和一次有记录优化；Day28-Day50 暂停竞赛，集中完成两个项目，Day51-Day53 再集中推进个人视觉赛题。
+- 已完成 Kaggle Digit Recognizer 有效提交和一次有记录优化；该记录作为历史保留，当前 60 天计划不再安排竞赛，Day28-Day53 完成两个项目，Day54-Day60 完成就业交付。
 
 ## 用户背景
 
@@ -33,10 +33,10 @@
 2. 阅读 `README.md` 的学习进度索引，确认最后一个已完成 Day。
 3. 阅读 `roadmap/60-day-plan.md`，它是当前唯一的 Day1-Day60 逐日执行表。
 4. 阅读最新的 `logs/dayXX.md`，确认当天已完成内容、错误和下一步。
-5. 阅读 `projects/README.md` 与 `career/competition-shortlist-2026-summer.md`，恢复两个项目和竞赛状态。
+5. 阅读 `projects/README.md` 与 `career/direction-and-jobs.md`，恢复两个项目和就业方向。
 6. 执行 `git status --short` 和 `git log -3 --oneline`，确认是否存在未提交改动以及最近完成的工作。
 
-恢复后先用仓库事实确认当前 Day 和下一任务。如果聊天中的旧计划与仓库冲突，以 `roadmap/60-day-plan.md` 和最新日志为准。当前优先级固定为 Day28-Day50 全力完成和增强两个项目，Day51-Day53 集中推进竞赛，不能恢复为每周并行竞赛。
+恢复后先用仓库事实确认当前 Day 和下一任务。如果聊天中的旧计划与仓库冲突，以 `roadmap/60-day-plan.md` 和最新日志为准。当前优先级固定为 Day28-Day53 全力完成和增强两个项目，Day54-Day60 完成就业材料、技术讲解、模拟面试和首批投递；不得重新插入竞赛任务。
 
 ## 两个正式项目仓库
 
@@ -71,7 +71,7 @@
 - 模块提问用于检查理解，不用于机械考试。问题必须紧扣当前项目的真实代码、数据流和设计决策；如果用户暂时答不上，先解释相关代码位置、输入输出、设计原因和失败场景，再让用户用自己的话复述或完成一次小验证，确认理解后才能继续。
 - 每完成一个阶段，先说明它解决了项目中的什么问题、与前后模块如何连接，以及用户需要达到“会运行、能解释、能修改”中的哪一层，避免只堆命令和功能。
 - 不要求用户机械背诵全部代码，但要求能说明设计原因、关键数据流、验证方法和常见失败场景。
-- Day28-Day50 不再为竞赛单独预留时间，提前完成的时间继续投入项目 1 或项目 2；Day51-Day53 集中完成主赛 baseline、一次受控优化和复盘。
+- Day28-Day53 不为竞赛预留时间，提前完成的时间继续投入项目 1 或项目 2；Day54-Day60 完成就业交付。
 - 每天结束后，整理当天学习记录到 `logs/dayXX.md`。
 - 每次新增学习记录后，更新 `README.md` 的学习进度索引。
 - 学习记录、路线、复盘和准备材料放在本仓库。
@@ -134,8 +134,8 @@
 - 个人目标与原则：`roadmap/personal-60-day-plan.md`
 - 每日记录：`logs/dayXX.md`
 - 项目规划：`projects/README.md`
-- 竞赛计划：`career/competition-plan.md`
-- 当前竞赛候选：`career/competition-shortlist-2026-summer.md`
+- 历史竞赛计划：`career/competition-plan.md`（不属于当前 60 天执行表）
+- 历史竞赛候选：`career/competition-shortlist-2026-summer.md`（不属于当前 60 天执行表）
 - 岗位建议：`career/direction-and-jobs.md`
 - Jetson 采购：`hardware/jetson-buying-list.md`
 - GitHub 规范：`github-workflow.md`

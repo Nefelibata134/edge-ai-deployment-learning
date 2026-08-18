@@ -1,6 +1,6 @@
 # 模型部署学习计划
 
-目标：用两个月建立“能找工作、能展示作品、能继续打竞赛”的模型部署能力。
+目标：用两个月建立能完成工程项目、解释关键技术并开始岗位投递的模型部署能力。
 
 主线：
 
@@ -59,7 +59,7 @@
 
 - `AGENTS.md`：上下文重置后的协作记忆、恢复顺序和仓库边界。
 - `roadmap/60-day-plan.md`：当前唯一的 Day1-Day60 逐日执行表；发生计划冲突时以它为准。
-- `roadmap/personal-60-day-plan.md`：个人目标、时间分配、项目和竞赛原则。
+- `roadmap/personal-60-day-plan.md`：个人目标、时间分配、项目和就业原则。
 - `logs/template.md`：每日学习记录模板。
 - `logs/day01.md`：第一天学习记录。
 - `logs/day02.md`：第二天学习记录。
@@ -97,8 +97,8 @@
 - `logs/day34.md`：第三十四天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
-- `career/competition-plan.md`：竞赛准备建议。
-- `career/competition-shortlist-2026-summer.md`：2026 暑假个人赛候选与规则核对表。
+- `career/competition-plan.md`：历史竞赛准备资料，不属于当前 60 天执行表。
+- `career/competition-shortlist-2026-summer.md`：历史候选与规则核对资料，不属于当前 60 天执行表。
 - `hardware/jetson-buying-list.md`：Jetson Orin Nano 采购清单。
 - `hardware/jetson-arrival-check.md`：Jetson Orin Nano 到货检查记录。
 - `github-workflow.md`：GitHub 记录和提交规范。
