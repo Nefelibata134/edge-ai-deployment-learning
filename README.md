@@ -54,6 +54,7 @@
 | Day 32 | 2026-08-14 至 2026-08-15 | MOT17、TrackEval、Nano/Tiny 受控选型与一次性 holdout 评估（已完成） | `logs/day32.md` |
 | Day 33 | 2026-08-17 | ROI 闯入、有限方向越线、PTS 停留状态机与实时审计视频（已完成） | `logs/day33.md` |
 | Day 34 | 2026-08-17 至 2026-08-18 | JSONL 事件协议、幂等去重、原子证据与有界异步事件录像（已完成） | `logs/day34.md` |
+| Day 35 | 2026-08-20 | H.264 RTSP 输入、无帧超时、有限重连与流代次状态重置（已完成） | `logs/day35.md` |
 
 文档：
 
@@ -95,6 +96,7 @@
 - `logs/day32.md`：第三十二天学习记录。
 - `logs/day33.md`：第三十三天学习记录。
 - `logs/day34.md`：第三十四天学习记录。
+- `logs/day35.md`：第三十五天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：历史竞赛准备资料，不属于当前 60 天执行表。
