@@ -56,6 +56,7 @@
 | Day 34 | 2026-08-17 至 2026-08-18 | JSONL 事件协议、幂等去重、原子证据与有界异步事件录像（已完成） | `logs/day34.md` |
 | Day 35 | 2026-08-20 | H.264 RTSP 输入、无帧超时、有限重连与流代次状态重置（已完成） | `logs/day35.md` |
 | Day 36 | 2026-08-20 | 统一 pipeline metrics、后台 `tegrastats` 遥测与版本化原子 JSON（已完成） | `logs/day36.md` |
+| Day 37 | 2026-08-20 至 2026-08-21 | systemd 无头服务、真实帧 watchdog、优雅退出、离线清理与日志轮转（已完成） | `logs/day37.md` |
 
 文档：
 
@@ -99,6 +100,7 @@
 - `logs/day34.md`：第三十四天学习记录。
 - `logs/day35.md`：第三十五天学习记录。
 - `logs/day36.md`：第三十六天学习记录。
+- `logs/day37.md`：第三十七天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：历史竞赛准备资料，不属于当前 60 天执行表。
