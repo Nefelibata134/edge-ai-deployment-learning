@@ -59,6 +59,7 @@
 | Day 37 | 2026-08-20 至 2026-08-21 | systemd 无头服务、真实帧 watchdog、优雅退出、离线清理与日志轮转（已完成） | `logs/day37.md` |
 | Day 38 | 2026-08-21 | 完整流水线阶段剖析、720p/1080p 与锁频功耗模式性能矩阵（已完成） | `logs/day38.md` |
 | Day 39 | 2026-08-21 至 2026-08-22 | 60 分钟稳定性测试、进程崩溃与 RTSP 输入源故障恢复（已完成） | `logs/day39.md` |
+| Day 40 | 2026-08-23 | 项目 2 v1 完整审计、发布冻结、最终 CI、版本标签与 GitHub Release（已完成） | `logs/day40.md` |
 
 文档：
 
@@ -105,6 +106,7 @@
 - `logs/day37.md`：第三十七天学习记录。
 - `logs/day38.md`：第三十八天学习记录。
 - `logs/day39.md`：第三十九天学习记录。
+- `logs/day40.md`：第四十天学习记录。
 - `projects/README.md`：作品集项目规划。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：历史竞赛准备资料，不属于当前 60 天执行表。
