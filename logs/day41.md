@@ -117,8 +117,11 @@
 | 评估协议 | PASS |
 | `git diff --check` | PASS |
 | 正式项目 GitHub 推送 | PASS |
+| 正式项目 GitHub Actions | PASS，提交 `7010939` |
 
 Pytest 有两个第三方兼容性警告，分别来自 Starlette TestClient 与 PyTorch ONNX treespec，不影响本次测试通过。
+
+GitHub Actions 运行记录：<https://github.com/Nefelibata134/industrial-defect-inference-service/actions/runs/32678601566>
 
 ## 会运行、能解释、能修改
 
