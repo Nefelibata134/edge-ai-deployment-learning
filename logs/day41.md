@@ -163,7 +163,7 @@ threshold_decision: candidate_requires_separate_test_gate
 - 失败样例可以暴露聚合指标隐藏的结构性问题，例如长条区域漏分、边缘纹理误报和预测错位。
 - 明确写出 `production_quality_established=false` 比夸大短训练模型更符合工程证据。
 
-## 项目 2 补充：1080p 审计视频编码修复（2026-08-27）
+## 项目 2 补充：720p/1080p 审计视频编码修复（2026-08-27）
 
 项目 2 原来的 OpenCV MP4V 后端不能在 Jetson Orin Nano 上持续保存
 1080p30 标注视频。主检测链路依靠有界异步队列仍可保持约 30 FPS，但保存
@@ -185,21 +185,43 @@ mp4mux -> filesink` 后端。Orin Nano 没有 NVENC，因此使用 CPU x264 的
 | MAXN_SUPER 锁频 | MP4V | 379/600 | 221 | 53.26 ms | 29.99 |
 | MAXN_SUPER 锁频 | x264 | 600/600 | 0 | 7.45 ms | 29.12 |
 
+为确认新后端没有回归原本能满帧的 720p 路径，又在两档锁频功率下补做
+600 帧完整链路测试。两次测试均有真实事件触发：
+
+| 功率模式 | 后端 | 写入/提交 | 输出丢帧 | 编码耗时/帧 | Pipeline FPS |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 25W 锁频 | MP4V | 600/600 | 0 | 30.93 ms | 30.03 |
+| 25W 锁频 | x264 | 600/600 | 0 | 4.68 ms | 30.03 |
+| MAXN_SUPER 锁频 | MP4V | 600/600 | 0 | 23.05 ms | 30.04 |
+| MAXN_SUPER 锁频 | x264 | 600/600 | 0 | 3.95 ms | 30.04 |
+
+720p 原来的 MP4V 后端已能保留所有帧，因此这次补测不是修复 720p 丢帧，
+而是证明统一切换 x264 后没有功能回归，同时把后台编码工作量降低约
+`84.9%`（25W）和 `82.9%`（MAXN_SUPER），为事件取证和其他后台任务留下
+更多 CPU 余量。
+
 两份 x264 文件均通过 GStreamer 重新解析，确认为 `1920x1080`、H.264
 Constrained Baseline、`30/1 FPS`、`20.000 s`。25W 测试画面没有目标，
 所以它只证明编码连续性；MAXN_SUPER 测试实际触发 ROI intrusion 和 dwell
 事件，仍保存全部 600 帧。生成视频和原始运行日志保留在 Jetson 的忽略目录，
 GitHub 只提交汇总指标与协议。
 
+两份 720p x264 文件也通过 GStreamer 重新解析，确认为 `1280x720`、H.264
+Constrained Baseline、`30/1 FPS`、`20.000 s`，并分别在 4 个和 5 个事件
+负载下保存全部 600 帧。事件数量因实时画面不同而不能用于功率模式间的质量
+比较，只用于证明测试覆盖了活跃事件 I/O。
+
 正式项目提交：
 
 - `04fd485 feat: add tuned x264 video output`
 - `937f6fb fix: validate Jetson clocks without sudo`
 - `6f3a111 docs: publish validated x264 benchmarks`
+- `64cb554 docs: complete x264 benchmark matrix`
 
-验证结果：Jetson 15/15 CTest 通过，WSL 24/24 Python 测试通过，GitHub CI
-通过；新二进制已安装到 `/opt/edge-vision/bin`。恢复服务后保持 25W 锁频，
-状态为 ready，18 秒观察窗口内真实帧 watchdog 前进、PID 稳定且无重启。
+验证结果：Jetson 15/15 CTest 通过，WSL/Jetson 24/24 Python 测试通过，
+GitHub CI 通过；新二进制已安装到 `/opt/edge-vision/bin`。完成 720p 补测后
+已恢复 25W、GPU 918 MHz 锁频服务；状态为 ready，18 秒观察窗口内真实帧
+watchdog 前进、PID 稳定且 `NRestarts=0`。
 
 ## 下一步
 
