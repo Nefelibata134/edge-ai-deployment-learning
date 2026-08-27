@@ -163,6 +163,44 @@ threshold_decision: candidate_requires_separate_test_gate
 - 失败样例可以暴露聚合指标隐藏的结构性问题，例如长条区域漏分、边缘纹理误报和预测错位。
 - 明确写出 `production_quality_established=false` 比夸大短训练模型更符合工程证据。
 
+## 项目 2 补充：1080p 审计视频编码修复（2026-08-27）
+
+项目 2 原来的 OpenCV MP4V 后端不能在 Jetson Orin Nano 上持续保存
+1080p30 标注视频。主检测链路依靠有界异步队列仍可保持约 30 FPS，但保存
+视频会丢帧：25W 锁频只写入 `280/600`，MAXN_SUPER 锁频只写入
+`379/600`。这说明“检测实时”与“审计视频连续”是两项不同的验收指标。
+
+正式项目新增 GStreamer `appsrc -> videoconvert -> x264enc -> h264parse ->
+mp4mux -> filesink` 后端。Orin Nano 没有 NVENC，因此使用 CPU x264 的
+`ultrafast`、`zerolatency`、无 B 帧、单参考帧和固定 GOP 配置；原有有界
+异步写出队列继续负责隔离编码背压。运行时新增编码器与码率参数，指标 JSON
+记录编码器、码率、提交/写入/丢弃帧数、编码耗时和 flush 耗时。
+
+真实 IMX219 1080p、YOLOX-Nano、600 帧完整链路结果：
+
+| 功率模式 | 后端 | 写入/提交 | 输出丢帧 | 编码耗时/帧 | Pipeline FPS |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 25W 锁频 | MP4V | 280/600 | 320 | 72.30 ms | 30.04 |
+| 25W 锁频 | x264 | 600/600 | 0 | 6.66 ms | 29.996 |
+| MAXN_SUPER 锁频 | MP4V | 379/600 | 221 | 53.26 ms | 29.99 |
+| MAXN_SUPER 锁频 | x264 | 600/600 | 0 | 7.45 ms | 29.12 |
+
+两份 x264 文件均通过 GStreamer 重新解析，确认为 `1920x1080`、H.264
+Constrained Baseline、`30/1 FPS`、`20.000 s`。25W 测试画面没有目标，
+所以它只证明编码连续性；MAXN_SUPER 测试实际触发 ROI intrusion 和 dwell
+事件，仍保存全部 600 帧。生成视频和原始运行日志保留在 Jetson 的忽略目录，
+GitHub 只提交汇总指标与协议。
+
+正式项目提交：
+
+- `04fd485 feat: add tuned x264 video output`
+- `937f6fb fix: validate Jetson clocks without sudo`
+- `6f3a111 docs: publish validated x264 benchmarks`
+
+验证结果：Jetson 15/15 CTest 通过，WSL 24/24 Python 测试通过，GitHub CI
+通过；新二进制已安装到 `/opt/edge-vision/bin`。恢复服务后保持 25W 锁频，
+状态为 ready，18 秒观察窗口内真实帧 watchdog 前进、PID 稳定且无重启。
+
 ## 下一步
 
 - Day42：复核 Triton 动态 batching 和并发压测，分解 QPS、P95/P99、排队与模型执行瓶颈，形成容量报告。
