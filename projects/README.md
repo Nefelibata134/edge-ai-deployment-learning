@@ -172,6 +172,7 @@ File / CSI IMX219 / RTSP
 两个公开项目仓库只展示工程开发过程：
 
 - README 首屏先展示演示图、架构图和关键指标，不写学习背景。
+- README、`CHANGELOG.md`、`docs/` 和自动生成报告中的人类可读说明统一使用中文；命令、路径、API/JSON 字段、协议标识、指标缩写、许可证与第三方法律文本保持原样。
 - 使用 release milestone、issue、ADR、`CHANGELOG.md` 和 benchmark report 记录演进。
 - commit message 描述功能、修复、性能或文档变化，不使用 `DayXX` 或“完成学习任务”。
 - 提供环境矩阵、复现命令、数据/权重获取脚本、许可和校验值。
