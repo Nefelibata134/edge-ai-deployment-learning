@@ -13,8 +13,12 @@
 建议节奏：
 
 - 你的个人节奏：每天 7 小时，基础学习、动手实验、项目开发、性能测试和复盘同步推进。
-- 每天都写学习日志，哪怕只有 10 行。
+- 明确以 Day 形式开始的学习日写对应日志；其他需求更新最相关的主题文档。
 - 每周至少产出一个能运行的 demo、脚本、报告或性能对比图。
+
+当前执行方式（2026-08-28 起）：Day1-Day41 是历史进度，后续不再严格按
+Day 顺序推进。未完成的 Day42-Day60 只作为候选任务池，用户的当次明确需求
+决定范围和优先级；不会自动开始“下一天”。
 
 学习进度索引：
 
@@ -65,7 +69,7 @@
 文档：
 
 - `AGENTS.md`：上下文重置后的协作记忆、恢复顺序和仓库边界。
-- `roadmap/60-day-plan.md`：当前唯一的 Day1-Day60 逐日执行表；发生计划冲突时以它为准。
+- `roadmap/60-day-plan.md`：Day1-Day41 历史进度与 Day42-Day60 候选任务池，不再自动顺序执行。
 - `roadmap/personal-60-day-plan.md`：个人目标、时间分配、项目和就业原则。
 - `logs/template.md`：每日学习记录模板。
 - `logs/day01.md`：第一天学习记录。
@@ -110,7 +114,7 @@
 - `logs/day40.md`：第四十天学习记录。
 - `logs/day41.md`：第四十一天学习记录。
 - `projects/README.md`：作品集项目规划。
-- `projects/project3-jetson-stm32-vision-safety-controller.md`：Day60 后项目 3 的定位、边界与验收。
+- `projects/project3-jetson-stm32-vision-safety-controller.md`：项目 3 候选方向的定位、边界与验收。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：历史竞赛准备资料，不属于当前 60 天执行表。
 - `career/competition-shortlist-2026-summer.md`：历史候选与规则核对资料，不属于当前 60 天执行表。
