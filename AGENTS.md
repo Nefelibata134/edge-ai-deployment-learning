@@ -9,6 +9,10 @@
 - 至少完成两个就业相关项目：
   - Severstal 钢材缺陷语义分割 + ONNX/TensorRT + Triton/FastAPI GPU 推理服务项目。
   - Jetson Orin Nano C++ 实时多目标跟踪与安全事件分析系统，可扩展为视觉小车。
+- Day60 后启动项目 3：Jetson + STM32 视觉安全控制原型，使用 FreeRTOS、
+  SocketCAN/CAN、PWM、编码器和失联安全状态机，把项目 2 的版本化风险事件
+  转换为物理减速与停车。项目 3 不复制项目 2 的视觉流水线，也不得挤占
+  Day42-Day60 的两个项目加固和就业交付。
 - 已完成 Kaggle Digit Recognizer 有效提交和一次有记录优化；该记录作为历史保留，当前 60 天计划不再安排竞赛，Day28-Day53 完成两个项目，Day54-Day60 完成就业交付。
 
 ## 用户背景
@@ -48,6 +52,12 @@
 | Jetson 实时跟踪与安全事件分析系统 | `jetson-realtime-tracking-system` | Day28 | Day40 |
 
 仓库归属统一使用 GitHub 用户 `Nefelibata134`。项目开始时再创建对应仓库；创建前先确认名称尚未占用。
+
+Day60 后项目 3 的计划仓库名为
+`jetson-stm32-vision-safety-controller`。正式启动前只在本学习仓库保存规划和
+采购清单；启动后同样使用独立公开仓库。其 Jetson 网关只消费项目 2 的稳定
+风险/真实帧健康协议，STM32 侧负责 FreeRTOS、CAN、控制反馈和失效安全，
+两个项目之间不得复制 YOLOX、TensorRT、ByteTrack 或视频输入代码。
 
 本学习仓库只保存项目 proposal、学习日志、实验摘要、踩坑记录和项目索引。正式项目仓库保存代码、配置、测试、依赖、模型说明、性能报告、截图位置和项目 README。
 

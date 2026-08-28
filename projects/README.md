@@ -1,6 +1,7 @@
 # 作品集项目规划
 
-两个项目共享同一条部署主线，但必须证明不同的工程能力：
+当前两个正式项目共享同一条部署主线，但必须证明不同的工程能力。Day60 后
+增加项目 3，专门补充 MCU、RTOS、CAN 与物理控制，不改变当前 60 天计划：
 
 ```text
 PyTorch -> ONNX -> TensorRT -> benchmark -> 可复现部署
@@ -8,7 +9,8 @@ PyTorch -> ONNX -> TensorRT -> benchmark -> 可复现部署
 
 - 项目 1 面向 x86 GPU 服务端，重点是语义分割、并发推理、服务接口和容器化。
 - 项目 2 面向 Jetson 边缘端，重点是 C++ 流式处理、跟踪、事件规则、功耗和可靠性。
-- 两个项目分别建立公开 GitHub 仓库，正式代码不放入本学习仓库。
+- 项目 3 面向 Jetson + STM32 异构系统，重点是 FreeRTOS、CAN、实时控制和失效安全。
+- 三个项目分别建立公开 GitHub 仓库，正式代码不放入本学习仓库。
 
 ## 项目 1：工业钢材缺陷分割与 GPU 推理服务
 
@@ -132,19 +134,37 @@ File / CSI IMX219 / RTSP
 - 使用 IMX219 完成 CSI 实时演示；RTSP 至少完成连接和断线恢复测试，USB UVC 为可选扩展。
 - 视觉小车、CUDA 自定义预处理、INT8、DeepStream 和多路流属于 v1.1/v2。
 
-## 两个项目的区别
+## 项目 3：Jetson + STM32 视觉安全控制原型
 
-| 维度 | 项目 1 | 项目 2 |
-| --- | --- | --- |
-| 场景 | 钢材缺陷语义分割 | 实时安全事件分析 |
-| 输入 | 图片请求、batch | 连续视频、CSI IMX219、RTSP |
-| 环境 | x86 RTX GPU / 云 GPU | Jetson Orin Nano ARM |
-| 主要语言 | Python | C++17 |
-| 模型 | 自训练 U-Net 分割模型 | 轻量检测器 + ByteTrack |
-| 系统形态 | Triton/FastAPI 推理服务 | GStreamer 长驻进程 |
-| 优化重点 | batch、并发、吞吐、服务延迟 | 实时性、背压、功耗、可靠性 |
-| 主要指标 | Dice/IoU、QPS、P95/P99、显存 | HOTA/IDF1、事件准确率、FPS、功耗 |
-| 工程关键词 | ONNX、TensorRT、Triton、Docker、FastAPI | C++、CMake、GStreamer、Jetson、systemd |
+计划仓库名：`jetson-stm32-vision-safety-controller`
+
+当前状态：已确定为 Day60 后项目，尚未创建正式仓库。
+
+项目 3 不复制项目 2 的摄像头、TensorRT、跟踪和证据代码。项目 2 输出版本化
+风险事件，项目 3 的 Jetson CAN 网关消费事件并通过 CAN 控制 STM32；STM32
+使用 FreeRTOS、PWM、编码器、看门狗和安全状态机完成减速、停车与故障保护。
+
+项目 2 可以独立用于告警、审计和证据留存；项目 3 也可以使用模拟风险源和
+`vcan` 独立测试。两者只有稳定协议依赖，没有源码依赖，因此属于上游感知模块
+与下游控制 ECU 的系统集成，而不是重复实现。
+
+完整定位、边界和验收见
+`projects/project3-jetson-stm32-vision-safety-controller.md`，采购清单见
+`hardware/project3-jetson-stm32-buying-list.md`。
+
+## 三个项目的区别
+
+| 维度 | 项目 1 | 项目 2 | 项目 3 |
+| --- | --- | --- | --- |
+| 场景 | 钢材缺陷语义分割 | 实时安全事件分析 | 视觉触发的实时执行与安全停车 |
+| 输入 | 图片请求、batch | 连续视频、CSI IMX219、RTSP | 风险事件、CAN、编码器和按键 |
+| 环境 | x86 RTX GPU / 云 GPU | Jetson Orin Nano ARM | Jetson Orin Nano + STM32G474RE |
+| 主要语言 | Python | C++17 | C++17 + Embedded C |
+| 模型 | 自训练 U-Net 分割模型 | 轻量检测器 + ByteTrack | 复用项目 2 事件，不新增模型训练 |
+| 系统形态 | Triton/FastAPI 推理服务 | GStreamer 长驻进程 | SocketCAN 网关 + FreeRTOS 固件 |
+| 优化重点 | batch、并发、吞吐、服务延迟 | 实时性、背压、功耗、可靠性 | 控制周期、失联安全、反馈和故障恢复 |
+| 主要指标 | Dice/IoU、QPS、P95/P99、显存 | HOTA/IDF1、事件准确率、FPS、功耗 | CAN 延迟、转速误差、停车时间、故障覆盖 |
+| 工程关键词 | ONNX、TensorRT、Triton、Docker、FastAPI | C++、CMake、GStreamer、Jetson、systemd | STM32、FreeRTOS、CAN、PWM、encoder、HIL |
 
 ## 公开仓库展示规范
 
@@ -170,6 +190,7 @@ File / CSI IMX219 / RTSP
 - Day29-Day40：完成项目 2 v1。
 - Day41-Day53：两个项目性能、稳定性和可展示性增强。
 - Day54-Day60：简历、GitHub、岗位和面试交付。
+- Day60 后：按新的阶段计划启动项目 3，不回填或挤占当前 Day42-Day60。
 
 详细日程以 `roadmap/60-day-plan.md` 为唯一执行表。
 

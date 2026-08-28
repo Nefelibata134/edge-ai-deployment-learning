@@ -110,9 +110,11 @@
 - `logs/day40.md`：第四十天学习记录。
 - `logs/day41.md`：第四十一天学习记录。
 - `projects/README.md`：作品集项目规划。
+- `projects/project3-jetson-stm32-vision-safety-controller.md`：Day60 后项目 3 的定位、边界与验收。
 - `career/direction-and-jobs.md`：就业方向和岗位建议。
 - `career/competition-plan.md`：历史竞赛准备资料，不属于当前 60 天执行表。
 - `career/competition-shortlist-2026-summer.md`：历史候选与规则核对资料，不属于当前 60 天执行表。
 - `hardware/jetson-buying-list.md`：Jetson Orin Nano 采购清单。
+- `hardware/project3-jetson-stm32-buying-list.md`：项目 3 的 STM32、CAN 和执行机构分批采购清单。
 - `hardware/jetson-arrival-check.md`：Jetson Orin Nano 到货检查记录。
 - `github-workflow.md`：GitHub 记录和提交规范。
