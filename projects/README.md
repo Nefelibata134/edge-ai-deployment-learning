@@ -17,8 +17,9 @@ PyTorch -> ONNX -> TensorRT -> benchmark -> 可复现部署
 
 仓库名：`industrial-defect-inference-service`
 
-当前状态：v1.0.0 实现和质量门禁已于 Day25 完成；项目采用 MIT License，
-`v1.0.0` Git 标签和 GitHub Release 已发布。
+当前状态：v1.0.0 实现和质量门禁已完成；项目采用 MIT License，`v1.0.0`
+Git 标签和 GitHub Release 已发布。后续性能复核已加入端到端阶段剖析，并把
+FastAPI 到 Triton 的默认传输从 HTTP 切换为 gRPC。
 
 ### 项目定位
 
@@ -31,6 +32,7 @@ PyTorch -> ONNX -> TensorRT -> benchmark -> 可复现部署
 ```text
 Client
   -> FastAPI gateway
+  -> Triton gRPC async client
   -> Triton Inference Server
   -> TensorRT FP16 model
   -> mask decoding and response
@@ -46,11 +48,16 @@ Client
 - FastAPI 图片上传、结果查询、错误处理和健康检查接口。
 - Docker Compose 启动服务，完成并发压测和异常输入测试。
 - 记录 mean/P50/P95/P99、QPS、错误率、GPU 显存、Triton queue/compute 时间。
+- 分解上传、解码、tensor 预处理、Triton 准备/往返/输出提取、逐项后处理、
+  JSON 序列化和未归因传输时间。
+- 同镜像 HTTP/gRPC A/B 后，正式 400 请求压测在并发 4 达到 `39.04 QPS`、
+  P95 `126.63 ms`，全部请求成功；并发 8 不再增加吞吐。
 
 ### v1 边界
 
 - 必做：Severstal baseline、ONNX、TensorRT FP16、Triton、FastAPI、Docker Compose、压测和完整 README。
-- 选做：INT8、gRPC、Kubernetes、云端公开演示。
+- 后续候选：INT8、Triton shared memory、紧凑输出/后处理下沉、API worker
+  拓扑、Kubernetes 和云端公开演示；只有有明确收益与场景时才执行。
 - 不把原始数据集、训练权重或大型 engine 提交到 Git。
 
 ## 项目 2：Jetson 实时跟踪与安全事件分析系统

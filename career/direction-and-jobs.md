@@ -79,7 +79,7 @@
 
 项目 1：
 
-基于 Severstal 钢材缺陷数据构建 U-Net 语义分割模型，完成 RLE 掩码处理及 Dice、IoU、Precision、Recall 和漏检分析，并导出 ONNX/TensorRT FP16。使用 Triton Inference Server、FastAPI 和 Docker Compose 构建 GPU 推理服务，通过动态 batching 与并发压测记录 QPS、P50/P95/P99、错误率和显存占用，形成可复现的模型与服务性能报告。
+基于 Severstal 钢材缺陷数据构建 U-Net 语义分割模型，完成 RLE 掩码处理及 Dice、IoU、Precision、Recall 和漏检分析，并导出 ONNX/TensorRT FP16。使用 Triton Inference Server、FastAPI 和 Docker Compose 构建 GPU 推理服务，通过端到端阶段剖析定位稠密 tensor 的 HTTP 传输瓶颈，切换 gRPC 后在并发 4 下达到 `39.04 QPS`、P95 `126.63 ms`，并保留可复现的协议 A/B、错误率和容量报告。
 
 项目 2：
 
